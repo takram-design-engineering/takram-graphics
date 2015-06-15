@@ -37,37 +37,37 @@
 namespace takram {
 namespace graphics {
 
-template <typename T, typename Enable = void>
+template <class T, class Enable = void>
 struct ColorDepth {};
 
-template <typename T>
+template <class T>
 using IntegralColorDepth = ColorDepth<T, math::EnableIfIntegral<T>>;
-template <typename T>
+template <class T>
 using FloatingColorDepth = ColorDepth<T, math::EnableIfFloating<T>>;
 
-template <typename T>
+template <class T>
 struct ColorDepth<T, math::EnableIfIntegral<T>> {
   static constexpr const int bits = std::numeric_limits<T>::digits;
   static constexpr const T min = std::numeric_limits<T>::min();
   static constexpr const T max = std::numeric_limits<T>::max();
 
   static T clamp(T value);
-  template <typename U>
+  template <class U>
   static math::EnableIfIntegral<U, T> convert(U value);
-  template <typename U>
+  template <class U>
   static math::EnableIfFloating<U, T> convert(U value);
 };
 
-template <typename T>
+template <class T>
 struct ColorDepth<T, math::EnableIfFloating<T>> {
   static constexpr const int bits = sizeof(T) * 8;
   static constexpr const T min = 0;
   static constexpr const T max = 1;
 
   static T clamp(T value);
-  template <typename U>
+  template <class U>
   static math::EnableIfIntegral<U, T> convert(U value);
-  template <typename U>
+  template <class U>
   static math::EnableIfFloating<U, T> convert(U value);
 };
 
@@ -75,18 +75,18 @@ struct ColorDepth<T, math::EnableIfFloating<T>> {
 
 #pragma mark Conversions
 
-template <typename T>
+template <class T>
 inline T IntegralColorDepth<T>::clamp(T value) {
   return math::clamp(value, min, max);
 }
 
-template <typename T>
+template <class T>
 inline T FloatingColorDepth<T>::clamp(T value) {
   return math::clamp(value, min, max);
 }
 
-template <typename T>
-template <typename U>
+template <class T>
+template <class U>
 inline math::EnableIfIntegral<U, T> IntegralColorDepth<T>::convert(U value) {
   if (ColorDepth<U>::bits < bits) {
     return (static_cast<T>(value) << (bits - ColorDepth<U>::bits)) | value;
@@ -96,20 +96,20 @@ inline math::EnableIfIntegral<U, T> IntegralColorDepth<T>::convert(U value) {
   return value;
 }
 
-template <typename T>
-template <typename U>
+template <class T>
+template <class U>
 inline math::EnableIfFloating<U, T> IntegralColorDepth<T>::convert(U value) {
   return std::round(max * value);
 }
 
-template <typename T>
-template <typename U>
+template <class T>
+template <class U>
 inline math::EnableIfIntegral<U, T> FloatingColorDepth<T>::convert(U value) {
   return static_cast<T>(value) / ColorDepth<U>::max;
 }
 
-template <typename T>
-template <typename U>
+template <class T>
+template <class U>
 inline math::EnableIfFloating<U, T> FloatingColorDepth<T>::convert(U value) {
   return value;
 }

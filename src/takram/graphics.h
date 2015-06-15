@@ -28,6 +28,10 @@
 #ifndef TAKRAM_GRAPHICS_H_
 #define TAKRAM_GRAPHICS_H_
 
+#define TAKRAM_HAS_OPENCV 1
+#define TAKRAM_HAS_OPENFRAMEWORKS 1
+#define TAKRAM_HAS_CINDER 1
+
 #include "takram/graphics/color.h"
 #include "takram/graphics/color_depth.h"
 #include "takram/graphics/contour.h"

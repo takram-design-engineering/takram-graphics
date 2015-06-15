@@ -33,21 +33,25 @@
 #include <ostream>
 #include <tuple>
 
+#if TAKRAM_HAS_CINDER
+#include "cinder/Color.h"
+#endif  // TAKRAM_HAS_CINDER
+
 #include "takram/graphics/color_depth.h"
 #include "takram/math/vector.h"
 
 namespace takram {
 namespace graphics {
 
-template <typename T, int C>
+template <class T, int C>
 class Color;
 
-template <typename T>
+template <class T>
 using Color3 = Color<T, 3>;
-template <typename T>
+template <class T>
 using Color4 = Color<T, 4>;
 
-template <typename T>
+template <class T>
 class Color<T, 3> final {
  public:
   using Type = T;
@@ -62,19 +66,30 @@ class Color<T, 3> final {
   explicit Color(T gray);
   Color(T red, T green, T blue);
   explicit Color(const T *values, int size = channels);
-  template <typename... Args>
+  template <class... Args>
   Color(const std::tuple<Args...>& tuple);
   Color(std::initializer_list<T> list);
 
   // Implicit conversion
-  template <typename U>
+  template <class U>
   Color(const Color3<U>& other);
 
+#if TAKRAM_HAS_OPENCV
+  template <class U>
+  Color(const cv::Vec<U, channels>& other);
+  operator cv::Vec<T, channels>() const;
+#endif  // TAKRAM_HAS_OPENCV
+
+#if TAKRAM_HAS_CINDER
+  template <class U>
+  Color(const ci::ColorT<U>& other);
+  operator ci::ColorT<T>() const;
+#endif  // TAKRAM_HAS_CINDER
+
   // Explicit conversion
-  template <typename U>
+  template <class U>
   explicit Color(const Color4<U>& other);
   explicit Color(const math::Vec3<T>& other);
-  explicit Color(const math::Vec4<T>& other);
 
   // Copy semantics
   Color(const Color3<T>& other);
@@ -90,7 +105,7 @@ class Color<T, 3> final {
   void set(T gray);
   void set(T red, T green, T blue);
   void set(const T *values, int size = channels);
-  template <typename... Args>
+  template <class... Args>
   void set(const std::tuple<Args...>& tuple);
   void set(std::initializer_list<T> list);
   void reset();
@@ -106,9 +121,9 @@ class Color<T, 3> final {
   const T& back() const { return vector.back(); }
 
   // Comparison
-  template <typename U>
+  template <class U>
   bool operator==(const Color3<U>& other) const;
-  template <typename U>
+  template <class U>
   bool operator!=(const Color3<U>& other) const;
 
   // Iterator
@@ -141,49 +156,74 @@ using Color3d = Color3<double>;
 
 #pragma mark -
 
-template <typename T>
+template <class T>
 inline Color3<T>::Color() : vector() {}
 
-template <typename T>
+template <class T>
 inline Color3<T>::Color(T gray) : vector(gray, gray, gray) {}
 
-template <typename T>
+template <class T>
 inline Color3<T>::Color(T red, T green, T blue) : vector(red, green, blue) {}
 
-template <typename T>
+template <class T>
 inline Color3<T>::Color(const T *values, int size) : vector(values, size) {}
 
-template <typename T>
-template <typename... Args>
+template <class T>
+template <class... Args>
 inline Color3<T>::Color(const std::tuple<Args...>& tuple) : vector(tuple) {}
 
-template <typename T>
+template <class T>
 inline Color3<T>::Color(std::initializer_list<T> list) : vector(list) {}
 
 #pragma mark Implicit conversion
 
-template <typename T>
-template <typename U>
+template <class T>
+template <class U>
 inline Color3<T>::Color(const Color3<U>& other) : vector(other.vector) {}
+
+#if TAKRAM_HAS_OPENCV
+
+template <class T>
+template <class U>
+inline Color3<T>::Color(const cv::Vec<U, channels>& other)
+    : vector(other) {}
+
+template <class T>
+inline Color3<T>::operator cv::Vec<T, channels>() const {
+  return cv::Vec<T, channels>(r, g, b);
+}
+
+#endif  // TAKRAM_HAS_OPENCV
+
+#if TAKRAM_HAS_CINDER
+
+template <class T>
+template <class U>
+inline Color3<T>::Color(const ci::ColorT<U>& other)
+    : vector(other.r, other.g, other.b) {}
+
+template <class T>
+inline Color3<T>::operator ci::ColorT<T>() const {
+  return ci::ColorT<T>(r, g, b);
+}
+
+#endif  // TAKRAM_HAS_CINDER
 
 #pragma mark Explicit conversion
 
-template <typename T>
-template <typename U>
+template <class T>
+template <class U>
 inline Color3<T>::Color(const Color4<U>& other) : vector(other.vector) {}
 
-template <typename T>
+template <class T>
 inline Color3<T>::Color(const math::Vec3<T>& other) : vector(other) {}
-
-template <typename T>
-inline Color3<T>::Color(const math::Vec4<T>& other) : vector(other) {}
 
 #pragma mark Copy semantics
 
-template <typename T>
+template <class T>
 inline Color3<T>::Color(const Color3<T>& other) : vector(other.vector) {}
 
-template <typename T>
+template <class T>
 inline Color3<T>& Color3<T>::operator=(const Color3<T>& other) {
   if (&other != this) {
     vector = other.vector;
@@ -193,22 +233,22 @@ inline Color3<T>& Color3<T>::operator=(const Color3<T>& other) {
 
 #pragma mark Factory
 
-template <typename T>
+template <class T>
 inline Color3<T> Color3<T>::white() {
   return Color3<T>(ColorDepth<T>::max);
 }
 
-template <typename T>
+template <class T>
 inline Color3<T> Color3<T>::gray() {
   return Color3<T>((ColorDepth<T>::min + ColorDepth<T>::max) / 2);
 }
 
-template <typename T>
+template <class T>
 inline Color3<T> Color3<T>::black() {
   return Color3<T>(ColorDepth<T>::min);
 }
 
-template <typename T>
+template <class T>
 inline Color3<T> Color3<T>::hex(std::uint32_t hex) {
   return Color3<T>(
     ColorDepth<T>::convert(static_cast<std::uint8_t>(0xff & (hex >> 16))),
@@ -219,66 +259,66 @@ inline Color3<T> Color3<T>::hex(std::uint32_t hex) {
 
 #pragma mark Mutators
 
-template <typename T>
+template <class T>
 inline void Color3<T>::set(T gray) {
   vector.set(gray, gray, gray);
 }
 
-template <typename T>
+template <class T>
 inline void Color3<T>::set(T red, T green, T blue) {
   vector.set(red, green, blue);
 }
 
-template <typename T>
+template <class T>
 inline void Color3<T>::set(const T *values, int size) {
   vector.set(values, size);
 }
 
-template <typename T>
-template <typename... Args>
+template <class T>
+template <class... Args>
 inline void Color3<T>::set(const std::tuple<Args...>& tuple) {
   vector.set(tuple);
 }
 
-template <typename T>
+template <class T>
 inline void Color3<T>::set(std::initializer_list<T> list) {
   vector.set(list);
 }
 
-template <typename T>
+template <class T>
 inline void Color3<T>::reset() {
   vector.reset();
 }
 
 #pragma mark Element access
 
-template <typename T>
+template <class T>
 inline T& Color3<T>::at(int index) {
   return vector.at(index);
 }
 
-template <typename T>
+template <class T>
 inline const T& Color3<T>::at(int index) const {
   return vector.at(index);
 }
 
 #pragma mark Comparison
 
-template <typename T>
-template <typename U>
+template <class T>
+template <class U>
 inline bool Color3<T>::operator==(const Color3<U>& other) const {
   return vector == other.vector;
 }
 
-template <typename T>
-template <typename U>
+template <class T>
+template <class U>
 inline bool Color3<T>::operator!=(const Color3<U>& other) const {
   return vector != other.vector;
 }
 
 #pragma mark Stream
 
-template <typename T>
+template <class T>
 inline std::ostream& operator<<(std::ostream& os, const Color3<T>& other) {
   return os << other.vector;
 }
