@@ -33,6 +33,14 @@
 #include <ostream>
 #include <tuple>
 
+#if TAKRAM_HAS_OPENCV
+#include "opencv2/core/core.hpp"
+#endif  // TAKRAM_HAS_OPENCV
+
+#if TAKRAM_HAS_OPENFRAMEWORKS
+#include "ofColor.h"
+#endif  // TAKRAM_HAS_OPENFRAMEWORKS
+
 #if TAKRAM_HAS_CINDER
 #include "cinder/Color.h"
 #endif  // TAKRAM_HAS_CINDER
@@ -79,6 +87,12 @@ class Color<T, 3> final {
   Color(const cv::Vec<U, channels>& other);
   operator cv::Vec<T, channels>() const;
 #endif  // TAKRAM_HAS_OPENCV
+
+#if TAKRAM_HAS_OPENFRAMEWORKS
+  template <class U>
+  Color(const ofColor_<U>& other);
+  operator ofColor_<T>() const;
+#endif  // TAKRAM_HAS_OPENFRAMEWORKS
 
 #if TAKRAM_HAS_CINDER
   template <class U>
@@ -194,6 +208,20 @@ inline Color3<T>::operator cv::Vec<T, channels>() const {
 }
 
 #endif  // TAKRAM_HAS_OPENCV
+
+#if TAKRAM_HAS_OPENFRAMEWORKS
+
+template <class T>
+template <class U>
+inline Color3<T>::Color(const ofColor_<U>& other)
+    : vector(other.r, other.g, other.b) {}
+
+template <class T>
+inline Color3<T>::operator ofColor_<T>() const {
+  return ofColor_<T>(r, g, b);
+}
+
+#endif  // TAKRAM_HAS_OPENFRAMEWORKS
 
 #if TAKRAM_HAS_CINDER
 
