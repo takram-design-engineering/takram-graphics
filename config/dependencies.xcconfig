@@ -1,9 +1,9 @@
 //
-//  takram/graphics.h
+//  dependencies.xcconfig
 //
 //  MIT License
 //
-//  Copyright (C) 2015 Shota Matsuda
+//  Copyright (C) 2014-2015 Shota Matsuda
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the "Software"),
@@ -24,13 +24,6 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#include "takram/graphics.h"
-
-namespace takram {
-namespace graphics {
-
-const double version_number = 1.0;
-const unsigned char version_string[] = "1.0";
-
-}  // namespace graphics
-}  // namespace takram
+OPENCV_DIR = /usr/local
+OPENFRAMEWORKS_DIR = ../openframeworks
+CINDER_DIR = ../cinder

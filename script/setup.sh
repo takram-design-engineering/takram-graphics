@@ -29,5 +29,5 @@ readonly PROJECT_DIR="$(cd "$(dirname "$0")/../"; pwd)"
 
 pushd "${PROJECT_DIR}"
   git submodule update --init
-  "scripts/build.sh" cmake "lib/gtest" "build/gtest"
+  "script/build.sh" cmake "lib/gtest" "build/gtest"
 popd

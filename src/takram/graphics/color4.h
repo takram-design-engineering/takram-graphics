@@ -416,6 +416,13 @@ inline std::ostream& operator<<(std::ostream& os, const Color4<T>& other) {
 
 namespace gfx = graphics;
 
+using graphics::Color4;
+using graphics::Color4u;
+using graphics::Color4s;
+using graphics::Color4i;
+using graphics::Color4f;
+using graphics::Color4d;
+
 }  // namespace takram
 
 #endif  // TAKRAM_GRAPHICS_COLOR4_H_

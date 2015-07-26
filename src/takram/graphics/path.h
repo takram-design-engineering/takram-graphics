@@ -33,7 +33,7 @@
 #include <utility>
 #include <vector>
 
-#include "takram/algorithm/tree_iterator.h"
+#include "takram/algorithm/leaf_iterator_iterator.h"
 #include "takram/graphics/contour.h"
 #include "takram/graphics/segment.h"
 #include "takram/math/vector.h"
@@ -45,12 +45,10 @@ class Path final {
  public:
   using Real = double;
   using Point = math::Vec2<Real>;
-  using Iterator = TreeIterator<
-      Segment,
+  using Iterator = LeafIteratorIterator<
       std::vector<Contour>::iterator,
       Contour::Iterator>;
-  using ConstIterator = TreeIterator<
-      const Segment,
+  using ConstIterator = LeafIteratorIterator<
       std::vector<Contour>::const_iterator,
       Contour::ConstIterator>;
   using ReverseIterator = std::reverse_iterator<Iterator>;

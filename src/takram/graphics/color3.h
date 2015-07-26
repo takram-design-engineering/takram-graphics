@@ -355,6 +355,13 @@ inline std::ostream& operator<<(std::ostream& os, const Color3<T>& other) {
 
 namespace gfx = graphics;
 
+using graphics::Color3;
+using graphics::Color3u;
+using graphics::Color3s;
+using graphics::Color3i;
+using graphics::Color3f;
+using graphics::Color3d;
+
 }  // namespace takram
 
 #endif  // TAKRAM_GRAPHICS_COLOR3_H_

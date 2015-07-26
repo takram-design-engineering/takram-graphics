@@ -8,24 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		930955321A4FB46600D09023 /* libtakram_graphics.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9309550E1A4FB1FC00D09023 /* libtakram_graphics.dylib */; };
-		93D7E4D51B2C5A47006EA047 /* color.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4C11B2C5A47006EA047 /* color.h */; };
-		93D7E4D61B2C5A47006EA047 /* color.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4C11B2C5A47006EA047 /* color.h */; };
-		93D7E4D91B2C5A47006EA047 /* color3.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4C31B2C5A47006EA047 /* color3.h */; };
-		93D7E4DA1B2C5A47006EA047 /* color3.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4C31B2C5A47006EA047 /* color3.h */; };
-		93D7E4DD1B2C5A47006EA047 /* color4.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4C51B2C5A47006EA047 /* color4.h */; };
-		93D7E4DE1B2C5A47006EA047 /* color4.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4C51B2C5A47006EA047 /* color4.h */; };
-		93D7E4DF1B2C5A47006EA047 /* color_depth.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4C61B2C5A47006EA047 /* color_depth.h */; };
-		93D7E4E01B2C5A47006EA047 /* color_depth.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4C61B2C5A47006EA047 /* color_depth.h */; };
+		93B474411B648CD400613FB6 /* libtakram_math.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B474381B648CC400613FB6 /* libtakram_math.dylib */; };
+		93B474441B648CDA00613FB6 /* libtakram_math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B4743A1B648CC400613FB6 /* libtakram_math.a */; };
+		93B474471B648CDF00613FB6 /* libtakram_math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B4743C1B648CC400613FB6 /* libtakram_math.a */; };
+		93B4746A1B648D0600613FB6 /* libtakram_algorithm.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B474601B648CFE00613FB6 /* libtakram_algorithm.dylib */; };
+		93B4746D1B648D0B00613FB6 /* libtakram_algorithm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B474621B648CFE00613FB6 /* libtakram_algorithm.a */; };
+		93B474701B648D1100613FB6 /* libtakram_algorithm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B474641B648CFE00613FB6 /* libtakram_algorithm.a */; };
+		93B474741B648D8F00613FB6 /* graphics.cc in Sources */ = {isa = PBXBuildFile; fileRef = 93D7E4FD1B2C5A52006EA047 /* graphics.cc */; };
+		93B474751B648D8F00613FB6 /* contour.cc in Sources */ = {isa = PBXBuildFile; fileRef = 93D7E4C71B2C5A47006EA047 /* contour.cc */; };
 		93D7E4E11B2C5A47006EA047 /* contour.cc in Sources */ = {isa = PBXBuildFile; fileRef = 93D7E4C71B2C5A47006EA047 /* contour.cc */; };
 		93D7E4E21B2C5A47006EA047 /* contour.cc in Sources */ = {isa = PBXBuildFile; fileRef = 93D7E4C71B2C5A47006EA047 /* contour.cc */; };
-		93D7E4E31B2C5A47006EA047 /* contour.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4C81B2C5A47006EA047 /* contour.h */; };
-		93D7E4E41B2C5A47006EA047 /* contour.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4C81B2C5A47006EA047 /* contour.h */; };
-		93D7E4ED1B2C5A47006EA047 /* path.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4CD1B2C5A47006EA047 /* path.h */; };
-		93D7E4EE1B2C5A47006EA047 /* path.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4CD1B2C5A47006EA047 /* path.h */; };
-		93D7E4F71B2C5A47006EA047 /* segment.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4D21B2C5A47006EA047 /* segment.h */; };
-		93D7E4F81B2C5A47006EA047 /* segment.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4D21B2C5A47006EA047 /* segment.h */; };
-		93D7E4FB1B2C5A47006EA047 /* graphics.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4D41B2C5A47006EA047 /* graphics.h */; };
-		93D7E4FC1B2C5A47006EA047 /* graphics.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7E4D41B2C5A47006EA047 /* graphics.h */; };
 		93D7E4FE1B2C5A52006EA047 /* graphics.cc in Sources */ = {isa = PBXBuildFile; fileRef = 93D7E4FD1B2C5A52006EA047 /* graphics.cc */; };
 		93D7E4FF1B2C5A52006EA047 /* graphics.cc in Sources */ = {isa = PBXBuildFile; fileRef = 93D7E4FD1B2C5A52006EA047 /* graphics.cc */; };
 /* End PBXBuildFile section */
@@ -38,6 +30,104 @@
 			remoteGlobalIDString = 9309550D1A4FB1FC00D09023;
 			remoteInfo = takram_triangulation_shared;
 		};
+		93B474371B648CC400613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B4741F1B648C8800613FB6 /* math.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9309550E1A4FB1FC00D09023;
+			remoteInfo = math_shared;
+		};
+		93B474391B648CC400613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B4741F1B648C8800613FB6 /* math.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 93C6B51519B22F5500A1CF93;
+			remoteInfo = math_static;
+		};
+		93B4743B1B648CC400613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B4741F1B648C8800613FB6 /* math.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 93F858331B564DB200C32E8D;
+			remoteInfo = math_ios;
+		};
+		93B4743D1B648CC400613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B4741F1B648C8800613FB6 /* math.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 93F1B9F6180282B0002A5A5C;
+			remoteInfo = math_test;
+		};
+		93B4743F1B648CD000613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B4741F1B648C8800613FB6 /* math.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9309550D1A4FB1FC00D09023;
+			remoteInfo = math_shared;
+		};
+		93B474421B648CD700613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B4741F1B648C8800613FB6 /* math.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 93C6B51419B22F5500A1CF93;
+			remoteInfo = math_static;
+		};
+		93B474451B648CDD00613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B4741F1B648C8800613FB6 /* math.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 93F858161B564DB200C32E8D;
+			remoteInfo = math_ios;
+		};
+		93B4745F1B648CFE00613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B474481B648CEF00613FB6 /* algorithm.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9309550E1A4FB1FC00D09023;
+			remoteInfo = algorithm_shared;
+		};
+		93B474611B648CFE00613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B474481B648CEF00613FB6 /* algorithm.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 93C6B51519B22F5500A1CF93;
+			remoteInfo = algorithm_static;
+		};
+		93B474631B648CFE00613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B474481B648CEF00613FB6 /* algorithm.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9397F58D1B647CAA00DFEDC9;
+			remoteInfo = algorithm_ios;
+		};
+		93B474651B648CFE00613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B474481B648CEF00613FB6 /* algorithm.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 93F1B9F6180282B0002A5A5C;
+			remoteInfo = algorithm_test;
+		};
+		93B474681B648D0200613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B474481B648CEF00613FB6 /* algorithm.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9309550D1A4FB1FC00D09023;
+			remoteInfo = algorithm_shared;
+		};
+		93B4746B1B648D0900613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B474481B648CEF00613FB6 /* algorithm.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 93C6B51419B22F5500A1CF93;
+			remoteInfo = algorithm_static;
+		};
+		93B4746E1B648D0F00613FB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93B474481B648CEF00613FB6 /* algorithm.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9397F58C1B647CAA00DFEDC9;
+			remoteInfo = algorithm_ios;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +139,9 @@
 		930959301A5062D400D09023 /* project_debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project_debug.xcconfig; sourceTree = "<group>"; };
 		930959311A5062D400D09023 /* project_release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project_release.xcconfig; sourceTree = "<group>"; };
 		930959321A5062D400D09023 /* project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project.xcconfig; sourceTree = "<group>"; };
+		93B474091B648C4C00613FB6 /* libtakram_graphics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libtakram_graphics.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		93B4741F1B648C8800613FB6 /* math.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = math.xcodeproj; path = "../takram-math/math.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		93B474481B648CEF00613FB6 /* algorithm.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = algorithm.xcodeproj; path = "../takram-algorithm/algorithm.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		93C6B51519B22F5500A1CF93 /* libtakram_graphics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libtakram_graphics.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		93D7E4C11B2C5A47006EA047 /* color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = color.h; sourceTree = "<group>"; };
 		93D7E4C31B2C5A47006EA047 /* color3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = color3.h; sourceTree = "<group>"; };
@@ -60,7 +153,8 @@
 		93D7E4D21B2C5A47006EA047 /* segment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = segment.h; sourceTree = "<group>"; };
 		93D7E4D41B2C5A47006EA047 /* graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graphics.h; sourceTree = "<group>"; };
 		93D7E4FD1B2C5A52006EA047 /* graphics.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graphics.cc; sourceTree = "<group>"; };
-		93F1B9F6180282B0002A5A5C /* graphics_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = graphics_test; sourceTree = BUILT_PRODUCTS_DIR; };
+		93F1B9F6180282B0002A5A5C /* takram_graphics_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = takram_graphics_test; sourceTree = BUILT_PRODUCTS_DIR; };
+		93F2949B1B5273AA00628F3C /* dependencies.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = dependencies.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +162,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93B4746A1B648D0600613FB6 /* libtakram_algorithm.dylib in Frameworks */,
+				93B474411B648CD400613FB6 /* libtakram_math.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93B474061B648C4C00613FB6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93B474701B648D1100613FB6 /* libtakram_algorithm.a in Frameworks */,
+				93B474471B648CDF00613FB6 /* libtakram_math.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +180,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93B4746D1B648D0B00613FB6 /* libtakram_algorithm.a in Frameworks */,
+				93B474441B648CDA00613FB6 /* libtakram_math.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +199,7 @@
 		930955021A4FB1E200D09023 /* config */ = {
 			isa = PBXGroup;
 			children = (
+				93F2949B1B5273AA00628F3C /* dependencies.xcconfig */,
 				930959321A5062D400D09023 /* project.xcconfig */,
 				930959301A5062D400D09023 /* project_debug.xcconfig */,
 				930959311A5062D400D09023 /* project_release.xcconfig */,
@@ -101,6 +209,28 @@
 				930955061A4FB1E200D09023 /* product_test.xcconfig */,
 			);
 			path = config;
+			sourceTree = "<group>";
+		};
+		93B474311B648CC400613FB6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				93B474381B648CC400613FB6 /* libtakram_math.dylib */,
+				93B4743A1B648CC400613FB6 /* libtakram_math.a */,
+				93B4743C1B648CC400613FB6 /* libtakram_math.a */,
+				93B4743E1B648CC400613FB6 /* takram_math_test */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		93B474591B648CFE00613FB6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				93B474601B648CFE00613FB6 /* libtakram_algorithm.dylib */,
+				93B474621B648CFE00613FB6 /* libtakram_algorithm.a */,
+				93B474641B648CFE00613FB6 /* libtakram_algorithm.a */,
+				93B474661B648CFE00613FB6 /* takram_algorithm_test */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		93D7E38D1B2BCBEB006EA047 /* src */ = {
@@ -143,6 +273,8 @@
 				93D7E4261B2C20BE006EA047 /* test */,
 				930955021A4FB1E200D09023 /* config */,
 				93F8AD7017C8B39800310877 /* products */,
+				93B474481B648CEF00613FB6 /* algorithm.xcodeproj */,
+				93B4741F1B648C8800613FB6 /* math.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -151,45 +283,13 @@
 			children = (
 				9309550E1A4FB1FC00D09023 /* libtakram_graphics.dylib */,
 				93C6B51519B22F5500A1CF93 /* libtakram_graphics.a */,
-				93F1B9F6180282B0002A5A5C /* graphics_test */,
+				93B474091B648C4C00613FB6 /* libtakram_graphics.a */,
+				93F1B9F6180282B0002A5A5C /* takram_graphics_test */,
 			);
 			name = products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
-
-/* Begin PBXHeadersBuildPhase section */
-		9309550C1A4FB1FC00D09023 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				93D7E4E31B2C5A47006EA047 /* contour.h in Headers */,
-				93D7E4F71B2C5A47006EA047 /* segment.h in Headers */,
-				93D7E4ED1B2C5A47006EA047 /* path.h in Headers */,
-				93D7E4D91B2C5A47006EA047 /* color3.h in Headers */,
-				93D7E4D51B2C5A47006EA047 /* color.h in Headers */,
-				93D7E4FB1B2C5A47006EA047 /* graphics.h in Headers */,
-				93D7E4DF1B2C5A47006EA047 /* color_depth.h in Headers */,
-				93D7E4DD1B2C5A47006EA047 /* color4.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		93C6B51319B22F5500A1CF93 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				93D7E4E41B2C5A47006EA047 /* contour.h in Headers */,
-				93D7E4F81B2C5A47006EA047 /* segment.h in Headers */,
-				93D7E4EE1B2C5A47006EA047 /* path.h in Headers */,
-				93D7E4DA1B2C5A47006EA047 /* color3.h in Headers */,
-				93D7E4D61B2C5A47006EA047 /* color.h in Headers */,
-				93D7E4FC1B2C5A47006EA047 /* graphics.h in Headers */,
-				93D7E4E01B2C5A47006EA047 /* color_depth.h in Headers */,
-				93D7E4DE1B2C5A47006EA047 /* color4.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		9309550D1A4FB1FC00D09023 /* graphics_shared */ = {
@@ -198,16 +298,37 @@
 			buildPhases = (
 				9309550A1A4FB1FC00D09023 /* Sources */,
 				9309550B1A4FB1FC00D09023 /* Frameworks */,
-				9309550C1A4FB1FC00D09023 /* Headers */,
+				93B474711B648D4500613FB6 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				93B474691B648D0200613FB6 /* PBXTargetDependency */,
+				93B474401B648CD000613FB6 /* PBXTargetDependency */,
 			);
 			name = graphics_shared;
 			productName = takram_triangulation;
 			productReference = 9309550E1A4FB1FC00D09023 /* libtakram_graphics.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
+		};
+		93B474081B648C4C00613FB6 /* graphics_ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 93B474191B648C4C00613FB6 /* Build configuration list for PBXNativeTarget "graphics_ios" */;
+			buildPhases = (
+				93B474051B648C4C00613FB6 /* Sources */,
+				93B474061B648C4C00613FB6 /* Frameworks */,
+				93B474731B648D4F00613FB6 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				93B4746F1B648D0F00613FB6 /* PBXTargetDependency */,
+				93B474461B648CDD00613FB6 /* PBXTargetDependency */,
+			);
+			name = graphics_ios;
+			productName = graphics_ios;
+			productReference = 93B474091B648C4C00613FB6 /* libtakram_graphics.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 		93C6B51419B22F5500A1CF93 /* graphics_static */ = {
 			isa = PBXNativeTarget;
@@ -215,11 +336,13 @@
 			buildPhases = (
 				93C6B51119B22F5500A1CF93 /* Sources */,
 				93C6B51219B22F5500A1CF93 /* Frameworks */,
-				93C6B51319B22F5500A1CF93 /* Headers */,
+				93B474721B648D4A00613FB6 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				93B4746C1B648D0900613FB6 /* PBXTargetDependency */,
+				93B474431B648CD700613FB6 /* PBXTargetDependency */,
 			);
 			name = graphics_static;
 			productName = sgss_opaque;
@@ -240,7 +363,7 @@
 			);
 			name = graphics_test;
 			productName = sgss_opaque_test;
-			productReference = 93F1B9F6180282B0002A5A5C /* graphics_test */;
+			productReference = 93F1B9F6180282B0002A5A5C /* takram_graphics_test */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -249,11 +372,14 @@
 		93F8AD6717C8B39800310877 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = sgss;
 				TargetAttributes = {
 					9309550D1A4FB1FC00D09023 = {
 						CreatedOnToolsVersion = 6.1;
+					};
+					93B474081B648C4C00613FB6 = {
+						CreatedOnToolsVersion = 7.0;
 					};
 				};
 			};
@@ -267,14 +393,126 @@
 			mainGroup = 93F8AD6617C8B39800310877;
 			productRefGroup = 93F8AD7017C8B39800310877 /* products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 93B474591B648CFE00613FB6 /* Products */;
+					ProjectRef = 93B474481B648CEF00613FB6 /* algorithm.xcodeproj */;
+				},
+				{
+					ProductGroup = 93B474311B648CC400613FB6 /* Products */;
+					ProjectRef = 93B4741F1B648C8800613FB6 /* math.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9309550D1A4FB1FC00D09023 /* graphics_shared */,
 				93C6B51419B22F5500A1CF93 /* graphics_static */,
+				93B474081B648C4C00613FB6 /* graphics_ios */,
 				93F1B9F5180282B0002A5A5C /* graphics_test */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		93B474381B648CC400613FB6 /* libtakram_math.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = libtakram_math.dylib;
+			remoteRef = 93B474371B648CC400613FB6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		93B4743A1B648CC400613FB6 /* libtakram_math.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtakram_math.a;
+			remoteRef = 93B474391B648CC400613FB6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		93B4743C1B648CC400613FB6 /* libtakram_math.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtakram_math.a;
+			remoteRef = 93B4743B1B648CC400613FB6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		93B4743E1B648CC400613FB6 /* takram_math_test */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = takram_math_test;
+			remoteRef = 93B4743D1B648CC400613FB6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		93B474601B648CFE00613FB6 /* libtakram_algorithm.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = libtakram_algorithm.dylib;
+			remoteRef = 93B4745F1B648CFE00613FB6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		93B474621B648CFE00613FB6 /* libtakram_algorithm.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtakram_algorithm.a;
+			remoteRef = 93B474611B648CFE00613FB6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		93B474641B648CFE00613FB6 /* libtakram_algorithm.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtakram_algorithm.a;
+			remoteRef = 93B474631B648CFE00613FB6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		93B474661B648CFE00613FB6 /* takram_algorithm_test */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = takram_algorithm_test;
+			remoteRef = 93B474651B648CFE00613FB6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		93B474711B648D4500613FB6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PROJECT_DIR}/script/header.sh\" \"src\"";
+		};
+		93B474721B648D4A00613FB6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PROJECT_DIR}/script/header.sh\" \"src\"";
+		};
+		93B474731B648D4F00613FB6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PROJECT_DIR}/script/header.sh\" \"src\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9309550A1A4FB1FC00D09023 /* Sources */ = {
@@ -283,6 +521,15 @@
 			files = (
 				93D7E4FE1B2C5A52006EA047 /* graphics.cc in Sources */,
 				93D7E4E11B2C5A47006EA047 /* contour.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93B474051B648C4C00613FB6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93B474751B648D8F00613FB6 /* contour.cc in Sources */,
+				93B474741B648D8F00613FB6 /* graphics.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +557,36 @@
 			target = 9309550D1A4FB1FC00D09023 /* graphics_shared */;
 			targetProxy = 930955301A4FB46000D09023 /* PBXContainerItemProxy */;
 		};
+		93B474401B648CD000613FB6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = math_shared;
+			targetProxy = 93B4743F1B648CD000613FB6 /* PBXContainerItemProxy */;
+		};
+		93B474431B648CD700613FB6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = math_static;
+			targetProxy = 93B474421B648CD700613FB6 /* PBXContainerItemProxy */;
+		};
+		93B474461B648CDD00613FB6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = math_ios;
+			targetProxy = 93B474451B648CDD00613FB6 /* PBXContainerItemProxy */;
+		};
+		93B474691B648D0200613FB6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = algorithm_shared;
+			targetProxy = 93B474681B648D0200613FB6 /* PBXContainerItemProxy */;
+		};
+		93B4746C1B648D0900613FB6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = algorithm_static;
+			targetProxy = 93B4746B1B648D0900613FB6 /* PBXContainerItemProxy */;
+		};
+		93B4746F1B648D0F00613FB6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = algorithm_ios;
+			targetProxy = 93B4746E1B648D0F00613FB6 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -321,7 +598,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
 				INSTALL_PATH = "@rpath";
-				PRODUCT_NAME = takram_graphics;
+				PRODUCT_NAME = "takram_$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -334,8 +611,30 @@
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
 				INSTALL_PATH = "@rpath";
-				PRODUCT_NAME = takram_graphics;
+				PRODUCT_NAME = "takram_$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		93B4741A1B648C4C00613FB6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "takram_$(PROJECT_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		93B4741B1B648C4C00613FB6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "takram_$(PROJECT_NAME)";
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
@@ -346,7 +645,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
-				PRODUCT_NAME = takram_graphics;
+				PRODUCT_NAME = "takram_$(PROJECT_NAME)";
 			};
 			name = Debug;
 		};
@@ -357,7 +656,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
-				PRODUCT_NAME = takram_graphics;
+				PRODUCT_NAME = "takram_$(PROJECT_NAME)";
 			};
 			name = Release;
 		};
@@ -366,7 +665,7 @@
 			baseConfigurationReference = 930955061A4FB1E200D09023 /* product_test.xcconfig */;
 			buildSettings = {
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/lib";
-				PRODUCT_NAME = graphics_test;
+				PRODUCT_NAME = "takram_$(PROJECT_NAME)_test";
 			};
 			name = Debug;
 		};
@@ -375,7 +674,7 @@
 			baseConfigurationReference = 930955061A4FB1E200D09023 /* product_test.xcconfig */;
 			buildSettings = {
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/lib";
-				PRODUCT_NAME = graphics_test;
+				PRODUCT_NAME = "takram_$(PROJECT_NAME)_test";
 			};
 			name = Release;
 		};
@@ -383,7 +682,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 930959301A5062D400D09023 /* project_debug.xcconfig */;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -393,8 +692,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 930959311A5062D400D09023 /* project_release.xcconfig */;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				ONLY_ACTIVE_ARCH = NO;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -407,6 +705,15 @@
 			buildConfigurations = (
 				930955171A4FB1FC00D09023 /* Debug */,
 				930955181A4FB1FC00D09023 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		93B474191B648C4C00613FB6 /* Build configuration list for PBXNativeTarget "graphics_ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93B4741A1B648C4C00613FB6 /* Debug */,
+				93B4741B1B648C4C00613FB6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

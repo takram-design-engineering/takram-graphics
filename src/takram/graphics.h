@@ -28,9 +28,14 @@
 #ifndef TAKRAM_GRAPHICS_H_
 #define TAKRAM_GRAPHICS_H_
 
-#define TAKRAM_HAS_OPENCV 1
-#define TAKRAM_HAS_OPENFRAMEWORKS 1
-#define TAKRAM_HAS_CINDER 1
+namespace takram {
+namespace graphics {
+
+extern const double version_number;
+extern const unsigned char version_string[];
+
+}  // namespace graphics
+}  // namespace takram
 
 #include "takram/graphics/color.h"
 #include "takram/graphics/color_depth.h"
