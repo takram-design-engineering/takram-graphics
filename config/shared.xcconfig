@@ -1,5 +1,5 @@
 //
-//  product_test.xcconfig
+//  shared.xcconfig
 //
 //  MIT License
 //
@@ -24,10 +24,14 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#include "product.xcconfig"
+// OpenCV
+OPENCV_DIR = /usr/local
+OPENCV_HEADER_SEARCH_PATHS = "$(OPENCV_DIR)/include"
 
-// Linking
-OTHER_LDFLAGS = $(inherited) "$(PROJECT_DIR)/build/gtest/libgtest.a" "$(PROJECT_DIR)/build/gtest/libgtest_main.a"
+// openFrameworks
+OPENFRAMEWORKS_DIR = $(TAKRAM_GRAPHICS_DIR)/../openframeworks
+OPENFRAMEWORKS_HEADER_SEARCH_PATHS = "$(OPENFRAMEWORKS_DIR)/libs/openFrameworks/**" "$(OPENFRAMEWORKS_DIR)/libs/freetype/include" "$(OPENFRAMEWORKS_DIR)/libs/freetype/include/freetype2" "$(OPENFRAMEWORKS_DIR)/libs/poco/include" "$(OPENFRAMEWORKS_DIR)/libs/fmodex/include" "$(OPENFRAMEWORKS_DIR)/libs/glew/include" "$(OPENFRAMEWORKS_DIR)/libs/FreeImage/include" "$(OPENFRAMEWORKS_DIR)/libs/tess2/include" "$(OPENFRAMEWORKS_DIR)/libs/cairo/include/cairo" "$(OPENFRAMEWORKS_DIR)/libs/rtAudio/include" "$(OPENFRAMEWORKS_DIR)/libs/glfw/include"
 
-// Search Paths
-HEADER_SEARCH_PATHS = $(inherited) "$(PROJECT_DIR)/src" "$(PROJECT_DIR)/lib" $(TAKRAM_HEADER_SEARCH_PATHS) "$(PROJECT_DIR)/lib/gtest/include"
+// Cinder
+CINDER_DIR = $(TAKRAM_GRAPHICS_DIR)/../cinder
+CINDER_HEADER_SEARCH_PATHS = "$(CINDER_DIR)/include"

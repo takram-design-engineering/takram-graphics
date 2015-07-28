@@ -1,5 +1,5 @@
 //
-//  dependencies.xcconfig
+//  test.xcconfig
 //
 //  MIT License
 //
@@ -24,6 +24,11 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-OPENCV_DIR = /usr/local
-OPENFRAMEWORKS_DIR = ../openframeworks
-CINDER_DIR = ../cinder
+TAKRAM_GRAPHICS_DIR = $(PROJECT_DIR)
+#include "shared.xcconfig"
+
+// Linking
+OTHER_LDFLAGS = $(inherited) "$(PROJECT_DIR)/build/gtest/libgtest.a" "$(PROJECT_DIR)/build/gtest/libgtest_main.a"
+
+// Search Paths
+HEADER_SEARCH_PATHS = $(inherited) $(OPENCV_HEADER_SEARCH_PATHS) $(OPENFRAMEWORKS_HEADER_SEARCH_PATHS) $(CINDER_HEADER_SEARCH_PATHS) "$(PROJECT_DIR)/lib/gtest/include"

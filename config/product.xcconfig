@@ -24,13 +24,8 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#include "dependencies.xcconfig"
-
-// Header Search Paths
-OPENCV_HEADER_SEARCH_PATHS = "$(OPENCV_DIR)/include"
-OPENFRAMEWORKS_HEADER_SEARCH_PATHS = "$(OPENFRAMEWORKS_DIR)/libs/openFrameworks/**" "$(OPENFRAMEWORKS_DIR)/libs/freetype/include" "$(OPENFRAMEWORKS_DIR)/libs/freetype/include/freetype2" "$(OPENFRAMEWORKS_DIR)/libs/poco/include" "$(OPENFRAMEWORKS_DIR)/libs/fmodex/include" "$(OPENFRAMEWORKS_DIR)/libs/glew/include" "$(OPENFRAMEWORKS_DIR)/libs/FreeImage/include" "$(OPENFRAMEWORKS_DIR)/libs/tess2/include" "$(OPENFRAMEWORKS_DIR)/libs/cairo/include/cairo" "$(OPENFRAMEWORKS_DIR)/libs/rtAudio/include" "$(OPENFRAMEWORKS_DIR)/libs/glfw/include"
-CINDER_HEADER_SEARCH_PATHS = "$(CINDER_DIR)/include"
-TAKRAM_HEADER_SEARCH_PATHS = $(OPENCV_HEADER_SEARCH_PATHS) $(OPENFRAMEWORKS_HEADER_SEARCH_PATHS) $(CINDER_HEADER_SEARCH_PATHS)
+TAKRAM_GRAPHICS_DIR = $(PROJECT_DIR)
+#include "shared.xcconfig"
 
 // Search Paths
-ALWAYS_SEARCH_USER_PATHS = NO
+HEADER_SEARCH_PATHS = $(inherited) "$(PROJECT_DIR)/src" "$(PROJECT_DIR)/lib" $(OPENCV_HEADER_SEARCH_PATHS) $(OPENFRAMEWORKS_HEADER_SEARCH_PATHS) $(CINDER_HEADER_SEARCH_PATHS)

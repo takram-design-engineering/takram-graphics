@@ -132,9 +132,7 @@
 
 /* Begin PBXFileReference section */
 		930955031A4FB1E200D09023 /* product.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = product.xcconfig; sourceTree = "<group>"; };
-		930955041A4FB1E200D09023 /* product_release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = product_release.xcconfig; sourceTree = "<group>"; };
-		930955051A4FB1E200D09023 /* product_debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = product_debug.xcconfig; sourceTree = "<group>"; };
-		930955061A4FB1E200D09023 /* product_test.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = product_test.xcconfig; sourceTree = "<group>"; };
+		930955061A4FB1E200D09023 /* test.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = test.xcconfig; sourceTree = "<group>"; };
 		9309550E1A4FB1FC00D09023 /* libtakram_graphics.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libtakram_graphics.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		930959301A5062D400D09023 /* project_debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project_debug.xcconfig; sourceTree = "<group>"; };
 		930959311A5062D400D09023 /* project_release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project_release.xcconfig; sourceTree = "<group>"; };
@@ -154,7 +152,7 @@
 		93D7E4D41B2C5A47006EA047 /* graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graphics.h; sourceTree = "<group>"; };
 		93D7E4FD1B2C5A52006EA047 /* graphics.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graphics.cc; sourceTree = "<group>"; };
 		93F1B9F6180282B0002A5A5C /* takram_graphics_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = takram_graphics_test; sourceTree = BUILT_PRODUCTS_DIR; };
-		93F2949B1B5273AA00628F3C /* dependencies.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = dependencies.xcconfig; sourceTree = "<group>"; };
+		93F2949B1B5273AA00628F3C /* shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = shared.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,14 +197,12 @@
 		930955021A4FB1E200D09023 /* config */ = {
 			isa = PBXGroup;
 			children = (
-				93F2949B1B5273AA00628F3C /* dependencies.xcconfig */,
+				93F2949B1B5273AA00628F3C /* shared.xcconfig */,
 				930959321A5062D400D09023 /* project.xcconfig */,
 				930959301A5062D400D09023 /* project_debug.xcconfig */,
 				930959311A5062D400D09023 /* project_release.xcconfig */,
 				930955031A4FB1E200D09023 /* product.xcconfig */,
-				930955051A4FB1E200D09023 /* product_debug.xcconfig */,
-				930955041A4FB1E200D09023 /* product_release.xcconfig */,
-				930955061A4FB1E200D09023 /* product_test.xcconfig */,
+				930955061A4FB1E200D09023 /* test.xcconfig */,
 			);
 			path = config;
 			sourceTree = "<group>";
@@ -592,7 +588,6 @@
 /* Begin XCBuildConfiguration section */
 		930955171A4FB1FC00D09023 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 930955051A4FB1E200D09023 /* product_debug.xcconfig */;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -605,7 +600,6 @@
 		};
 		930955181A4FB1FC00D09023 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 930955041A4FB1E200D09023 /* product_release.xcconfig */;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -640,7 +634,6 @@
 		};
 		93C6B51719B22F5500A1CF93 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 930955051A4FB1E200D09023 /* product_debug.xcconfig */;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -651,7 +644,6 @@
 		};
 		93C6B51819B22F5500A1CF93 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 930955041A4FB1E200D09023 /* product_release.xcconfig */;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -662,7 +654,7 @@
 		};
 		93F1B9FC180282B1002A5A5C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 930955061A4FB1E200D09023 /* product_test.xcconfig */;
+			baseConfigurationReference = 930955061A4FB1E200D09023 /* test.xcconfig */;
 			buildSettings = {
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/lib";
 				PRODUCT_NAME = "takram_$(PROJECT_NAME)_test";
@@ -671,7 +663,7 @@
 		};
 		93F1B9FD180282B1002A5A5C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 930955061A4FB1E200D09023 /* product_test.xcconfig */;
+			baseConfigurationReference = 930955061A4FB1E200D09023 /* test.xcconfig */;
 			buildSettings = {
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/lib";
 				PRODUCT_NAME = "takram_$(PROJECT_NAME)_test";
