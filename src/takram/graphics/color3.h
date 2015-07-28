@@ -245,7 +245,7 @@ inline Color3<T>::operator ci::ColorT<T>() const {
 
 #endif  // TAKRAM_HAS_CINDER
 
-#if TAKRAM_HAS_CINDER
+#if TAKRAM_HAS_NANOVG
 
 template <class T>
 inline Color3<T>::Color(const NVGcolor& other)
@@ -255,15 +255,15 @@ inline Color3<T>::Color(const NVGcolor& other)
 
 template <class T>
 inline Color3<T>::operator NVGcolor() const {
-  return {
+  return {{{
     ColorDepth<float>::convert(r),
     ColorDepth<float>::convert(g),
     ColorDepth<float>::convert(b),
     ColorDepth<float>::max
-  };
+  }}};
 }
 
-#endif  // TAKRAM_HAS_CINDER
+#endif  // TAKRAM_HAS_NANOVG
 
 #pragma mark Explicit conversion
 
