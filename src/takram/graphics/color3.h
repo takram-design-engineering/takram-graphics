@@ -45,6 +45,10 @@
 #include "cinder/Color.h"
 #endif  // TAKRAM_HAS_CINDER
 
+#if TAKRAM_HAS_NANOVG
+#include "nanovg.h"
+#endif  // TAKRAM_HAS_NANOVG
+
 #include "takram/graphics/color_depth.h"
 #include "takram/math/vector.h"
 
@@ -90,15 +94,19 @@ class Color<T, 3> final {
 
 #if TAKRAM_HAS_OPENFRAMEWORKS
   template <class U>
-  Color(const ofColor_<U>& other);
+  explicit Color(const ofColor_<U>& other);
   operator ofColor_<T>() const;
 #endif  // TAKRAM_HAS_OPENFRAMEWORKS
 
 #if TAKRAM_HAS_CINDER
-  template <class U>
   Color(const ci::ColorT<U>& other);
   operator ci::ColorT<T>() const;
 #endif  // TAKRAM_HAS_CINDER
+
+#if TAKRAM_HAS_NANOVG
+  explicit Color(const NVGcolor& other);
+  operator NVGcolor() const;
+#endif  // TAKRAM_HAS_NANOVG
 
   // Explicit conversion
   template <class U>
@@ -233,6 +241,26 @@ inline Color3<T>::Color(const ci::ColorT<U>& other)
 template <class T>
 inline Color3<T>::operator ci::ColorT<T>() const {
   return ci::ColorT<T>(r, g, b);
+}
+
+#endif  // TAKRAM_HAS_CINDER
+
+#if TAKRAM_HAS_CINDER
+
+template <class T>
+inline Color3<T>::Color(const NVGcolor& other)
+    : vector(ColorDepth<T>::convert(other.r),
+             ColorDepth<T>::convert(other.g),
+             ColorDepth<T>::convert(other.b)) {}
+
+template <class T>
+inline Color3<T>::operator NVGcolor() const {
+  return {
+    ColorDepth<float>::convert(r),
+    ColorDepth<float>::convert(g),
+    ColorDepth<float>::convert(b),
+    ColorDepth<float>::max
+  };
 }
 
 #endif  // TAKRAM_HAS_CINDER

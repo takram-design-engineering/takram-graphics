@@ -588,6 +588,7 @@
 /* Begin XCBuildConfiguration section */
 		930955171A4FB1FC00D09023 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 930955031A4FB1E200D09023 /* product.xcconfig */;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -600,6 +601,7 @@
 		};
 		930955181A4FB1FC00D09023 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 930955031A4FB1E200D09023 /* product.xcconfig */;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -612,6 +614,7 @@
 		};
 		93B4741A1B648C4C00613FB6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 930955031A4FB1E200D09023 /* product.xcconfig */;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -623,6 +626,7 @@
 		};
 		93B4741B1B648C4C00613FB6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 930955031A4FB1E200D09023 /* product.xcconfig */;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -634,6 +638,7 @@
 		};
 		93C6B51719B22F5500A1CF93 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 930955031A4FB1E200D09023 /* product.xcconfig */;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -644,6 +649,7 @@
 		};
 		93C6B51819B22F5500A1CF93 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 930955031A4FB1E200D09023 /* product.xcconfig */;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
