@@ -383,6 +383,7 @@ inline std::ostream& operator<<(std::ostream& os, const Color3<T>& other) {
 
 namespace gfx = graphics;
 
+using graphics::Color;
 using graphics::Color3;
 using graphics::Color3u;
 using graphics::Color3s;

@@ -446,6 +446,7 @@ inline std::ostream& operator<<(std::ostream& os, const Color4<T>& other) {
 
 namespace gfx = graphics;
 
+using graphics::Color;
 using graphics::Color4;
 using graphics::Color4u;
 using graphics::Color4s;
