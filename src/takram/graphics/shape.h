@@ -1,5 +1,5 @@
 //
-//  takram/graphics/path.h
+//  takram/graphics/shape.h
 //
 //  MIT License
 //
@@ -25,9 +25,9 @@
 //
 
 #pragma once
-#ifndef TAKRAM_GRAPHICS_PATH_H_
-#define TAKRAM_GRAPHICS_PATH_H_
+#ifndef TAKRAM_GRAPHICS_SHAPE_H_
+#define TAKRAM_GRAPHICS_SHAPE_H_
 
-#include "takram/graphics/path2.h"
+#include "takram/graphics/shape2.h"
 
-#endif  // TAKRAM_GRAPHICS_PATH_H_
+#endif  // TAKRAM_GRAPHICS_SHAPE_H_

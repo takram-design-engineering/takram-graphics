@@ -1,5 +1,5 @@
 //
-//  takram/graphics/segment.h
+//  takram/graphics/command.h
 //
 //  MIT License
 //
@@ -25,21 +25,23 @@
 //
 
 #pragma once
-#ifndef TAKRAM_GRAPHICS_SEGMENT_H_
-#define TAKRAM_GRAPHICS_SEGMENT_H_
+#ifndef TAKRAM_GRAPHICS_COMMAND_H_
+#define TAKRAM_GRAPHICS_COMMAND_H_
 
 #include "takram/math/vector.h"
 
 namespace takram {
 namespace graphics {
 
-class Segment final {
+template <class T, int D>
+class Command final {
  public:
-  using Real = double;
-  using Point = math::Vec2<Real>;
+  using Type = T;
+  using Point = Vector2<T>;
+  static constexpr const int dimensions = D;
 
  public:
-  enum class Type {
+  enum class Kind {
     MOVE,
     LINE,
     QUADRATIC,
@@ -48,24 +50,24 @@ class Segment final {
   };
 
  public:
-  explicit Segment(Type type);
-  Segment(Type type, const Point& point);
-  Segment(Type type, const Point& control, const Point& point);
-  Segment(Type type,
+  explicit Command(Kind kind);
+  Command(Kind kind, const Point& point);
+  Command(Kind kind, const Point& control, const Point& point);
+  Command(Kind kind,
           const Point& control1,
           const Point& control2,
           const Point& point);
 
   // Copy semantics
-  Segment(const Segment& other) = default;
-  Segment& operator=(const Segment& other) = default;
+  Command(const Command<T, D>& other) = default;
+  Command& operator=(const Command<T, D>& other) = default;
 
   // Comparison
-  bool operator==(const Segment& other) const;
-  bool operator!=(const Segment& other) const;
+  bool operator==(const Command<T, D>& other) const;
+  bool operator!=(const Command<T, D>& other) const;
 
   // Properties
-  Type type() const { return type_; }
+  Kind kind() const { return kind_; }
   const Point& control() const { return control1_; }
   Point& control() { return control1_; }
   const Point& control1() const { return control1_; }
@@ -76,7 +78,7 @@ class Segment final {
   Point& point() { return point_; }
 
  private:
-  Type type_;
+  Kind kind_;
   Point control1_;
   Point control2_;
   Point point_;
@@ -84,36 +86,44 @@ class Segment final {
 
 #pragma mark -
 
-inline Segment::Segment(Type type) : type_(type) {}
+template <class T, int D>
+inline Command<T, D>::Command(Kind kind) : kind_(kind) {}
 
-inline Segment::Segment(Type type, const Point& point)
-    : type_(type),
+template <class T, int D>
+inline Command<T, D>::Command(Kind kind, const Point& point)
+    : kind_(kind),
       point_(point) {}
 
-inline Segment::Segment(Type type, const Point& control, const Point& point)
-    : type_(type),
+template <class T, int D>
+inline Command<T, D>::Command(Kind kind,
+                              const Point& control,
+                              const Point& point)
+    : kind_(kind),
       control1_(control),
       point_(point) {}
 
-inline Segment::Segment(Type type,
-                        const Point& control1,
-                        const Point& control2,
-                        const Point& point)
-    : type_(type),
+template <class T, int D>
+inline Command<T, D>::Command(Kind kind,
+                              const Point& control1,
+                              const Point& control2,
+                              const Point& point)
+    : kind_(kind),
       control1_(control1),
       control2_(control2),
       point_(point) {}
 
 #pragma mark Comparison
 
-inline bool Segment::operator==(const Segment& other) const {
-  return (type_ == other.type_ &&
+template <class T, int D>
+inline bool Command<T, D>::operator==(const Command<T, D>& other) const {
+  return (kind_ == other.kind_ &&
           control1_ == other.control1_ &&
           control2_ == other.control2_ &&
           point_ == other.point_);
 }
 
-inline bool Segment::operator!=(const Segment& other) const {
+template <class T, int D>
+inline bool Command<T, D>::operator!=(const Command<T, D>& other) const {
   return !operator==(other);
 }
 
@@ -123,4 +133,4 @@ namespace gfx = graphics;
 
 }  // namespace takram
 
-#endif  // TAKRAM_GRAPHICS_SEGMENT_H_
+#endif  // TAKRAM_GRAPHICS_COMMAND_H_

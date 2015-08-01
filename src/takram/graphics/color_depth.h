@@ -118,6 +118,8 @@ inline math::EnableIfFloating<U, T> FloatingColorDepth<T>::convert(U value) {
 
 namespace gfx = graphics;
 
+using graphics::ColorDepth;
+
 }  // namespace takram
 
 #endif  // TAKRAM_GRAPHICS_COLOR_DEPTH_H_
