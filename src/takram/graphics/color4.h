@@ -123,9 +123,9 @@ class Color<T, 4> final {
   Color4<T>& operator=(const Color4<T>& other);
 
   // Factory
-  static Color4<T> white();
-  static Color4<T> gray();
-  static Color4<T> black();
+  static Color4<T> white(T alpha = ColorDepth<T>::max);
+  static Color4<T> gray(T alpha = ColorDepth<T>::max);
+  static Color4<T> black(T alpha = ColorDepth<T>::max);
   static Color4<T> hex(std::uint32_t hex);
   static Color4<T> hex(std::uint32_t hex, math::Promote<T> alpha);
   static Color4<T> hexA(std::uint32_t hex);
@@ -315,18 +315,18 @@ inline Color4<T>& Color4<T>::operator=(const Color4<T>& other) {
 #pragma mark Factory
 
 template <class T>
-inline Color4<T> Color4<T>::white() {
-  return Color4<T>(ColorDepth<T>::max);
+inline Color4<T> Color4<T>::white(T alpha) {
+  return Color4<T>(ColorDepth<T>::max, alpha);
 }
 
 template <class T>
-inline Color4<T> Color4<T>::gray() {
-  return Color4<T>((ColorDepth<T>::min + ColorDepth<T>::max) / 2);
+inline Color4<T> Color4<T>::gray(T alpha) {
+  return Color4<T>((ColorDepth<T>::min + ColorDepth<T>::max) / 2, alpha);
 }
 
 template <class T>
-inline Color4<T> Color4<T>::black() {
-  return Color4<T>(ColorDepth<T>::min);
+inline Color4<T> Color4<T>::black(T alpha) {
+  return Color4<T>(ColorDepth<T>::min, alpha);
 }
 
 template <class T>
