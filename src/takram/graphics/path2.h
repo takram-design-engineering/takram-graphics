@@ -251,7 +251,7 @@ inline Rect<T> Path2<T>::bounds() const {
 
 template <class T>
 inline void Path2<T>::close() {
-  if (commands_.back().kind() != Command::Kind::CLOSE) {
+  if (!commands_.empty() && commands_.back().kind() != Command::Kind::CLOSE) {
     commands_.emplace_back(Command::Kind::CLOSE);
   }
 }
@@ -350,6 +350,9 @@ inline typename Path2<T>::Direction Path2<T>::direction() const {
 
 template <class T>
 inline Path2<T>& Path2<T>::reverse() {
+  if (commands_.empty()) {
+    return *this;
+  }
   std::list<Point> points;
   for (auto& command : commands_) {
     switch (command.type()) {
