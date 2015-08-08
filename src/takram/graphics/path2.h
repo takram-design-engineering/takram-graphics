@@ -38,7 +38,7 @@
 #include <vector>
 
 #include "takram/graphics/command.h"
-#include "takram/math/rect.h"
+#include "takram/math/rectangle.h"
 #include "takram/math/vector.h"
 
 namespace takram {
@@ -88,7 +88,7 @@ class Path<T, 2> final {
   // Attributes
   bool empty() const { return commands_.empty(); }
   std::size_t size() const { return commands_.size(); }
-  math::Rect<T> bounds() const;
+  Rect2<T> bounds() const;
 
   // Adding commands
   void close();
@@ -178,7 +178,7 @@ inline bool Path2<T>::operator!=(const Path2<T>& other) const {
 #pragma mark Attributes
 
 template <class T>
-inline Rect<T> Path2<T>::bounds() const {
+inline Rect2<T> Path2<T>::bounds() const {
   T min_x = std::numeric_limits<T>::max();
   T min_y = std::numeric_limits<T>::max();
   T max_x = std::numeric_limits<T>::lowest();
@@ -244,7 +244,7 @@ inline Rect<T> Path2<T>::bounds() const {
   if (max_y == std::numeric_limits<T>::lowest()) {
     max_y = T();
   }
-  return Rect<T>(Point(min_x, min_y), Point(max_x, max_y));
+  return Rect2<T>(Point(min_x, min_y), Point(max_x, max_y));
 }
 
 #pragma mark Adding commands

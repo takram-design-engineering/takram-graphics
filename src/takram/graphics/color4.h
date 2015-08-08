@@ -67,11 +67,11 @@ template <class T>
 class Color<T, 4> final {
  public:
   using Type = T;
-  using Iterator = typename math::Vec4<T>::Iterator;
-  using ConstIterator = typename math::Vec4<T>::ConstIterator;
-  using ReverseIterator = typename math::Vec4<T>::ReverseIterator;
-  using ConstReverseIterator = typename math::Vec4<T>::ConstReverseIterator;
-  static constexpr const auto channels = math::Vec4<T>::dimensions;
+  using Iterator = typename Vec4<T>::Iterator;
+  using ConstIterator = typename Vec4<T>::ConstIterator;
+  using ReverseIterator = typename Vec4<T>::ReverseIterator;
+  using ConstReverseIterator = typename Vec4<T>::ConstReverseIterator;
+  static constexpr const auto channels = Vec4<T>::dimensions;
 
  public:
   Color();
@@ -116,7 +116,7 @@ class Color<T, 4> final {
   // Explicit conversion
   template <class U>
   explicit Color(const Color3<U>& other);
-  explicit Color(const math::Vec4<T>& other);
+  explicit Color(const Vec4<T>& other);
 
   // Copy semantics
   Color(const Color4<T>& other);
@@ -175,7 +175,7 @@ class Color<T, 4> final {
 
  public:
   union {
-    math::Vec4<T> vector;
+    Vec4<T> vector;
     struct { T red; T green; T blue; T alpha; };
     struct { T r; T g; T b; T a; };
   };
@@ -328,7 +328,7 @@ inline Color4<T>::Color(const Color3<U>& other)
              ColorDepth<T>::convert(other.b)) {}
 
 template <class T>
-inline Color4<T>::Color(const math::Vec4<T>& other) : vector(other) {}
+inline Color4<T>::Color(const Vec4<T>& other) : vector(other) {}
 
 #pragma mark Copy semantics
 
