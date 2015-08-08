@@ -201,18 +201,27 @@ inline Color3<T>::Color(std::initializer_list<T> list) : vector(list) {}
 
 template <class T>
 template <class U>
-inline Color3<T>::Color(const Color3<U>& other) : vector(other.vector) {}
+inline Color3<T>::Color(const Color3<U>& other)
+    : vector(ColorDepth<T>::convert(other.r),
+             ColorDepth<T>::convert(other.g),
+             ColorDepth<T>::convert(other.b)) {}
 
 #if TAKRAM_HAS_OPENCV
 
 template <class T>
 template <class U>
 inline Color3<T>::Color(const cv::Vec<U, channels>& other)
-    : vector(other) {}
+    : vector(ColorDepth<T>::convert(other[0]),
+             ColorDepth<T>::convert(other[1]),
+             ColorDepth<T>::convert(other[2])) {}
 
 template <class T>
 inline Color3<T>::operator cv::Vec<T, channels>() const {
-  return cv::Vec<T, channels>(r, g, b);
+  return cv::Vec<T, channels>(
+    ColorDepth<T>::convert(r),
+    ColorDepth<T>::convert(g),
+    ColorDepth<T>::convert(b)
+  );
 }
 
 #endif  // TAKRAM_HAS_OPENCV
@@ -222,11 +231,17 @@ inline Color3<T>::operator cv::Vec<T, channels>() const {
 template <class T>
 template <class U>
 inline Color3<T>::Color(const ofColor_<U>& other)
-    : vector(other.r, other.g, other.b) {}
+    : vector(ColorDepth<T>::convert(other.r),
+             ColorDepth<T>::convert(other.g),
+             ColorDepth<T>::convert(other.b)) {}
 
 template <class T>
 inline Color3<T>::operator ofColor_<T>() const {
-  return ofColor_<T>(r, g, b);
+  return ofColor_<T>(
+    ColorDepth<T>::convert(r),
+    ColorDepth<T>::convert(g),
+    ColorDepth<T>::convert(b)
+  );
 }
 
 #endif  // TAKRAM_HAS_OPENFRAMEWORKS
@@ -236,11 +251,17 @@ inline Color3<T>::operator ofColor_<T>() const {
 template <class T>
 template <class U>
 inline Color3<T>::Color(const ci::ColorT<U>& other)
-    : vector(other.r, other.g, other.b) {}
+    : vector(ColorDepth<T>::convert(other.r),
+             ColorDepth<T>::convert(other.g),
+             ColorDepth<T>::convert(other.b)) {}
 
 template <class T>
 inline Color3<T>::operator ci::ColorT<T>() const {
-  return ci::ColorT<T>(r, g, b);
+  return ci::ColorT<T>(
+    ColorDepth<T>::convert(r),
+    ColorDepth<T>::convert(g),
+    ColorDepth<T>::convert(b)
+  );
 }
 
 #endif  // TAKRAM_HAS_CINDER
@@ -269,7 +290,10 @@ inline Color3<T>::operator NVGcolor() const {
 
 template <class T>
 template <class U>
-inline Color3<T>::Color(const Color4<U>& other) : vector(other.vector) {}
+inline Color3<T>::Color(const Color4<U>& other)
+    : vector(ColorDepth<T>::convert(other.r),
+             ColorDepth<T>::convert(other.g),
+             ColorDepth<T>::convert(other.b)) {}
 
 template <class T>
 inline Color3<T>::Color(const math::Vec3<T>& other) : vector(other) {}
