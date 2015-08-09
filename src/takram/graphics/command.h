@@ -59,12 +59,12 @@ class Command final {
           const Point& point);
 
   // Copy semantics
-  Command(const Command<T, D>& other) = default;
-  Command& operator=(const Command<T, D>& other) = default;
+  Command(const Command&) = default;
+  Command& operator=(const Command&) = default;
 
   // Comparison
-  bool operator==(const Command<T, D>& other) const;
-  bool operator!=(const Command<T, D>& other) const;
+  bool operator==(const Command& other) const;
+  bool operator!=(const Command& other) const;
 
   // Properties
   Kind kind() const { return kind_; }
@@ -115,7 +115,7 @@ inline Command<T, D>::Command(Kind kind,
 #pragma mark Comparison
 
 template <class T, int D>
-inline bool Command<T, D>::operator==(const Command<T, D>& other) const {
+inline bool Command<T, D>::operator==(const Command& other) const {
   return (kind_ == other.kind_ &&
           control1_ == other.control1_ &&
           control2_ == other.control2_ &&
@@ -123,7 +123,7 @@ inline bool Command<T, D>::operator==(const Command<T, D>& other) const {
 }
 
 template <class T, int D>
-inline bool Command<T, D>::operator!=(const Command<T, D>& other) const {
+inline bool Command<T, D>::operator!=(const Command& other) const {
   return !operator==(other);
 }
 

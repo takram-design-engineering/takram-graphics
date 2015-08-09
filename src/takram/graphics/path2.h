@@ -74,16 +74,16 @@ class Path<T, 2> final {
   explicit Path(const std::vector<Command>& commands);
 
   // Copy semantics
-  Path(const Path2<T>& other) = default;
-  Path& operator=(const Path2<T>& other) = default;
+  Path(const Path&) = default;
+  Path& operator=(const Path&) = default;
 
   // Mutators
   void set(const std::vector<Command>& commands);
   void reset();
 
   // Comparison
-  bool operator==(const Path2<T>& other) const;
-  bool operator!=(const Path2<T>& other) const;
+  bool operator==(const Path& other) const;
+  bool operator!=(const Path& other) const;
 
   // Attributes
   bool empty() const { return commands_.empty(); }
@@ -109,8 +109,8 @@ class Path<T, 2> final {
 
   // Direction
   Direction direction() const;
-  Path2<T>& reverse();
-  Path2<T> reversed() const;
+  Path& reverse();
+  Path reversed() const;
 
   // Element access
   Command& operator[](int index) { return commands_.at(index); }
@@ -166,12 +166,12 @@ inline void Path2<T>::reset() {
 #pragma mark Comparison
 
 template <class T>
-inline bool Path2<T>::operator==(const Path2<T>& other) const {
+inline bool Path2<T>::operator==(const Path& other) const {
   return commands_ == other.commands_;
 }
 
 template <class T>
-inline bool Path2<T>::operator!=(const Path2<T>& other) const {
+inline bool Path2<T>::operator!=(const Path& other) const {
   return !operator==(other);
 }
 

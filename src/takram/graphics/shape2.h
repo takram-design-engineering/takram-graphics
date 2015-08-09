@@ -67,16 +67,16 @@ class Shape<T, 2> final {
   explicit Shape(const std::vector<Path>& paths);
 
   // Copy semantics
-  Shape(const Shape2<T>& other) = default;
-  Shape& operator=(const Shape2<T>& other) = default;
+  Shape(const Shape&) = default;
+  Shape& operator=(const Shape&) = default;
 
   // Mutators
   void set(const std::vector<Path>& paths);
   void reset();
 
   // Comparison
-  bool operator==(const Shape2<T>& other) const;
-  bool operator!=(const Shape2<T>& other) const;
+  bool operator==(const Shape& other) const;
+  bool operator!=(const Shape& other) const;
 
   // Attributes
   bool empty() const { return paths_.empty(); }
@@ -148,12 +148,12 @@ inline void Shape2<T>::reset() {
 #pragma mark Comparison
 
 template <class T>
-inline bool Shape2<T>::operator==(const Shape2<T>& other) const {
+inline bool Shape2<T>::operator==(const Shape& other) const {
   return paths_ == other.paths_;
 }
 
 template <class T>
-inline bool Shape2<T>::operator!=(const Shape2<T>& other) const {
+inline bool Shape2<T>::operator!=(const Shape& other) const {
   return !operator==(other);
 }
 

@@ -114,14 +114,14 @@ class Color<T, 3> final {
   explicit Color(const Vec3<T>& other);
 
   // Copy semantics
-  Color(const Color3<T>& other);
-  Color3<T>& operator=(const Color3<T>& other);
+  Color(const Color& other);
+  Color& operator=(const Color& other);
 
   // Factory
-  static Color3<T> white();
-  static Color3<T> gray();
-  static Color3<T> black();
-  static Color3<T> hex(std::uint32_t hex);
+  static Color white();
+  static Color gray();
+  static Color black();
+  static Color hex(std::uint32_t hex);
 
   // Mutators
   void set(T gray);
@@ -217,11 +217,9 @@ inline Color3<T>::Color(const cv::Vec<U, channels>& other)
 
 template <class T>
 inline Color3<T>::operator cv::Vec<T, channels>() const {
-  return cv::Vec<T, channels>(
-    ColorDepth<T>::convert(r),
-    ColorDepth<T>::convert(g),
-    ColorDepth<T>::convert(b)
-  );
+  return cv::Vec<T, channels>(ColorDepth<T>::convert(r),
+                              ColorDepth<T>::convert(g),
+                              ColorDepth<T>::convert(b));
 }
 
 #endif  // TAKRAM_HAS_OPENCV
@@ -237,11 +235,9 @@ inline Color3<T>::Color(const ofColor_<U>& other)
 
 template <class T>
 inline Color3<T>::operator ofColor_<T>() const {
-  return ofColor_<T>(
-    ColorDepth<T>::convert(r),
-    ColorDepth<T>::convert(g),
-    ColorDepth<T>::convert(b)
-  );
+  return ofColor_<T>(ColorDepth<T>::convert(r),
+                     ColorDepth<T>::convert(g),
+                     ColorDepth<T>::convert(b));
 }
 
 #endif  // TAKRAM_HAS_OPENFRAMEWORKS
@@ -257,11 +253,9 @@ inline Color3<T>::Color(const ci::ColorT<U>& other)
 
 template <class T>
 inline Color3<T>::operator ci::ColorT<T>() const {
-  return ci::ColorT<T>(
-    ColorDepth<T>::convert(r),
-    ColorDepth<T>::convert(g),
-    ColorDepth<T>::convert(b)
-  );
+  return ci::ColorT<T>(ColorDepth<T>::convert(r),
+                       ColorDepth<T>::convert(g),
+                       ColorDepth<T>::convert(b));
 }
 
 #endif  // TAKRAM_HAS_CINDER
@@ -301,10 +295,10 @@ inline Color3<T>::Color(const Vec3<T>& other) : vector(other) {}
 #pragma mark Copy semantics
 
 template <class T>
-inline Color3<T>::Color(const Color3<T>& other) : vector(other.vector) {}
+inline Color3<T>::Color(const Color& other) : vector(other.vector) {}
 
 template <class T>
-inline Color3<T>& Color3<T>::operator=(const Color3<T>& other) {
+inline Color3<T>& Color3<T>::operator=(const Color& other) {
   if (&other != this) {
     vector = other.vector;
   }
@@ -315,26 +309,25 @@ inline Color3<T>& Color3<T>::operator=(const Color3<T>& other) {
 
 template <class T>
 inline Color3<T> Color3<T>::white() {
-  return Color3<T>(ColorDepth<T>::max);
+  return Color(ColorDepth<T>::max);
 }
 
 template <class T>
 inline Color3<T> Color3<T>::gray() {
-  return Color3<T>((ColorDepth<T>::min + ColorDepth<T>::max) / 2);
+  return Color((ColorDepth<T>::min + ColorDepth<T>::max) / 2);
 }
 
 template <class T>
 inline Color3<T> Color3<T>::black() {
-  return Color3<T>(ColorDepth<T>::min);
+  return Color(ColorDepth<T>::min);
 }
 
 template <class T>
 inline Color3<T> Color3<T>::hex(std::uint32_t hex) {
-  return Color3<T>(
-    ColorDepth<T>::convert(static_cast<std::uint8_t>(0xff & (hex >> 16))),
-    ColorDepth<T>::convert(static_cast<std::uint8_t>(0xff & (hex >> 8))),
-    ColorDepth<T>::convert(static_cast<std::uint8_t>(0xff & (hex >> 0)))
-  );
+  return Color(
+      ColorDepth<T>::convert(static_cast<std::uint8_t>(0xff & (hex >> 16))),
+      ColorDepth<T>::convert(static_cast<std::uint8_t>(0xff & (hex >> 8))),
+      ColorDepth<T>::convert(static_cast<std::uint8_t>(0xff & (hex >> 0))));
 }
 
 #pragma mark Mutators
