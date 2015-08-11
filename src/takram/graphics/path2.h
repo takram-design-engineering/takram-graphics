@@ -38,6 +38,7 @@
 #include <vector>
 
 #include "takram/graphics/command.h"
+#include "takram/graphics/path_direction.h"
 #include "takram/math/rectangle.h"
 #include "takram/math/vector.h"
 
@@ -61,13 +62,6 @@ class Path<T, 2> final {
   using ReverseIterator = std::reverse_iterator<Iterator>;
   using ConstReverseIterator = std::reverse_iterator<ConstIterator>;
   static constexpr const int dimensions = 2;
-
- public:
-  enum class Direction {
-    UNDEFINED,
-    CLOCKWISE,
-    COUNTER_CLOCKWISE
-  };
 
  public:
   Path();
@@ -110,7 +104,7 @@ class Path<T, 2> final {
   std::vector<Command>& commands() { return commands_; }
 
   // Direction
-  Direction direction() const;
+  PathDirection direction() const;
   Path& reverse();
   Path reversed() const;
 
@@ -136,7 +130,7 @@ class Path<T, 2> final {
 
  private:
   std::vector<Command> commands_;
-  mutable Direction direction_;
+  mutable PathDirection direction_;
 };
 
 using Path2i = Path2<int>;
@@ -146,12 +140,12 @@ using Path2d = Path2<double>;
 #pragma mark -
 
 template <class T>
-inline Path2<T>::Path() : direction_(Direction::UNDEFINED) {}
+inline Path2<T>::Path() : direction_(PathDirection::UNDEFINED) {}
 
 template <class T>
 inline Path2<T>::Path(const std::vector<Command>& commands)
     : commands_(commands),
-      direction_(Direction::UNDEFINED) {}
+      direction_(PathDirection::UNDEFINED) {}
 
 #pragma mark Mutators
 
@@ -345,9 +339,9 @@ inline void Path2<T>::cubicTo(const Point& control1,
 #pragma mark Direction
 
 template <class T>
-inline typename Path2<T>::Direction Path2<T>::direction() const {
+inline PathDirection Path2<T>::direction() const {
   if (commands_.size() < 3) {
-    return Direction::UNDEFINED;
+    return PathDirection::UNDEFINED;
   }
   T sum{};
   auto first = std::begin(commands_);
@@ -368,7 +362,7 @@ inline typename Path2<T>::Direction Path2<T>::direction() const {
         break;
     }
   }
-  return sum < 0.0 ? Direction::COUNTER_CLOCKWISE : Direction::CLOCKWISE;
+  return sum < 0 ? PathDirection::COUNTER_CLOCKWISE : PathDirection::CLOCKWISE;
 }
 
 template <class T>

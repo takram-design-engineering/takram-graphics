@@ -28,6 +28,7 @@
 #ifndef TAKRAM_GRAPHICS_COMMAND_H_
 #define TAKRAM_GRAPHICS_COMMAND_H_
 
+#include <cassert>
 #include <ostream>
 
 #include "takram/graphics/command_type.h"
