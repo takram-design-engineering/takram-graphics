@@ -54,7 +54,7 @@ template <class T>
 class Path<T, 2> final {
  public:
   using Type = T;
-  using Point = Vector2<T>;
+  using Point = Vec2<T>;
   using Command = Command<T, 2>;
   using Iterator = typename std::vector<Command>::iterator;
   using ConstIterator = typename std::vector<Command>::const_iterator;
@@ -98,6 +98,8 @@ class Path<T, 2> final {
   void lineTo(const Point& point);
   void quadraticTo(T cx, T cy, T x, T y);
   void quadraticTo(const Point& control, const Point& point);
+  void conicTo(T cx, T cy, T x, T y, T weight);
+  void conicTo(const Point& control, const Point& point, T weight);
   void cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y);
   void cubicTo(const Point& control1,
                const Point& control2,
@@ -185,7 +187,7 @@ inline Rect2<T> Path2<T>::bounds() const {
   T max_y = std::numeric_limits<T>::lowest();
   for (const auto& command : *this) {
     switch (command.type()) {
-      case Command::Kind::CUBIC:
+      case CommandType::CUBIC:
         if (command.control2().x < min_x) {
           min_x = command.control2().x;
         }
@@ -199,7 +201,8 @@ inline Rect2<T> Path2<T>::bounds() const {
           max_y = command.control2().y;
         }
         // Pass through
-      case Command::Kind::QUADRATIC:
+      case CommandType::QUADRATIC:
+      case CommandType::CONIC:
         if (command.control().x < min_x) {
           min_x = command.control().x;
         }
@@ -213,8 +216,8 @@ inline Rect2<T> Path2<T>::bounds() const {
           max_y = command.control().y;
         }
         // Pass through
-      case Command::Kind::MOVE:
-      case Command::Kind::LINE:
+      case CommandType::MOVE:
+      case CommandType::LINE:
         if (command.point().x < min_x) {
           min_x = command.point().x;
         }
@@ -251,8 +254,8 @@ inline Rect2<T> Path2<T>::bounds() const {
 
 template <class T>
 inline void Path2<T>::close() {
-  if (!commands_.empty() && commands_.back().kind() != Command::Kind::CLOSE) {
-    commands_.emplace_back(Command::Kind::CLOSE);
+  if (!commands_.empty() && commands_.back().type() != CommandType::CLOSE) {
+    commands_.emplace_back(CommandType::CLOSE);
   }
 }
 
@@ -264,7 +267,7 @@ inline void Path2<T>::moveTo(T x, T y) {
 template <class T>
 inline void Path2<T>::moveTo(const Point& point) {
   commands_.clear();
-  commands_.emplace_back(Command::Kind::MOVE, point);
+  commands_.emplace_back(CommandType::MOVE, point);
 }
 
 template <class T>
@@ -277,7 +280,7 @@ inline void Path2<T>::lineTo(const Point& point) {
   if (commands_.empty()) {
     moveTo(point);
   } else {
-    commands_.emplace_back(Command::Kind::LINE, point);
+    commands_.emplace_back(CommandType::LINE, point);
     if (point == commands_.front().point()) {
       close();
     }
@@ -294,7 +297,26 @@ inline void Path2<T>::quadraticTo(const Point& control, const Point& point) {
   if (commands_.empty()) {
     moveTo(point);
   } else {
-    commands_.emplace_back(Command::Kind::QUADRATIC, control, point);
+    commands_.emplace_back(CommandType::QUADRATIC, control, point);
+    if (point == commands_.front().point()) {
+      close();
+    }
+  }
+}
+
+template <class T>
+inline void Path2<T>::conicTo(T cx, T cy, T x, T y, T weight) {
+  conicTo(Point(cx, cy), Point(x, y), weight);
+}
+
+template <class T>
+inline void Path2<T>::conicTo(const Point& control,
+                              const Point& point,
+                              T weight) {
+  if (commands_.empty()) {
+    moveTo(point);
+  } else {
+    commands_.emplace_back(CommandType::CONIC, control, point, weight);
     if (point == commands_.front().point()) {
       close();
     }
@@ -313,7 +335,7 @@ inline void Path2<T>::cubicTo(const Point& control1,
   if (commands_.empty()) {
     moveTo(point);
   } else {
-    commands_.emplace_back(Command::Kind::CUBIC, control1, control2, point);
+    commands_.emplace_back(CommandType::CUBIC, control1, control2, point);
     if (point == commands_.front().point()) {
       close();
     }
@@ -332,12 +354,13 @@ inline typename Path2<T>::Direction Path2<T>::direction() const {
   auto second = std::next(first);
   for (; second != std::end(commands_); ++first, ++second) {
     switch (second->type()) {
-      case Command::Kind::LINE:
-      case Command::Kind::QUADRATIC:
-      case Command::Kind::CUBIC:
+      case CommandType::LINE:
+      case CommandType::QUADRATIC:
+      case CommandType::CONIC:
+      case CommandType::CUBIC:
         sum += first->point().cross(second->point());
         break;
-      case Command::Kind::CLOSE:
+      case CommandType::CLOSE:
         sum += second->point().cross(commands_.front().point());
         break;
       default:
@@ -356,15 +379,17 @@ inline Path2<T>& Path2<T>::reverse() {
   std::list<Point> points;
   for (auto& command : commands_) {
     switch (command.type()) {
-      case Command::Kind::MOVE:
-      case Command::Kind::LINE:
+      case CommandType::MOVE:
+      case CommandType::LINE:
         points.emplace_back(command.point());
         break;
-      case Command::Kind::QUADRATIC:
-        points.emplace_back(command.control1());
+      case CommandType::QUADRATIC:
+        points.emplace_back(command.control());
         points.emplace_back(command.point());
         break;
-      case Command::Kind::CUBIC:
+      case CommandType::CONIC:
+      case CommandType::CUBIC:
+        // Conic weight is stored in the second control point
         points.emplace_back(command.control1());
         points.emplace_back(command.control2());
         points.emplace_back(command.point());
@@ -373,25 +398,31 @@ inline Path2<T>& Path2<T>::reverse() {
         break;
     }
   }
-  if (commands_.back().type() == Command::Kind::CLOSE) {
+  if (commands_.back().type() == CommandType::CLOSE) {
     std::reverse(std::next(std::begin(commands_)),
                  std::prev(std::end(commands_)));
   } else {
-    std::reverse(std::next(std::begin(commands_)), std::end(commands_));
+    std::reverse(std::next(std::begin(commands_)),
+                 std::end(commands_));
   }
   std::reverse(std::begin(points), std::end(points));
   auto itr = std::begin(points);
   for (auto& command : commands_) {
     switch (command.type()) {
-      case Command::Kind::MOVE:
-      case Command::Kind::LINE:
+      case CommandType::MOVE:
+      case CommandType::LINE:
         command.point() = *(itr++);
         break;
-      case Command::Kind::QUADRATIC:
-        command.control1() = *(itr++);
+      case CommandType::QUADRATIC:
+        command.control() = *(itr++);
         command.point() = *(itr++);
         break;
-      case Command::Kind::CUBIC:
+      case CommandType::CONIC:
+        command.weight() = (itr++)->front();
+        command.control() = *(itr++);
+        command.point() = *(itr++);
+        break;
+      case CommandType::CUBIC:
         command.control1() = *(itr++);
         command.control2() = *(itr++);
         command.point() = *(itr++);

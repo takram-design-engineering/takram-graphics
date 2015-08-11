@@ -50,7 +50,7 @@ template <class T>
 class Shape<T, 2> final {
  public:
   using Type = T;
-  using Point = Vector2<T>;
+  using Point = Vec2<T>;
   using Path = Path2<T>;
   using Iterator = LeafIteratorIterator<
       typename std::vector<Path>::iterator,
@@ -90,6 +90,8 @@ class Shape<T, 2> final {
   void lineTo(const Point& point);
   void quadraticTo(T cx, T cy, T x, T y);
   void quadraticTo(const Point& control, const Point& point);
+  void conicTo(T cx, T cy, T x, T y, T weight);
+  void conicTo(const Point& control, const Point& point, T weight);
   void cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y);
   void cubicTo(const Point& control1,
                const Point& control2,
@@ -203,6 +205,22 @@ template <class T>
 inline void Shape2<T>::quadraticTo(const Point& control, const Point& point) {
   if (!paths_.empty()) {
     paths_.back().quadraticTo(control, point);
+  }
+}
+
+template <class T>
+inline void Shape2<T>::conicTo(T cx, T cy, T x, T y, T weight) {
+  if (!paths_.empty()) {
+    paths_.back().conicTo(cx, cy, x, y, weight);
+  }
+}
+
+template <class T>
+inline void Shape2<T>::conicTo(const Point& control,
+                               const Point& point,
+                               T weight) {
+  if (!paths_.empty()) {
+    paths_.back().conicTo(control, point, weight);
   }
 }
 
