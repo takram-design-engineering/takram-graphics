@@ -108,6 +108,10 @@ class Path<T, 2> final {
   Path& reverse();
   Path reversed() const;
 
+  // Conversion
+  bool convertConicToQuadratic();
+  bool convertConicToQuadratic(double tolerance);
+
   // Element access
   Command& operator[](int index) { return commands_.at(index); }
   const Command& operator[](int index) const { return commands_.at(index); }
@@ -182,65 +186,33 @@ inline Rect2<T> Path2<T>::bounds() const {
   for (const auto& command : *this) {
     switch (command.type()) {
       case CommandType::CUBIC:
-        if (command.control2().x < min_x) {
-          min_x = command.control2().x;
-        }
-        if (command.control2().y < min_y) {
-          min_y = command.control2().y;
-        }
-        if (command.control2().x > max_x) {
-          max_x = command.control2().x;
-        }
-        if (command.control2().y > max_y) {
-          max_y = command.control2().y;
-        }
+        if (command.control2().x < min_x) min_x = command.control2().x;
+        if (command.control2().y < min_y) min_y = command.control2().y;
+        if (command.control2().x > max_x) max_x = command.control2().x;
+        if (command.control2().y > max_y) max_y = command.control2().y;
         // Pass through
       case CommandType::QUADRATIC:
       case CommandType::CONIC:
-        if (command.control().x < min_x) {
-          min_x = command.control().x;
-        }
-        if (command.control().y < min_y) {
-          min_y = command.control().y;
-        }
-        if (command.control().x > max_x) {
-          max_x = command.control().x;
-        }
-        if (command.control().y > max_y) {
-          max_y = command.control().y;
-        }
+        if (command.control().x < min_x) min_x = command.control().x;
+        if (command.control().y < min_y) min_y = command.control().y;
+        if (command.control().x > max_x) max_x = command.control().x;
+        if (command.control().y > max_y) max_y = command.control().y;
         // Pass through
       case CommandType::MOVE:
       case CommandType::LINE:
-        if (command.point().x < min_x) {
-          min_x = command.point().x;
-        }
-        if (command.point().y < min_y) {
-          min_y = command.point().y;
-        }
-        if (command.point().x > max_x) {
-          max_x = command.point().x;
-        }
-        if (command.point().y > max_y) {
-          max_y = command.point().y;
-        }
+        if (command.point().x < min_x) min_x = command.point().x;
+        if (command.point().y < min_y) min_y = command.point().y;
+        if (command.point().x > max_x) max_x = command.point().x;
+        if (command.point().y > max_y) max_y = command.point().y;
         break;
       default:
         break;
     }
   }
-  if (min_x == std::numeric_limits<T>::max()) {
-    min_x = T();
-  }
-  if (min_y == std::numeric_limits<T>::max()) {
-    min_y = T();
-  }
-  if (max_x == std::numeric_limits<T>::lowest()) {
-    max_x = T();
-  }
-  if (max_y == std::numeric_limits<T>::lowest()) {
-    max_y = T();
-  }
+  if (min_x == std::numeric_limits<T>::max()) min_x = T();
+  if (min_y == std::numeric_limits<T>::max()) min_y = T();
+  if (max_x == std::numeric_limits<T>::lowest()) max_x = T();
+  if (max_y == std::numeric_limits<T>::lowest()) max_y = T();
   return Rect2<T>(Point(min_x, min_y), Point(max_x, max_y));
 }
 
@@ -362,6 +334,9 @@ inline PathDirection Path2<T>::direction() const {
         break;
     }
   }
+  if (!sum) {
+    return PathDirection::UNDEFINED;
+  }
   return sum < 0 ? PathDirection::COUNTER_CLOCKWISE : PathDirection::CLOCKWISE;
 }
 
@@ -432,6 +407,16 @@ inline Path2<T>& Path2<T>::reverse() {
 template <class T>
 inline Path2<T> Path2<T>::reversed() const {
   return std::move(Path(*this).reverse());
+}
+
+#pragma mark Conversion
+
+template <class T>
+inline bool Path2<T>::convertConicToQuadratic() {
+}
+
+template <class T>
+inline bool Path2<T>::convertConicToQuadratic(double tolerance) {
 }
 
 }  // namespace graphics

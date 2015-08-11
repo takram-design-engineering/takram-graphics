@@ -1,5 +1,5 @@
 //
-//  takram/graphics.h
+//  takram/graphics/conic.h
 //
 //  MIT License
 //
@@ -25,25 +25,9 @@
 //
 
 #pragma once
-#ifndef TAKRAM_GRAPHICS_H_
-#define TAKRAM_GRAPHICS_H_
+#ifndef TAKRAM_GRAPHICS_CONIC_H_
+#define TAKRAM_GRAPHICS_CONIC_H_
 
-namespace takram {
-namespace graphics {
+#include "takram/graphics/conic2.h"
 
-extern const double version_number;
-extern const unsigned char version_string[];
-
-}  // namespace graphics
-}  // namespace takram
-
-#include "takram/graphics/color.h"
-#include "takram/graphics/color_depth.h"
-#include "takram/graphics/conic.h"
-#include "takram/graphics/command.h"
-#include "takram/graphics/command_type.h"
-#include "takram/graphics/path.h"
-#include "takram/graphics/path_direction.h"
-#include "takram/graphics/shape.h"
-
-#endif  // TAKRAM_GRAPHICS_H_
+#endif  // TAKRAM_GRAPHICS_CONIC_H_

@@ -82,6 +82,9 @@ class Command final {
   Point point_;
 };
 
+template <class T>
+using Command2 = Command<T, 2>;
+
 #pragma mark -
 
 template <class T, int D>

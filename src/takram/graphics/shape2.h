@@ -132,8 +132,7 @@ using Shape2d = Shape2<double>;
 #pragma mark -
 
 template <class T>
-inline Shape2<T>::Shape(const std::vector<Path>& paths)
-    : paths_(paths) {}
+inline Shape2<T>::Shape(const std::vector<Path>& paths) : paths_(paths) {}
 
 #pragma mark Mutators
 

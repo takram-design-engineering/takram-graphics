@@ -136,6 +136,8 @@
 		930959321A5062D400D09023 /* project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project.xcconfig; sourceTree = "<group>"; };
 		937521D21B79CFC00059AA91 /* command_type.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = command_type.h; sourceTree = "<group>"; };
 		937521D31B79D8E30059AA91 /* path_direction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = path_direction.h; sourceTree = "<group>"; };
+		937521D51B79E17E0059AA91 /* conic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = conic.h; sourceTree = "<group>"; };
+		937521D61B79E1830059AA91 /* conic2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = conic2.h; sourceTree = "<group>"; };
 		93A6DF861B6D426700D6C7E7 /* shape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shape.h; sourceTree = "<group>"; };
 		93A6DF871B6D426E00D6C7E7 /* path.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = path.h; sourceTree = "<group>"; };
 		93A6DF891B6D427700D6C7E7 /* command.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = command.h; sourceTree = "<group>"; };
@@ -261,6 +263,8 @@
 				937521D31B79D8E30059AA91 /* path_direction.h */,
 				93A6DF891B6D427700D6C7E7 /* command.h */,
 				937521D21B79CFC00059AA91 /* command_type.h */,
+				937521D51B79E17E0059AA91 /* conic.h */,
+				937521D61B79E1830059AA91 /* conic2.h */,
 			);
 			path = graphics;
 			sourceTree = "<group>";
