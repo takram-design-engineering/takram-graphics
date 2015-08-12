@@ -90,6 +90,10 @@ class Conic<T, 2> final {
   T weight;
 };
 
+using Conic2i = Conic2<int>;
+using Conic2f = Conic2<float>;
+using Conic2d = Conic2<double>;
+
 #pragma mark -
 
 template <class T>
@@ -167,6 +171,12 @@ inline std::pair<Conic2<T>, Conic2<T>> Conic2<T>::chop() const {
 }  // namespace graphics
 
 namespace gfx = graphics;
+
+using graphics::Conic;
+using graphics::Conic2;
+using graphics::Conic2i;
+using graphics::Conic2f;
+using graphics::Conic2d;
 
 }  // namespace takram
 
