@@ -62,8 +62,6 @@ inline std::ostream& operator<<(std::ostream& os, CommandType type) {
 
 namespace gfx = graphics;
 
-using graphics::CommandType;
-
 }  // namespace takram
 
 #endif  // TAKRAM_GRAPHICS_COMMAND_TYPE_H_

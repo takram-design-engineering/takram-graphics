@@ -81,10 +81,8 @@ class Command final {
  private:
   CommandType type_;
   Vec2<T> control1_;
-  union {
-    Vec2<T> control2_;
-    math::Promote<T> weight_;
-  };
+  Vec2<T> control2_;
+  math::Promote<T> weight_;
   Vec2<T> point_;
 };
 
@@ -94,11 +92,12 @@ using Command2 = Command<T, 2>;
 #pragma mark -
 
 template <class T, int D>
-inline Command<T, D>::Command(CommandType type) : type_(type) {}
+inline Command<T, D>::Command(CommandType type) : type_(type), weight_() {}
 
 template <class T, int D>
 inline Command<T, D>::Command(CommandType type, const Vec2<T>& point)
     : type_(type),
+      weight_(),
       point_(point) {}
 
 template <class T, int D>
@@ -107,6 +106,7 @@ inline Command<T, D>::Command(CommandType type,
                               const Vec2<T>& point)
     : type_(type),
       control1_(control),
+      weight_(),
       point_(point) {}
 
 template <class T, int D>
@@ -127,6 +127,7 @@ inline Command<T, D>::Command(CommandType type,
     : type_(type),
       control1_(control1),
       control2_(control2),
+      weight_(),
       point_(point) {}
 
 #pragma mark Comparison
