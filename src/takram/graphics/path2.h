@@ -60,24 +60,35 @@ template <class T>
 class Path<T, 2> final {
  public:
   using Type = T;
-  using Point = Vec2<T>;
-  using Command = Command<T, 2>;
-  using Iterator = typename std::list<Command>::iterator;
-  using ConstIterator = typename std::list<Command>::const_iterator;
+  using Iterator = typename std::list<Command2<T>>::iterator;
+  using ConstIterator = typename std::list<Command2<T>>::const_iterator;
   using ReverseIterator = std::reverse_iterator<Iterator>;
   using ConstReverseIterator = std::reverse_iterator<ConstIterator>;
   static constexpr const int dimensions = 2;
 
+ private:
+  // Provided for reverse()
+  struct Holder {
+    explicit Holder(const Vec2<T>& vector) : vector(vector) {}
+    explicit Holder(const math::Promote<T>& scalar) : scalar(scalar) {}
+    operator const Vec2<T>&() const { return vector; }
+    operator const math::Promote<T>&() const { return scalar; }
+    union {
+      Vec2<T> vector;
+      math::Promote<T> scalar;
+    };
+  };
+
  public:
   Path();
-  explicit Path(const std::list<Command>& commands);
+  explicit Path(const std::list<Command2<T>>& commands);
 
   // Copy semantics
   Path(const Path&) = default;
   Path& operator=(const Path&) = default;
 
   // Mutators
-  void set(const std::list<Command>& commands);
+  void set(const std::list<Command2<T>>& commands);
   void reset();
 
   // Comparison
@@ -92,23 +103,23 @@ class Path<T, 2> final {
   // Adding commands
   void close();
   void moveTo(T x, T y);
-  void moveTo(const Point& point);
+  void moveTo(const Vec2<T>& point);
   void lineTo(T x, T y);
-  void lineTo(const Point& point);
+  void lineTo(const Vec2<T>& point);
   void quadraticTo(T cx, T cy, T x, T y);
-  void quadraticTo(const Point& control, const Point& point);
+  void quadraticTo(const Vec2<T>& control, const Vec2<T>& point);
   void conicTo(T cx, T cy, T x, T y, math::Promote<T> weight);
-  void conicTo(const Point& control,
-               const Point& point,
+  void conicTo(const Vec2<T>& control,
+               const Vec2<T>& point,
                math::Promote<T> weight);
   void cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y);
-  void cubicTo(const Point& control1,
-               const Point& control2,
-               const Point& point);
+  void cubicTo(const Vec2<T>& control1,
+               const Vec2<T>& control2,
+               const Vec2<T>& point);
 
-  // Commands
-  const std::list<Command>& commands() const { return commands_; }
-  std::list<Command>& commands() { return commands_; }
+  // Command2<T>s
+  const std::list<Command2<T>>& commands() const { return commands_; }
+  std::list<Command2<T>>& commands() { return commands_; }
 
   // Direction
   PathDirection direction() const;
@@ -120,14 +131,14 @@ class Path<T, 2> final {
   bool convertConicsToQuadratics(math::Promote<T> tolerance);
 
   // Element access
-  Command& operator[](int index) { return at(index); }
-  const Command& operator[](int index) const { return at(index); }
-  Command& at(int index);
-  const Command& at(int index) const;
-  Command& front() { return commands_.front(); }
-  const Command& front() const { return commands_.front(); }
-  Command& back() { return commands_.back(); }
-  const Command& back() const { return commands_.back(); }
+  Command2<T>& operator[](int index) { return at(index); }
+  const Command2<T>& operator[](int index) const { return at(index); }
+  Command2<T>& at(int index);
+  const Command2<T>& at(int index) const;
+  Command2<T>& front() { return commands_.front(); }
+  const Command2<T>& front() const { return commands_.front(); }
+  Command2<T>& back() { return commands_.back(); }
+  const Command2<T>& back() const { return commands_.back(); }
 
   // Iterator
   Iterator begin() { return std::begin(commands_); }
@@ -147,7 +158,7 @@ class Path<T, 2> final {
   bool convertConicsToQuadratics(Method method, Args&&... args);
 
  private:
-  std::list<Command> commands_;
+  std::list<Command2<T>> commands_;
   mutable PathDirection direction_;
 };
 
@@ -161,14 +172,14 @@ template <class T>
 inline Path2<T>::Path() : direction_(PathDirection::UNDEFINED) {}
 
 template <class T>
-inline Path2<T>::Path(const std::list<Command>& commands)
+inline Path2<T>::Path(const std::list<Command2<T>>& commands)
     : commands_(commands),
       direction_(PathDirection::UNDEFINED) {}
 
 #pragma mark Mutators
 
 template <class T>
-inline void Path2<T>::set(const std::list<Command>& commands) {
+inline void Path2<T>::set(const std::list<Command2<T>>& commands) {
   commands_ = commands;
 }
 
@@ -230,7 +241,7 @@ inline Rect2<T> Path2<T>::bounds() const {
   if (min_y == std::numeric_limits<T>::max()) min_y = T();
   if (max_x == std::numeric_limits<T>::lowest()) max_x = T();
   if (max_y == std::numeric_limits<T>::lowest()) max_y = T();
-  return Rect2<T>(Point(min_x, min_y), Point(max_x, max_y));
+  return Rect2<T>(Vec2<T>(min_x, min_y), Vec2<T>(max_x, max_y));
 }
 
 #pragma mark Adding commands
@@ -244,22 +255,22 @@ inline void Path2<T>::close() {
 
 template <class T>
 inline void Path2<T>::moveTo(T x, T y) {
-  moveTo(Point(x, y));
+  moveTo(Vec2<T>(x, y));
 }
 
 template <class T>
-inline void Path2<T>::moveTo(const Point& point) {
+inline void Path2<T>::moveTo(const Vec2<T>& point) {
   commands_.clear();
   commands_.emplace_back(CommandType::MOVE, point);
 }
 
 template <class T>
 inline void Path2<T>::lineTo(T x, T y) {
-  lineTo(Point(x, y));
+  lineTo(Vec2<T>(x, y));
 }
 
 template <class T>
-inline void Path2<T>::lineTo(const Point& point) {
+inline void Path2<T>::lineTo(const Vec2<T>& point) {
   if (commands_.empty()) {
     moveTo(point);
   } else {
@@ -272,11 +283,12 @@ inline void Path2<T>::lineTo(const Point& point) {
 
 template <class T>
 inline void Path2<T>::quadraticTo(T cx, T cy, T x, T y) {
-  quadraticTo(Point(cx, cy), Point(x, y));
+  quadraticTo(Vec2<T>(cx, cy), Vec2<T>(x, y));
 }
 
 template <class T>
-inline void Path2<T>::quadraticTo(const Point& control, const Point& point) {
+inline void Path2<T>::quadraticTo(const Vec2<T>& control,
+                                  const Vec2<T>& point) {
   if (commands_.empty()) {
     moveTo(point);
   } else {
@@ -289,12 +301,12 @@ inline void Path2<T>::quadraticTo(const Point& control, const Point& point) {
 
 template <class T>
 inline void Path2<T>::conicTo(T cx, T cy, T x, T y, math::Promote<T> weight) {
-  conicTo(Point(cx, cy), Point(x, y), weight);
+  conicTo(Vec2<T>(cx, cy), Vec2<T>(x, y), weight);
 }
 
 template <class T>
-inline void Path2<T>::conicTo(const Point& control,
-                              const Point& point,
+inline void Path2<T>::conicTo(const Vec2<T>& control,
+                              const Vec2<T>& point,
                               math::Promote<T> weight) {
   if (commands_.empty()) {
     moveTo(point);
@@ -308,13 +320,13 @@ inline void Path2<T>::conicTo(const Point& control,
 
 template <class T>
 inline void Path2<T>::cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y) {
-  cubicTo(Point(cx1, cy1), Point(cx2, cy2), Point(x, y));
+  cubicTo(Vec2<T>(cx1, cy1), Vec2<T>(cx2, cy2), Vec2<T>(x, y));
 }
 
 template <class T>
-inline void Path2<T>::cubicTo(const Point& control1,
-                              const Point& control2,
-                              const Point& point) {
+inline void Path2<T>::cubicTo(const Vec2<T>& control1,
+                              const Vec2<T>& control2,
+                              const Vec2<T>& point) {
   if (commands_.empty()) {
     moveTo(point);
   } else {
@@ -362,25 +374,31 @@ inline Path2<T>& Path2<T>::reverse() {
   if (commands_.empty()) {
     return *this;
   }
-  std::list<std::reference_wrapper<Point>> points;
+  std::list<Holder> holders;
   for (auto& command : commands_) {
     switch (command.type()) {
       case CommandType::MOVE:
       case CommandType::LINE:
-        points.emplace_back(command.point());
+        holders.emplace_back(command.point());
         break;
       case CommandType::QUADRATIC:
-        points.emplace_back(command.control());
-        points.emplace_back(command.point());
+        holders.emplace_back(command.control());
+        holders.emplace_back(command.point());
         break;
       case CommandType::CONIC:
+        holders.emplace_back(command.control());
+        holders.emplace_back(command.weight());
+        holders.emplace_back(command.point());
+        break;
       case CommandType::CUBIC:
-        // Conic weight is stored in the second control point
-        points.emplace_back(command.control1());
-        points.emplace_back(command.control2());
-        points.emplace_back(command.point());
+        holders.emplace_back(command.control1());
+        holders.emplace_back(command.control2());
+        holders.emplace_back(command.point());
+        break;
+      case CommandType::CLOSE:
         break;
       default:
+        assert(false);
         break;
     }
   }
@@ -391,8 +409,8 @@ inline Path2<T>& Path2<T>::reverse() {
     std::reverse(std::next(std::begin(commands_)),
                  std::end(commands_));
   }
-  std::reverse(std::begin(points), std::end(points));
-  auto itr = std::begin(points);
+  std::reverse(std::begin(holders), std::end(holders));
+  auto itr = std::begin(holders);
   for (auto& command : commands_) {
     switch (command.type()) {
       case CommandType::MOVE:
@@ -404,7 +422,7 @@ inline Path2<T>& Path2<T>::reverse() {
         command.point() = *(itr++);
         break;
       case CommandType::CONIC:
-        command.weight() = (itr++)->get().front();
+        command.weight() = *(itr++);
         command.control() = *(itr++);
         command.point() = *(itr++);
         break;
@@ -413,11 +431,14 @@ inline Path2<T>& Path2<T>::reverse() {
         command.control2() = *(itr++);
         command.point() = *(itr++);
         break;
+      case CommandType::CLOSE:
+        break;
       default:
+        assert(false);
         break;
     }
   }
-  assert(itr == std::end(points));
+  assert(itr == std::end(holders));
   return *this;
 }
 
@@ -447,6 +468,7 @@ template <
   std::enable_if_t<std::is_member_pointer<Method>::value> *&
 >
 inline bool Path2<T>::convertConicsToQuadratics(Method method, Args&&... args) {
+  assert(method);
   bool changed{};
   const auto end = std::end(commands_);
   auto previous = std::begin(commands_);

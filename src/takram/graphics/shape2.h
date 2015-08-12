@@ -34,7 +34,6 @@
 
 #include "takram/algorithm/leaf_iterator_iterator.h"
 #include "takram/graphics/path.h"
-#include "takram/graphics/command.h"
 #include "takram/math/promotion.h"
 #include "takram/math/vector.h"
 
@@ -51,28 +50,26 @@ template <class T>
 class Shape<T, 2> final {
  public:
   using Type = T;
-  using Point = Vec2<T>;
-  using Path = Path2<T>;
   using Iterator = LeafIteratorIterator<
-      typename std::list<Path>::iterator,
-      typename Path::Iterator>;
+      typename std::list<Path2<T>>::iterator,
+      typename Path2<T>::Iterator>;
   using ConstIterator = LeafIteratorIterator<
-      typename std::list<Path>::const_iterator,
-      typename Path::ConstIterator>;
+      typename std::list<Path2<T>>::const_iterator,
+      typename Path2<T>::ConstIterator>;
   using ReverseIterator = std::reverse_iterator<Iterator>;
   using ConstReverseIterator = std::reverse_iterator<ConstIterator>;
   static constexpr const int dimensions = 2;
 
  public:
   Shape() = default;
-  explicit Shape(const std::list<Path>& paths);
+  explicit Shape(const std::list<Path2<T>>& paths);
 
   // Copy semantics
   Shape(const Shape&) = default;
   Shape& operator=(const Shape&) = default;
 
   // Mutators
-  void set(const std::list<Path>& paths);
+  void set(const std::list<Path2<T>>& paths);
   void reset();
 
   // Comparison
@@ -86,37 +83,37 @@ class Shape<T, 2> final {
   // Adding commands
   void close();
   void moveTo(T x, T y);
-  void moveTo(const Point& point);
+  void moveTo(const Vec2<T>& point);
   void lineTo(T x, T y);
-  void lineTo(const Point& point);
+  void lineTo(const Vec2<T>& point);
   void quadraticTo(T cx, T cy, T x, T y);
-  void quadraticTo(const Point& control, const Point& point);
+  void quadraticTo(const Vec2<T>& control, const Vec2<T>& point);
   void conicTo(T cx, T cy, T x, T y, math::Promote<T> weight);
-  void conicTo(const Point& control,
-               const Point& point,
+  void conicTo(const Vec2<T>& control,
+               const Vec2<T>& point,
                math::Promote<T> weight);
   void cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y);
-  void cubicTo(const Point& control1,
-               const Point& control2,
-               const Point& point);
+  void cubicTo(const Vec2<T>& control1,
+               const Vec2<T>& control2,
+               const Vec2<T>& point);
 
   // Paths
-  const std::list<Path>& paths() const { return paths_; }
-  std::list<Path>& paths() { return paths_; }
+  const std::list<Path2<T>>& paths() const { return paths_; }
+  std::list<Path2<T>>& paths() { return paths_; }
 
   // Conversion
   bool convertConicsToQuadratics();
   bool convertConicsToQuadratics(math::Promote<T> tolerance);
 
   // Element access
-  Path& operator[](int index) { return at(index); }
-  const Path& operator[](int index) const { return at(index); }
-  Path& at(int index);
-  const Path& at(int index) const;
-  Path& front() { return paths_.front(); }
-  const Path& front() const { return paths_.front(); }
-  Path& back() { return paths_.back(); }
-  const Path& back() const { return paths_.back(); }
+  Path2<T>& operator[](int index) { return at(index); }
+  const Path2<T>& operator[](int index) const { return at(index); }
+  Path2<T>& at(int index);
+  const Path2<T>& at(int index) const;
+  Path2<T>& front() { return paths_.front(); }
+  const Path2<T>& front() const { return paths_.front(); }
+  Path2<T>& back() { return paths_.back(); }
+  const Path2<T>& back() const { return paths_.back(); }
 
   // Iterator
   Iterator begin();
@@ -129,7 +126,7 @@ class Shape<T, 2> final {
   ConstReverseIterator rend() const { return ConstReverseIterator(end()); }
 
  private:
-  std::list<Path> paths_;
+  std::list<Path2<T>> paths_;
 };
 
 using Shape2i = Shape2<int>;
@@ -139,12 +136,12 @@ using Shape2d = Shape2<double>;
 #pragma mark -
 
 template <class T>
-inline Shape2<T>::Shape(const std::list<Path>& paths) : paths_(paths) {}
+inline Shape2<T>::Shape(const std::list<Path2<T>>& paths) : paths_(paths) {}
 
 #pragma mark Mutators
 
 template <class T>
-inline void Shape2<T>::set(const std::list<Path>& paths) {
+inline void Shape2<T>::set(const std::list<Path2<T>>& paths) {
   paths_ = paths;
 }
 
@@ -181,7 +178,7 @@ inline void Shape2<T>::moveTo(T x, T y) {
 }
 
 template <class T>
-inline void Shape2<T>::moveTo(const Point& point) {
+inline void Shape2<T>::moveTo(const Vec2<T>& point) {
   paths_.emplace_back();
   paths_.back().moveTo(point);
 }
@@ -194,7 +191,7 @@ inline void Shape2<T>::lineTo(T x, T y) {
 }
 
 template <class T>
-inline void Shape2<T>::lineTo(const Point& point) {
+inline void Shape2<T>::lineTo(const Vec2<T>& point) {
   if (!paths_.empty()) {
     paths_.back().lineTo(point);
   }
@@ -208,7 +205,8 @@ inline void Shape2<T>::quadraticTo(T cx, T cy, T x, T y) {
 }
 
 template <class T>
-inline void Shape2<T>::quadraticTo(const Point& control, const Point& point) {
+inline void Shape2<T>::quadraticTo(const Vec2<T>& control,
+                                   const Vec2<T>& point) {
   if (!paths_.empty()) {
     paths_.back().quadraticTo(control, point);
   }
@@ -222,8 +220,8 @@ inline void Shape2<T>::conicTo(T cx, T cy, T x, T y, math::Promote<T> weight) {
 }
 
 template <class T>
-inline void Shape2<T>::conicTo(const Point& control,
-                               const Point& point,
+inline void Shape2<T>::conicTo(const Vec2<T>& control,
+                               const Vec2<T>& point,
                                math::Promote<T> weight) {
   if (!paths_.empty()) {
     paths_.back().conicTo(control, point, weight);
@@ -238,9 +236,9 @@ inline void Shape2<T>::cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y) {
 }
 
 template <class T>
-inline void Shape2<T>::cubicTo(const Point& control1,
-                               const Point& control2,
-                               const Point& point) {
+inline void Shape2<T>::cubicTo(const Vec2<T>& control1,
+                               const Vec2<T>& control2,
+                               const Vec2<T>& point) {
   if (!paths_.empty()) {
     paths_.back().cubicTo(control1, control2, point);
   }
