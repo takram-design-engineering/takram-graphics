@@ -32,5 +32,13 @@ namespace graphics {
 const double version_number = 1.0;
 const unsigned char version_string[] = "1.0";
 
+// For static analysis
+template class Color<float, 3>;
+template class Color<float, 4>;
+template class Shape<float, 2>;
+template class Path<float, 2>;
+template class Command<float, 2>;
+template class Conic<float, 2>;
+
 }  // namespace graphics
 }  // namespace takram

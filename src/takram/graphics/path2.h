@@ -31,19 +31,24 @@
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
+#include <functional>
 #include <iterator>
 #include <limits>
 #include <list>
+#include <type_traits>
 #include <utility>
-#include <vector>
 
 #include "takram/graphics/command.h"
+#include "takram/graphics/conic.h"
 #include "takram/graphics/path_direction.h"
+#include "takram/math/promotion.h"
 #include "takram/math/rectangle.h"
 #include "takram/math/vector.h"
 
 namespace takram {
 namespace graphics {
+
+extern void *enabler;
 
 template <class T, int D>
 class Path;
@@ -57,22 +62,22 @@ class Path<T, 2> final {
   using Type = T;
   using Point = Vec2<T>;
   using Command = Command<T, 2>;
-  using Iterator = typename std::vector<Command>::iterator;
-  using ConstIterator = typename std::vector<Command>::const_iterator;
+  using Iterator = typename std::list<Command>::iterator;
+  using ConstIterator = typename std::list<Command>::const_iterator;
   using ReverseIterator = std::reverse_iterator<Iterator>;
   using ConstReverseIterator = std::reverse_iterator<ConstIterator>;
   static constexpr const int dimensions = 2;
 
  public:
   Path();
-  explicit Path(const std::vector<Command>& commands);
+  explicit Path(const std::list<Command>& commands);
 
   // Copy semantics
   Path(const Path&) = default;
   Path& operator=(const Path&) = default;
 
   // Mutators
-  void set(const std::vector<Command>& commands);
+  void set(const std::list<Command>& commands);
   void reset();
 
   // Comparison
@@ -92,16 +97,18 @@ class Path<T, 2> final {
   void lineTo(const Point& point);
   void quadraticTo(T cx, T cy, T x, T y);
   void quadraticTo(const Point& control, const Point& point);
-  void conicTo(T cx, T cy, T x, T y, T weight);
-  void conicTo(const Point& control, const Point& point, T weight);
+  void conicTo(T cx, T cy, T x, T y, math::Promote<T> weight);
+  void conicTo(const Point& control,
+               const Point& point,
+               math::Promote<T> weight);
   void cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y);
   void cubicTo(const Point& control1,
                const Point& control2,
                const Point& point);
 
   // Commands
-  const std::vector<Command>& commands() const { return commands_; }
-  std::vector<Command>& commands() { return commands_; }
+  const std::list<Command>& commands() const { return commands_; }
+  std::list<Command>& commands() { return commands_; }
 
   // Direction
   PathDirection direction() const;
@@ -109,14 +116,14 @@ class Path<T, 2> final {
   Path reversed() const;
 
   // Conversion
-  bool convertConicToQuadratic();
-  bool convertConicToQuadratic(double tolerance);
+  bool convertConicsToQuadratics();
+  bool convertConicsToQuadratics(math::Promote<T> tolerance);
 
   // Element access
-  Command& operator[](int index) { return commands_.at(index); }
-  const Command& operator[](int index) const { return commands_.at(index); }
-  Command& at(int index) { return commands_.at(index); }
-  const Command& at(int index) const { return commands_.at(index); }
+  Command& operator[](int index) { return at(index); }
+  const Command& operator[](int index) const { return at(index); }
+  Command& at(int index);
+  const Command& at(int index) const;
   Command& front() { return commands_.front(); }
   const Command& front() const { return commands_.front(); }
   Command& back() { return commands_.back(); }
@@ -133,7 +140,14 @@ class Path<T, 2> final {
   ConstReverseIterator rend() const { return ConstReverseIterator(end()); }
 
  private:
-  std::vector<Command> commands_;
+  template <
+    class Method, class... Args,
+    std::enable_if_t<std::is_member_pointer<Method>::value> *& = enabler
+  >
+  bool convertConicsToQuadratics(Method method, Args&&... args);
+
+ private:
+  std::list<Command> commands_;
   mutable PathDirection direction_;
 };
 
@@ -147,14 +161,14 @@ template <class T>
 inline Path2<T>::Path() : direction_(PathDirection::UNDEFINED) {}
 
 template <class T>
-inline Path2<T>::Path(const std::vector<Command>& commands)
+inline Path2<T>::Path(const std::list<Command>& commands)
     : commands_(commands),
       direction_(PathDirection::UNDEFINED) {}
 
 #pragma mark Mutators
 
 template <class T>
-inline void Path2<T>::set(const std::vector<Command>& commands) {
+inline void Path2<T>::set(const std::list<Command>& commands) {
   commands_ = commands;
 }
 
@@ -191,21 +205,24 @@ inline Rect2<T> Path2<T>::bounds() const {
         if (command.control2().x > max_x) max_x = command.control2().x;
         if (command.control2().y > max_y) max_y = command.control2().y;
         // Pass through
-      case CommandType::QUADRATIC:
       case CommandType::CONIC:
+      case CommandType::QUADRATIC:
         if (command.control().x < min_x) min_x = command.control().x;
         if (command.control().y < min_y) min_y = command.control().y;
         if (command.control().x > max_x) max_x = command.control().x;
         if (command.control().y > max_y) max_y = command.control().y;
         // Pass through
-      case CommandType::MOVE:
       case CommandType::LINE:
+      case CommandType::MOVE:
         if (command.point().x < min_x) min_x = command.point().x;
         if (command.point().y < min_y) min_y = command.point().y;
         if (command.point().x > max_x) max_x = command.point().x;
         if (command.point().y > max_y) max_y = command.point().y;
         break;
+      case CommandType::CLOSE:
+        break;
       default:
+        assert(false);
         break;
     }
   }
@@ -271,14 +288,14 @@ inline void Path2<T>::quadraticTo(const Point& control, const Point& point) {
 }
 
 template <class T>
-inline void Path2<T>::conicTo(T cx, T cy, T x, T y, T weight) {
+inline void Path2<T>::conicTo(T cx, T cy, T x, T y, math::Promote<T> weight) {
   conicTo(Point(cx, cy), Point(x, y), weight);
 }
 
 template <class T>
 inline void Path2<T>::conicTo(const Point& control,
                               const Point& point,
-                              T weight) {
+                              math::Promote<T> weight) {
   if (commands_.empty()) {
     moveTo(point);
   } else {
@@ -345,7 +362,7 @@ inline Path2<T>& Path2<T>::reverse() {
   if (commands_.empty()) {
     return *this;
   }
-  std::list<Point> points;
+  std::list<std::reference_wrapper<Point>> points;
   for (auto& command : commands_) {
     switch (command.type()) {
       case CommandType::MOVE:
@@ -387,7 +404,7 @@ inline Path2<T>& Path2<T>::reverse() {
         command.point() = *(itr++);
         break;
       case CommandType::CONIC:
-        command.weight() = (itr++)->front();
+        command.weight() = (itr++)->get().front();
         command.control() = *(itr++);
         command.point() = *(itr++);
         break;
@@ -412,11 +429,62 @@ inline Path2<T> Path2<T>::reversed() const {
 #pragma mark Conversion
 
 template <class T>
-inline bool Path2<T>::convertConicToQuadratic() {
+inline bool Path2<T>::convertConicsToQuadratics() {
+  using Method = std::vector<Vec2<T>> (Conic2<T>::*)(void) const;
+  return convertConicsToQuadratics(static_cast<Method>(&Conic2<T>::quadratics));
 }
 
 template <class T>
-inline bool Path2<T>::convertConicToQuadratic(double tolerance) {
+inline bool Path2<T>::convertConicsToQuadratics(math::Promote<T> tolerance) {
+  using Method = std::vector<Vec2<T>> (Conic2<T>::*)(math::Promote<T>) const;
+  return convertConicsToQuadratics(static_cast<Method>(&Conic2<T>::quadratics),
+                                   tolerance);
+}
+
+template <class T>
+template <
+  class Method, class... Args,
+  std::enable_if_t<std::is_member_pointer<Method>::value> *&
+>
+inline bool Path2<T>::convertConicsToQuadratics(Method method, Args&&... args) {
+  bool changed{};
+  const auto end = std::end(commands_);
+  auto previous = std::begin(commands_);
+  for (auto current = previous; current != end;) {
+    if (current->type() != CommandType::CONIC) {
+      previous = current++;
+      continue;
+    }
+    const Conic2<T> conic(previous->point(),
+                          current->control(),
+                          current->point(),
+                          current->weight());
+    const auto points = (conic.*method)(args...);
+    current = commands_.erase(current);
+    for (auto itr = std::begin(points); itr != std::end(points); ++itr) {
+      current = commands_.emplace(
+          current, CommandType::QUADRATIC, *itr, *(++itr));
+      ++current;
+    }
+    changed = true;
+  }
+  return changed;
+}
+
+#pragma mark Element access
+
+template <class T>
+inline Command2<T>& Path2<T>::at(int index) {
+  auto itr = std::begin(commands_);
+  std::advance(itr, index);
+  return *itr;
+}
+
+template <class T>
+inline const Command2<T>& Path2<T>::at(int index) const {
+  auto itr = std::begin(commands_);
+  std::advance(itr, index);
+  return *itr;
 }
 
 }  // namespace graphics

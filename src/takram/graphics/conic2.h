@@ -36,7 +36,7 @@
 #include <utility>
 #include <vector>
 
-#include "takram/graphics/command.h"
+#include "takram/math/promotion.h"
 #include "takram/math/vector.h"
 
 namespace takram {
@@ -59,7 +59,10 @@ class Conic<T, 2> final {
 
  public:
   Conic();
-  Conic(const Point& a, const Point& b, const Point& c, T weight);
+  Conic(const Point& a,
+        const Point& b,
+        const Point& c,
+        math::Promote<T> weight);
 
   // Copy semantics
   Conic(const Conic&) = default;
@@ -71,7 +74,7 @@ class Conic<T, 2> final {
 
   // Subdivision
   std::vector<Point> quadratics() const;
-  std::vector<Point> quadratics(T tolerance) const;
+  std::vector<Point> quadratics(math::Promote<T> tolerance) const;
   std::vector<Point> subdivide(unsigned int level) const;
   std::pair<Conic, Conic> chop() const;
 
@@ -87,7 +90,7 @@ class Conic<T, 2> final {
   T weight;
 };
 
-#pragma mark - 
+#pragma mark -
 
 template <class T>
 inline Conic2<T>::Conic() : weight() {}
@@ -96,8 +99,8 @@ template <class T>
 inline Conic2<T>::Conic(const Point& a,
                         const Point& b,
                         const Point& c,
-                        T weight)
-    : points{a, b, c},
+                        math::Promote<T> weight)
+    : points{{a, b, c}},
       weight(weight) {}
 
 #pragma mark Comparison
@@ -120,12 +123,12 @@ inline std::vector<Vec2<T>> Conic2<T>::quadratics() const {
 }
 
 template <class T>
-inline std::vector<Vec2<T>> Conic2<T>::quadratics(T tolerance) const {
+inline std::vector<Vec2<T>> Conic2<T>::quadratics(
+    math::Promote<T> tolerance) const {
   unsigned int subdivision{};
   if (tolerance >= 0) {
     static const unsigned int max_subdivision = 5;
-    const auto w = weight - 1;
-    const auto k = w / (4 * (2 + w));
+    const auto k = (weight - 1) / (4 * (weight + 1));
     const auto x = k * (a.x - 2 * b.x + c.x);
     const auto y = k * (a.y - 2 * b.y + c.y);
     auto error = std::sqrt(x * x + y * y);
@@ -155,10 +158,10 @@ template <class T>
 inline std::pair<Conic2<T>, Conic2<T>> Conic2<T>::chop() const {
   const auto scale = 1 / (1 + this->weight);
   const auto weight = std::sqrt((1 + this->weight) / 2);
-  const auto point = this->weight * b;
-  const auto middle = (a + point + point + c) * scale / 2;
-  return std::make_pair(Conic(a, (a + point) * scale, middle, weight),
-                        Conic(middle, (point + c) * scale, c, weight));
+  const auto weighted = this->weight * b;
+  const auto middle = (a + weighted + weighted + c) * scale / 2;
+  return std::make_pair(Conic(a, (a + weighted) * scale, middle, weight),
+                        Conic(middle, (weighted + c) * scale, c, weight));
 }
 
 }  // namespace graphics
