@@ -60,6 +60,7 @@ template <class T>
 class Path<T, 2> final {
  public:
   using Type = T;
+  using Command = Command2<T>;
   using Iterator = typename std::list<Command2<T>>::iterator;
   using ConstIterator = typename std::list<Command2<T>>::const_iterator;
   using ReverseIterator = std::reverse_iterator<Iterator>;

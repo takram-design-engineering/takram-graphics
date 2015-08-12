@@ -56,6 +56,8 @@ inline std::ostream& operator<<(std::ostream& os, PathDirection direction) {
 
 namespace gfx = graphics;
 
+using graphics::PathDirection;
+
 }  // namespace takram
 
 #endif  // TAKRAM_GRAPHICS_PATH_DIRECTION_H_
