@@ -472,8 +472,9 @@ inline bool Path2<T>::convertConicsToQuadratics(Method method, Args&&... args) {
   assert(method);
   bool changed{};
   const auto end = std::end(commands_);
-  auto previous = std::begin(commands_);
-  for (auto current = previous; current != end;) {
+  auto current = std::begin(commands_);
+  auto previous = current++;
+  while (current != end) {
     if (current->type() != CommandType::CONIC) {
       previous = current++;
       continue;
@@ -487,7 +488,7 @@ inline bool Path2<T>::convertConicsToQuadratics(Method method, Args&&... args) {
     for (auto itr = std::begin(points); itr != std::end(points); ++itr) {
       current = commands_.emplace(current, CommandType::QUADRATIC,
                                   *itr, *(++itr));
-      ++current;
+      previous = current++;
     }
     changed = true;
   }

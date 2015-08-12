@@ -73,8 +73,8 @@ class Command final {
   Vec2<T>& control1() { return control1_; }
   const Vec2<T>& control2() const { return control2_; }
   Vec2<T>& control2() { return control2_; }
-  const T& weight() const { return control2_.front(); }
-  T& weight() { return control2_.front(); }
+  const T& weight() const { return weight_; }
+  T& weight() { return weight_; }
   const Vec2<T>& point() const { return point_; }
   Vec2<T>& point() { return point_; }
 
@@ -154,16 +154,21 @@ inline std::ostream& operator<<(std::ostream& os, const Command<T, D>& other) {
   switch (other.type()) {
     case CommandType::MOVE:
     case CommandType::LINE:
-      os << other.point();
+      os << " "  << other.point();
       break;
     case CommandType::QUADRATIC:
-      os << other.control() << " " << other.point();
+      os << " "  << other.control();
+      os << " " << other.point();
       break;
     case CommandType::CONIC:
-      os << other.control() << " " << other.point() << " " << other.weight();
+      os << " "  << other.control();
+      os << " " << other.point();
+      os << " " << other.weight();
       break;
     case CommandType::CUBIC:
-      os << other.control1() << " " << other.control2() << " " << other.point();
+      os << " "  << other.control1();
+      os << " " << other.control2();
+      os << " " << other.point();
       break;
     case CommandType::CLOSE:
       break;
