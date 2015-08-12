@@ -1,5 +1,5 @@
 //
-//  takram/graphics.h
+//  takram/graphics/path_direction.h
 //
 //  MIT License
 //
@@ -24,21 +24,40 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#include "takram/graphics.h"
+#pragma once
+#ifndef TAKRAM_GRAPHICS_PATH_DIRECTION_H_
+#define TAKRAM_GRAPHICS_PATH_DIRECTION_H_
+
+#include <cassert>
+#include <ostream>
 
 namespace takram {
 namespace graphics {
 
-const double version_number = 1.0;
-const unsigned char version_string[] = "1.0";
+enum class PathDirection {
+  UNDEFINED,
+  CLOCKWISE,
+  COUNTER_CLOCKWISE
+};
 
-// For static analysis
-template class Color<float, 3>;
-template class Color<float, 4>;
-template class Shape<float, 2>;
-template class Path<float, 2>;
-template class Command<float, 2>;
-template class Conic<float, 2>;
+inline std::ostream& operator<<(std::ostream& os, PathDirection direction) {
+  switch (direction) {
+    case PathDirection::UNDEFINED: os << "undefined"; break;
+    case PathDirection::CLOCKWISE: os << "clockwise"; break;
+    case PathDirection::COUNTER_CLOCKWISE: os << "counter clockwise"; break;
+    default:
+      assert(false);
+      break;
+  }
+  return os;
+}
 
 }  // namespace graphics
+
+namespace gfx = graphics;
+
+using graphics::PathDirection;
+
 }  // namespace takram
+
+#endif  // TAKRAM_GRAPHICS_PATH_DIRECTION_H_

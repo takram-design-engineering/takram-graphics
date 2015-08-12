@@ -1,5 +1,5 @@
 //
-//  takram/graphics.h
+//  takram/graphics/conic.h
 //
 //  MIT License
 //
@@ -24,21 +24,10 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#include "takram/graphics.h"
+#pragma once
+#ifndef TAKRAM_GRAPHICS_CONIC_H_
+#define TAKRAM_GRAPHICS_CONIC_H_
 
-namespace takram {
-namespace graphics {
+#include "takram/graphics/conic2.h"
 
-const double version_number = 1.0;
-const unsigned char version_string[] = "1.0";
-
-// For static analysis
-template class Color<float, 3>;
-template class Color<float, 4>;
-template class Shape<float, 2>;
-template class Path<float, 2>;
-template class Command<float, 2>;
-template class Conic<float, 2>;
-
-}  // namespace graphics
-}  // namespace takram
+#endif  // TAKRAM_GRAPHICS_CONIC_H_

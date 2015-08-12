@@ -39,8 +39,11 @@ extern const unsigned char version_string[];
 
 #include "takram/graphics/color.h"
 #include "takram/graphics/color_depth.h"
+#include "takram/graphics/conic.h"
 #include "takram/graphics/command.h"
+#include "takram/graphics/command_type.h"
 #include "takram/graphics/path.h"
+#include "takram/graphics/path_direction.h"
 #include "takram/graphics/shape.h"
 
 #endif  // TAKRAM_GRAPHICS_H_

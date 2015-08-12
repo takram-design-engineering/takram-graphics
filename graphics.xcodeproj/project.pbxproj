@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		930955321A4FB46600D09023 /* libtakram_graphics.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9309550E1A4FB1FC00D09023 /* libtakram_graphics.dylib */; };
+		932809551B7B0A65000B0B4C /* path_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 932809531B7B0A65000B0B4C /* path_test.cc */; };
+		932809561B7B0A65000B0B4C /* shape_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 932809541B7B0A65000B0B4C /* shape_test.cc */; };
 		93B474411B648CD400613FB6 /* libtakram_math.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B474381B648CC400613FB6 /* libtakram_math.dylib */; };
 		93B474441B648CDA00613FB6 /* libtakram_math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B4743A1B648CC400613FB6 /* libtakram_math.a */; };
 		93B474471B648CDF00613FB6 /* libtakram_math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B4743C1B648CC400613FB6 /* libtakram_math.a */; };
@@ -134,6 +136,12 @@
 		930959301A5062D400D09023 /* project_debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project_debug.xcconfig; sourceTree = "<group>"; };
 		930959311A5062D400D09023 /* project_release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project_release.xcconfig; sourceTree = "<group>"; };
 		930959321A5062D400D09023 /* project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = project.xcconfig; sourceTree = "<group>"; };
+		932809531B7B0A65000B0B4C /* path_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = path_test.cc; sourceTree = "<group>"; };
+		932809541B7B0A65000B0B4C /* shape_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shape_test.cc; sourceTree = "<group>"; };
+		937521D21B79CFC00059AA91 /* command_type.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = command_type.h; sourceTree = "<group>"; };
+		937521D31B79D8E30059AA91 /* path_direction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = path_direction.h; sourceTree = "<group>"; };
+		937521D51B79E17E0059AA91 /* conic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = conic.h; sourceTree = "<group>"; };
+		937521D61B79E1830059AA91 /* conic2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = conic2.h; sourceTree = "<group>"; };
 		93A6DF861B6D426700D6C7E7 /* shape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shape.h; sourceTree = "<group>"; };
 		93A6DF871B6D426E00D6C7E7 /* path.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = path.h; sourceTree = "<group>"; };
 		93A6DF891B6D427700D6C7E7 /* command.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = command.h; sourceTree = "<group>"; };
@@ -241,6 +249,8 @@
 		93D7E4261B2C20BE006EA047 /* test */ = {
 			isa = PBXGroup;
 			children = (
+				932809531B7B0A65000B0B4C /* path_test.cc */,
+				932809541B7B0A65000B0B4C /* shape_test.cc */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -256,7 +266,11 @@
 				93D7E4CD1B2C5A47006EA047 /* shape2.h */,
 				93A6DF871B6D426E00D6C7E7 /* path.h */,
 				93D7E4C81B2C5A47006EA047 /* path2.h */,
+				937521D31B79D8E30059AA91 /* path_direction.h */,
 				93A6DF891B6D427700D6C7E7 /* command.h */,
+				937521D21B79CFC00059AA91 /* command_type.h */,
+				937521D51B79E17E0059AA91 /* conic.h */,
+				937521D61B79E1830059AA91 /* conic2.h */,
 			);
 			path = graphics;
 			sourceTree = "<group>";
@@ -538,6 +552,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				932809551B7B0A65000B0B4C /* path_test.cc in Sources */,
+				932809561B7B0A65000B0B4C /* shape_test.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

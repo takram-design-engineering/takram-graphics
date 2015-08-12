@@ -28,6 +28,11 @@
 #ifndef TAKRAM_GRAPHICS_COMMAND_H_
 #define TAKRAM_GRAPHICS_COMMAND_H_
 
+#include <cassert>
+#include <ostream>
+
+#include "takram/graphics/command_type.h"
+#include "takram/math/promotion.h"
 #include "takram/math/vector.h"
 
 namespace takram {
@@ -37,26 +42,20 @@ template <class T, int D>
 class Command final {
  public:
   using Type = T;
-  using Point = Vector2<T>;
   static constexpr const int dimensions = D;
 
  public:
-  enum class Kind {
-    MOVE,
-    LINE,
-    QUADRATIC,
-    CUBIC,
-    CLOSE
-  };
-
- public:
-  explicit Command(Kind kind);
-  Command(Kind kind, const Point& point);
-  Command(Kind kind, const Point& control, const Point& point);
-  Command(Kind kind,
-          const Point& control1,
-          const Point& control2,
-          const Point& point);
+  explicit Command(CommandType type);
+  Command(CommandType type, const Vec2<T>& point);
+  Command(CommandType type, const Vec2<T>& control, const Vec2<T>& point);
+  Command(CommandType type,
+          const Vec2<T>& control,
+          const Vec2<T>& point,
+          math::Promote<T> weight);
+  Command(CommandType type,
+          const Vec2<T>& control1,
+          const Vec2<T>& control2,
+          const Vec2<T>& point);
 
   // Copy semantics
   Command(const Command&) = default;
@@ -67,64 +66,117 @@ class Command final {
   bool operator!=(const Command& other) const;
 
   // Properties
-  Kind kind() const { return kind_; }
-  const Point& control() const { return control1_; }
-  Point& control() { return control1_; }
-  const Point& control1() const { return control1_; }
-  Point& control1() { return control1_; }
-  const Point& control2() const { return control2_; }
-  Point& control2() { return control2_; }
-  const Point& point() const { return point_; }
-  Point& point() { return point_; }
+  CommandType type() const { return type_; }
+  const Vec2<T>& control() const { return control1_; }
+  Vec2<T>& control() { return control1_; }
+  const Vec2<T>& control1() const { return control1_; }
+  Vec2<T>& control1() { return control1_; }
+  const Vec2<T>& control2() const { return control2_; }
+  Vec2<T>& control2() { return control2_; }
+  const T& weight() const { return weight_; }
+  T& weight() { return weight_; }
+  const Vec2<T>& point() const { return point_; }
+  Vec2<T>& point() { return point_; }
 
  private:
-  Kind kind_;
-  Point control1_;
-  Point control2_;
-  Point point_;
+  CommandType type_;
+  Vec2<T> control1_;
+  Vec2<T> control2_;
+  math::Promote<T> weight_;
+  Vec2<T> point_;
 };
+
+template <class T>
+using Command2 = Command<T, 2>;
 
 #pragma mark -
 
 template <class T, int D>
-inline Command<T, D>::Command(Kind kind) : kind_(kind) {}
+inline Command<T, D>::Command(CommandType type) : type_(type), weight_() {}
 
 template <class T, int D>
-inline Command<T, D>::Command(Kind kind, const Point& point)
-    : kind_(kind),
+inline Command<T, D>::Command(CommandType type, const Vec2<T>& point)
+    : type_(type),
+      weight_(),
       point_(point) {}
 
 template <class T, int D>
-inline Command<T, D>::Command(Kind kind,
-                              const Point& control,
-                              const Point& point)
-    : kind_(kind),
+inline Command<T, D>::Command(CommandType type,
+                              const Vec2<T>& control,
+                              const Vec2<T>& point)
+    : type_(type),
       control1_(control),
+      weight_(),
       point_(point) {}
 
 template <class T, int D>
-inline Command<T, D>::Command(Kind kind,
-                              const Point& control1,
-                              const Point& control2,
-                              const Point& point)
-    : kind_(kind),
+inline Command<T, D>::Command(CommandType type,
+                              const Vec2<T>& control,
+                              const Vec2<T>& point,
+                              math::Promote<T> weight)
+    : type_(type),
+      control1_(control),
+      weight_(weight),
+      point_(point) {}
+
+template <class T, int D>
+inline Command<T, D>::Command(CommandType type,
+                              const Vec2<T>& control1,
+                              const Vec2<T>& control2,
+                              const Vec2<T>& point)
+    : type_(type),
       control1_(control1),
       control2_(control2),
+      weight_(),
       point_(point) {}
 
 #pragma mark Comparison
 
 template <class T, int D>
 inline bool Command<T, D>::operator==(const Command& other) const {
-  return (kind_ == other.kind_ &&
+  return (type_ == other.type_ &&
           control1_ == other.control1_ &&
           control2_ == other.control2_ &&
+          weight_ == other.weight_ &&
           point_ == other.point_);
 }
 
 template <class T, int D>
 inline bool Command<T, D>::operator!=(const Command& other) const {
   return !operator==(other);
+}
+
+#pragma mark Stream
+
+template <class T, int D>
+inline std::ostream& operator<<(std::ostream& os, const Command<T, D>& other) {
+  os << "( " << other.type();
+  switch (other.type()) {
+    case CommandType::MOVE:
+    case CommandType::LINE:
+      os << " "  << other.point();
+      break;
+    case CommandType::QUADRATIC:
+      os << " "  << other.control();
+      os << " " << other.point();
+      break;
+    case CommandType::CONIC:
+      os << " "  << other.control();
+      os << " " << other.point();
+      os << " " << other.weight();
+      break;
+    case CommandType::CUBIC:
+      os << " "  << other.control1();
+      os << " " << other.control2();
+      os << " " << other.point();
+      break;
+    case CommandType::CLOSE:
+      break;
+    default:
+      assert(false);
+      break;
+  }
+  return os << " )";
 }
 
 }  // namespace graphics

@@ -1,5 +1,5 @@
 //
-//  takram/graphics.h
+//  takram/graphics/command_type.h
 //
 //  MIT License
 //
@@ -24,21 +24,44 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#include "takram/graphics.h"
+#pragma once
+#ifndef TAKRAM_GRAPHICS_COMMAND_TYPE_H_
+#define TAKRAM_GRAPHICS_COMMAND_TYPE_H_
+
+#include <cassert>
+#include <ostream>
 
 namespace takram {
 namespace graphics {
 
-const double version_number = 1.0;
-const unsigned char version_string[] = "1.0";
+enum class CommandType {
+  MOVE,
+  LINE,
+  QUADRATIC,
+  CONIC,
+  CUBIC,
+  CLOSE
+};
 
-// For static analysis
-template class Color<float, 3>;
-template class Color<float, 4>;
-template class Shape<float, 2>;
-template class Path<float, 2>;
-template class Command<float, 2>;
-template class Conic<float, 2>;
+inline std::ostream& operator<<(std::ostream& os, CommandType type) {
+  switch (type) {
+    case CommandType::MOVE: os << "move"; break;
+    case CommandType::LINE: os << "line"; break;
+    case CommandType::QUADRATIC: os << "quadratic"; break;
+    case CommandType::CONIC: os << "conic"; break;
+    case CommandType::CUBIC: os << "cubic"; break;
+    case CommandType::CLOSE: os << "close"; break;
+    default:
+      assert(false);
+      break;
+  }
+  return os;
+}
 
 }  // namespace graphics
+
+namespace gfx = graphics;
+
 }  // namespace takram
+
+#endif  // TAKRAM_GRAPHICS_COMMAND_TYPE_H_
