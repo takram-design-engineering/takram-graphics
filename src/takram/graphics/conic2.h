@@ -97,7 +97,7 @@ using Conic2d = Conic2<double>;
 #pragma mark -
 
 template <class T>
-inline Conic2<T>::Conic() : weight() {}
+inline Conic2<T>::Conic() : a(), b(), c(), weight() {}
 
 template <class T>
 inline Conic2<T>::Conic(const Point& a,
