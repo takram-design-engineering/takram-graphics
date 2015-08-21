@@ -17,6 +17,7 @@
 		93B4746D1B648D0B00613FB6 /* libtakram_algorithm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B474621B648CFE00613FB6 /* libtakram_algorithm.a */; };
 		93B474701B648D1100613FB6 /* libtakram_algorithm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B474641B648CFE00613FB6 /* libtakram_algorithm.a */; };
 		93B474741B648D8F00613FB6 /* graphics.cc in Sources */ = {isa = PBXBuildFile; fileRef = 93D7E4FD1B2C5A52006EA047 /* graphics.cc */; };
+		93C2E2841B8716BF007DD87D /* test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 93C2E2831B8716BF007DD87D /* test.cc */; };
 		93D7E4FE1B2C5A52006EA047 /* graphics.cc in Sources */ = {isa = PBXBuildFile; fileRef = 93D7E4FD1B2C5A52006EA047 /* graphics.cc */; };
 		93D7E4FF1B2C5A52006EA047 /* graphics.cc in Sources */ = {isa = PBXBuildFile; fileRef = 93D7E4FD1B2C5A52006EA047 /* graphics.cc */; };
 /* End PBXBuildFile section */
@@ -148,11 +149,13 @@
 		93B474091B648C4C00613FB6 /* libtakram_graphics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libtakram_graphics.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		93B4741F1B648C8800613FB6 /* math.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = math.xcodeproj; path = "../takram-math/math.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		93B474481B648CEF00613FB6 /* algorithm.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = algorithm.xcodeproj; path = "../takram-algorithm/algorithm.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		93C2E2831B8716BF007DD87D /* test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test.cc; sourceTree = "<group>"; };
+		93C2E2871B871781007DD87D /* channel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = channel.h; sourceTree = "<group>"; };
 		93C6B51519B22F5500A1CF93 /* libtakram_graphics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libtakram_graphics.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		93D7E4C11B2C5A47006EA047 /* color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = color.h; sourceTree = "<group>"; };
 		93D7E4C31B2C5A47006EA047 /* color3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = color3.h; sourceTree = "<group>"; };
 		93D7E4C51B2C5A47006EA047 /* color4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = color4.h; sourceTree = "<group>"; };
-		93D7E4C61B2C5A47006EA047 /* color_depth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = color_depth.h; sourceTree = "<group>"; };
+		93D7E4C61B2C5A47006EA047 /* depth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = depth.h; sourceTree = "<group>"; };
 		93D7E4C81B2C5A47006EA047 /* path2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = path2.h; sourceTree = "<group>"; };
 		93D7E4CD1B2C5A47006EA047 /* shape2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shape2.h; sourceTree = "<group>"; };
 		93D7E4D41B2C5A47006EA047 /* graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graphics.h; sourceTree = "<group>"; };
@@ -249,6 +252,7 @@
 		93D7E4261B2C20BE006EA047 /* test */ = {
 			isa = PBXGroup;
 			children = (
+				93C2E2831B8716BF007DD87D /* test.cc */,
 				932809531B7B0A65000B0B4C /* path_test.cc */,
 				932809541B7B0A65000B0B4C /* shape_test.cc */,
 			);
@@ -258,10 +262,11 @@
 		93D7E4C01B2C5A47006EA047 /* graphics */ = {
 			isa = PBXGroup;
 			children = (
+				93C2E2871B871781007DD87D /* channel.h */,
+				93D7E4C61B2C5A47006EA047 /* depth.h */,
 				93D7E4C11B2C5A47006EA047 /* color.h */,
 				93D7E4C31B2C5A47006EA047 /* color3.h */,
 				93D7E4C51B2C5A47006EA047 /* color4.h */,
-				93D7E4C61B2C5A47006EA047 /* color_depth.h */,
 				93A6DF861B6D426700D6C7E7 /* shape.h */,
 				93D7E4CD1B2C5A47006EA047 /* shape2.h */,
 				93A6DF871B6D426E00D6C7E7 /* path.h */,
@@ -552,6 +557,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93C2E2841B8716BF007DD87D /* test.cc in Sources */,
 				932809551B7B0A65000B0B4C /* path_test.cc in Sources */,
 				932809561B7B0A65000B0B4C /* shape_test.cc in Sources */,
 			);

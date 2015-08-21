@@ -1,5 +1,5 @@
 //
-//  takram/graphics/color_depth.h
+//  takram/graphics/depth.h
 //
 //  MIT License
 //
@@ -25,8 +25,8 @@
 //
 
 #pragma once
-#ifndef TAKRAM_GRAPHICS_COLOR_DEPTH_H_
-#define TAKRAM_GRAPHICS_COLOR_DEPTH_H_
+#ifndef TAKRAM_GRAPHICS_DEPTH_H_
+#define TAKRAM_GRAPHICS_DEPTH_H_
 
 #include <cmath>
 #include <limits>
@@ -38,15 +38,15 @@ namespace takram {
 namespace graphics {
 
 template <class T, class Enable = void>
-struct ColorDepth {};
+struct Depth {};
 
 template <class T>
-using IntegralColorDepth = ColorDepth<T, EnableIfIntegral<T>>;
+using IntegralDepth = Depth<T, EnableIfIntegral<T>>;
 template <class T>
-using FloatingColorDepth = ColorDepth<T, EnableIfFloating<T>>;
+using FloatingDepth = Depth<T, EnableIfFloating<T>>;
 
 template <class T>
-struct ColorDepth<T, EnableIfIntegral<T>> {
+struct Depth<T, EnableIfIntegral<T>> {
   static constexpr const int bits = std::numeric_limits<T>::digits;
   static constexpr const T min = std::numeric_limits<T>::min();
   static constexpr const T max = std::numeric_limits<T>::max();
@@ -59,7 +59,7 @@ struct ColorDepth<T, EnableIfIntegral<T>> {
 };
 
 template <class T>
-struct ColorDepth<T, EnableIfFloating<T>> {
+struct Depth<T, EnableIfFloating<T>> {
   static constexpr const int bits = sizeof(T) * 8;
   static constexpr const T min = 0;
   static constexpr const T max = 1;
@@ -76,41 +76,41 @@ struct ColorDepth<T, EnableIfFloating<T>> {
 #pragma mark Conversions
 
 template <class T>
-inline T IntegralColorDepth<T>::clamp(T value) {
+inline T IntegralDepth<T>::clamp(T value) {
   return math::clamp(value, min, max);
 }
 
 template <class T>
-inline T FloatingColorDepth<T>::clamp(T value) {
+inline T FloatingDepth<T>::clamp(T value) {
   return math::clamp(value, min, max);
 }
 
 template <class T>
 template <class U>
-inline EnableIfIntegral<U, T> IntegralColorDepth<T>::convert(U value) {
-  if (ColorDepth<U>::bits < bits) {
-    return (static_cast<T>(value) << (bits - ColorDepth<U>::bits)) | value;
-  } else if (ColorDepth<U>::bits > bits) {
-    return value >> (ColorDepth<U>::bits - bits);
+inline EnableIfIntegral<U, T> IntegralDepth<T>::convert(U value) {
+  if (Depth<U>::bits < bits) {
+    return (static_cast<T>(value) << (bits - Depth<U>::bits)) | value;
+  } else if (Depth<U>::bits > bits) {
+    return value >> (Depth<U>::bits - bits);
   }
   return value;
 }
 
 template <class T>
 template <class U>
-inline EnableIfFloating<U, T> IntegralColorDepth<T>::convert(U value) {
+inline EnableIfFloating<U, T> IntegralDepth<T>::convert(U value) {
   return std::round(max * value);
 }
 
 template <class T>
 template <class U>
-inline EnableIfIntegral<U, T> FloatingColorDepth<T>::convert(U value) {
-  return static_cast<T>(value) / ColorDepth<U>::max;
+inline EnableIfIntegral<U, T> FloatingDepth<T>::convert(U value) {
+  return static_cast<T>(value) / Depth<U>::max;
 }
 
 template <class T>
 template <class U>
-inline EnableIfFloating<U, T> FloatingColorDepth<T>::convert(U value) {
+inline EnableIfFloating<U, T> FloatingDepth<T>::convert(U value) {
   return value;
 }
 
@@ -118,8 +118,8 @@ inline EnableIfFloating<U, T> FloatingColorDepth<T>::convert(U value) {
 
 namespace gfx = graphics;
 
-using graphics::ColorDepth;
+using graphics::Depth;
 
 }  // namespace takram
 
-#endif  // TAKRAM_GRAPHICS_COLOR_DEPTH_H_
+#endif  // TAKRAM_GRAPHICS_DEPTH_H_

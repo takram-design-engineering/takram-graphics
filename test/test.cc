@@ -1,5 +1,5 @@
 //
-//  takram/graphics.h
+//  test.cc
 //
 //  MIT License
 //
@@ -24,27 +24,19 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#pragma once
-#ifndef TAKRAM_GRAPHICS_H_
-#define TAKRAM_GRAPHICS_H_
+#include "gtest/gtest.h"
+
+#include "takram/graphics.h"
 
 namespace takram {
 namespace graphics {
 
-extern const double version_number;
-extern const unsigned char version_string[];
+template class Color<float, 3>;
+template class Color<float, 4>;
+template class Shape<float, 2>;
+template class Path<float, 2>;
+template class Command<float, 2>;
+template class Conic<float, 2>;
 
 }  // namespace graphics
 }  // namespace takram
-
-#include "takram/graphics/channel.h"
-#include "takram/graphics/color.h"
-#include "takram/graphics/depth.h"
-#include "takram/graphics/conic.h"
-#include "takram/graphics/command.h"
-#include "takram/graphics/command_type.h"
-#include "takram/graphics/path.h"
-#include "takram/graphics/path_direction.h"
-#include "takram/graphics/shape.h"
-
-#endif  // TAKRAM_GRAPHICS_H_

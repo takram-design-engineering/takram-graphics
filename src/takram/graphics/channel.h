@@ -1,5 +1,5 @@
 //
-//  takram/graphics.h
+//  takram/graphics/channel.h
 //
 //  MIT License
 //
@@ -25,26 +25,39 @@
 //
 
 #pragma once
-#ifndef TAKRAM_GRAPHICS_H_
-#define TAKRAM_GRAPHICS_H_
+#ifndef TAKRAM_GRAPHICS_CHANNEL_H_
+#define TAKRAM_GRAPHICS_CHANNEL_H_
+
+#include <cassert>
+#include <ostream>
 
 namespace takram {
 namespace graphics {
 
-extern const double version_number;
-extern const unsigned char version_string[];
+enum class Channel : int {
+  RED = 0,
+  GREEN = 1,
+  BLUE = 2,
+  ALPHA = 3
+};
+
+inline std::ostream& operator<<(std::ostream& os, Channel channel) {
+  switch (channel) {
+    case Channel::RED: os << "red"; break;
+    case Channel::GREEN: os << "green"; break;
+    case Channel::BLUE: os << "blue"; break;
+    case Channel::ALPHA: os << "alpha"; break;
+    default:
+      assert(false);
+      break;
+  }
+  return os;
+}
 
 }  // namespace graphics
+
+using graphics::Channel;
+
 }  // namespace takram
 
-#include "takram/graphics/channel.h"
-#include "takram/graphics/color.h"
-#include "takram/graphics/depth.h"
-#include "takram/graphics/conic.h"
-#include "takram/graphics/command.h"
-#include "takram/graphics/command_type.h"
-#include "takram/graphics/path.h"
-#include "takram/graphics/path_direction.h"
-#include "takram/graphics/shape.h"
-
-#endif  // TAKRAM_GRAPHICS_H_
+#endif  // TAKRAM_GRAPHICS_CHANNEL_H_

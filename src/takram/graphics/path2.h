@@ -118,7 +118,7 @@ class Path<T, 2> final {
                const Vec2<T>& control2,
                const Vec2<T>& point);
 
-  // Command2<T>s
+  // Commands
   const std::list<Command2<T>>& commands() const { return commands_; }
   std::list<Command2<T>>& commands() { return commands_; }
 
