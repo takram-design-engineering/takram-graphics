@@ -7,6 +7,11 @@ A collection of C++ classes and functions to compute common graphical operations
 
 Run "setup.sh" inside "script" directory to initialize submodules and build dependant libraries.
 
+### Dependencies
+
+- [Algorithm](https://github.com/takram-design-engineering/takram-algorithm)
+- [Math](https://github.com/takram-design-engineering/takram-math)
+
 ### Submodules
 
 - [Google Testing Framework](https://chromium.googlesource.com/external/googletest)
@@ -15,7 +20,7 @@ Run "setup.sh" inside "script" directory to initialize submodules and build depe
 
 The MIT License
 
-Copyright (C) 2015 takram design engineering
+Copyright (C) 2015 Shota Matsuda
 
 Includes algorithm based on Skia http://skia.org/<br>
 Copyright (C) 2006 The Android Open Source Project<br>
