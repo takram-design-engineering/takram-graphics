@@ -62,6 +62,7 @@ class Shape<T, 2> final {
 
  public:
   Shape() = default;
+  explicit Shape(const Path2<T>& path);
   explicit Shape(const std::list<Path2<T>>& paths);
 
   // Copy semantics
@@ -134,6 +135,9 @@ using Shape2f = Shape2<float>;
 using Shape2d = Shape2<double>;
 
 #pragma mark -
+
+template <class T>
+inline Shape2<T>::Shape(const Path2<T>& path) : paths_{path} {}
 
 template <class T>
 inline Shape2<T>::Shape(const std::list<Path2<T>>& paths) : paths_(paths) {}
