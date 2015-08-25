@@ -98,6 +98,7 @@ class Path<T, 2> final {
 
   // Attributes
   bool empty() const { return commands_.empty(); }
+  bool closed() const;
   std::size_t size() const { return commands_.size(); }
   Rect2<T> bounds() const;
 
@@ -204,6 +205,11 @@ inline bool Path2<T>::operator!=(const Path& other) const {
 #pragma mark Attributes
 
 template <class T>
+inline bool Path2<T>::closed() const {
+  return !commands_.empty() && commands_.back().type() == CommandType::CLOSE;
+}
+
+template <class T>
 inline Rect2<T> Path2<T>::bounds() const {
   T min_x = std::numeric_limits<T>::max();
   T min_y = std::numeric_limits<T>::max();
@@ -249,7 +255,7 @@ inline Rect2<T> Path2<T>::bounds() const {
 
 template <class T>
 inline void Path2<T>::close() {
-  if (!commands_.empty() && commands_.back().type() != CommandType::CLOSE) {
+  if (!closed()) {
     commands_.emplace_back(CommandType::CLOSE);
   }
 }
