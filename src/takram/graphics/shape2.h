@@ -170,9 +170,10 @@ inline bool Shape2<T>::operator!=(const Shape& other) const {
 
 template <class T>
 inline void Shape2<T>::close() {
-  if (!paths_.empty()) {
-    paths_.back().close();
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().close();
 }
 
 template <class T>
@@ -183,69 +184,79 @@ inline void Shape2<T>::moveTo(T x, T y) {
 
 template <class T>
 inline void Shape2<T>::moveTo(const Vec2<T>& point) {
-  paths_.emplace_back();
+  if (paths_.empty()) {
+    paths_.emplace_back();
+  }
   paths_.back().moveTo(point);
 }
 
 template <class T>
 inline void Shape2<T>::lineTo(T x, T y) {
-  if (!paths_.empty()) {
-    paths_.back().lineTo(x, y);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().lineTo(x, y);
 }
 
 template <class T>
 inline void Shape2<T>::lineTo(const Vec2<T>& point) {
-  if (!paths_.empty()) {
-    paths_.back().lineTo(point);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().lineTo(point);
 }
 
 template <class T>
 inline void Shape2<T>::quadraticTo(T cx, T cy, T x, T y) {
-  if (!paths_.empty()) {
-    paths_.back().quadraticTo(cx, cy, x, y);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().quadraticTo(cx, cy, x, y);
 }
 
 template <class T>
 inline void Shape2<T>::quadraticTo(const Vec2<T>& control,
                                    const Vec2<T>& point) {
-  if (!paths_.empty()) {
-    paths_.back().quadraticTo(control, point);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().quadraticTo(control, point);
 }
 
 template <class T>
 inline void Shape2<T>::conicTo(T cx, T cy, T x, T y, math::Promote<T> weight) {
-  if (!paths_.empty()) {
-    paths_.back().conicTo(cx, cy, x, y, weight);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().conicTo(cx, cy, x, y, weight);
 }
 
 template <class T>
 inline void Shape2<T>::conicTo(const Vec2<T>& control,
                                const Vec2<T>& point,
                                math::Promote<T> weight) {
-  if (!paths_.empty()) {
-    paths_.back().conicTo(control, point, weight);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().conicTo(control, point, weight);
 }
 
 template <class T>
 inline void Shape2<T>::cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y) {
-  if (!paths_.empty()) {
-    paths_.back().cubicTo(cx1, cy1, cx2, cy2, x, y);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().cubicTo(cx1, cy1, cx2, cy2, x, y);
 }
 
 template <class T>
 inline void Shape2<T>::cubicTo(const Vec2<T>& control1,
                                const Vec2<T>& control2,
                                const Vec2<T>& point) {
-  if (!paths_.empty()) {
-    paths_.back().cubicTo(control1, control2, point);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().cubicTo(control1, control2, point);
 }
 
 #pragma mark Conversion
