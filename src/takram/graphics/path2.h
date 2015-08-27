@@ -206,7 +206,16 @@ inline bool Path2<T>::operator!=(const Path& other) const {
 
 template <class T>
 inline bool Path2<T>::closed() const {
-  return !commands_.empty() && commands_.back().type() == CommandType::CLOSE;
+  if (commands_.size() < 3) {
+    return false;
+  }
+  if (commands_.back().type() == CommandType::CLOSE) {
+    return true;
+  }
+  if (commands_.back().point() == commands_.front().point()) {
+    return true;
+  }
+  return false;
 }
 
 template <class T>
@@ -282,9 +291,6 @@ inline void Path2<T>::lineTo(const Vec2<T>& point) {
     moveTo(point);
   } else {
     commands_.emplace_back(CommandType::LINE, point);
-    if (point == commands_.front().point()) {
-      close();
-    }
   }
 }
 
@@ -300,9 +306,6 @@ inline void Path2<T>::quadraticTo(const Vec2<T>& control,
     moveTo(point);
   } else {
     commands_.emplace_back(CommandType::QUADRATIC, control, point);
-    if (point == commands_.front().point()) {
-      close();
-    }
   }
 }
 
@@ -319,9 +322,6 @@ inline void Path2<T>::conicTo(const Vec2<T>& control,
     moveTo(point);
   } else {
     commands_.emplace_back(CommandType::CONIC, control, point, weight);
-    if (point == commands_.front().point()) {
-      close();
-    }
   }
 }
 
@@ -338,9 +338,6 @@ inline void Path2<T>::cubicTo(const Vec2<T>& control1,
     moveTo(point);
   } else {
     commands_.emplace_back(CommandType::CUBIC, control1, control2, point);
-    if (point == commands_.front().point()) {
-      close();
-    }
   }
 }
 
@@ -458,14 +455,14 @@ inline Path2<T> Path2<T>::reversed() const {
 
 template <class T>
 inline bool Path2<T>::convertConicsToQuadratics() {
-  using Method = std::vector<Vec2<T>> (Conic2<T>::*)(void) const;
-  return convertConicsToQuadratics(static_cast<Method>(&Conic2<T>::quadratics));
+  using F = std::vector<Vec2<T>> (Conic2<T>::*)(void) const;
+  return convertConicsToQuadratics(static_cast<F>(&Conic2<T>::quadratics));
 }
 
 template <class T>
 inline bool Path2<T>::convertConicsToQuadratics(math::Promote<T> tolerance) {
-  using Method = std::vector<Vec2<T>> (Conic2<T>::*)(math::Promote<T>) const;
-  return convertConicsToQuadratics(static_cast<Method>(&Conic2<T>::quadratics),
+  using F = std::vector<Vec2<T>> (Conic2<T>::*)(math::Promote<T>) const;
+  return convertConicsToQuadratics(static_cast<F>(&Conic2<T>::quadratics),
                                    tolerance);
 }
 
