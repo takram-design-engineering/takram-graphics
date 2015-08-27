@@ -41,6 +41,7 @@
 #include "takram/graphics/command.h"
 #include "takram/graphics/conic.h"
 #include "takram/graphics/path_direction.h"
+#include "takram/math/constants.h"
 #include "takram/math/promotion.h"
 #include "takram/math/rectangle.h"
 #include "takram/math/vector.h"
@@ -129,6 +130,7 @@ class Path<T, 2> final {
   Path reversed() const;
 
   // Conversion
+  bool convertQuadraticsToCubics();
   bool convertConicsToQuadratics();
   bool convertConicsToQuadratics(math::Promote<T> tolerance);
 
@@ -264,7 +266,7 @@ inline Rect2<T> Path2<T>::bounds() const {
 
 template <class T>
 inline void Path2<T>::close() {
-  if (!closed()) {
+  if (commands_.back().type() != CommandType::CLOSE) {
     commands_.emplace_back(CommandType::CLOSE);
   }
 }
@@ -290,7 +292,13 @@ inline void Path2<T>::lineTo(const Vec2<T>& point) {
   if (commands_.empty()) {
     moveTo(point);
   } else {
+    if (commands_.back().type() == CommandType::CLOSE) {
+      commands_.pop_back();
+    }
     commands_.emplace_back(CommandType::LINE, point);
+    if (point == commands_.front().point()) {
+      close();
+    }
   }
 }
 
@@ -305,7 +313,13 @@ inline void Path2<T>::quadraticTo(const Vec2<T>& control,
   if (commands_.empty()) {
     moveTo(point);
   } else {
+    if (commands_.back().type() == CommandType::CLOSE) {
+      commands_.pop_back();
+    }
     commands_.emplace_back(CommandType::QUADRATIC, control, point);
+    if (point == commands_.front().point()) {
+      close();
+    }
   }
 }
 
@@ -321,7 +335,13 @@ inline void Path2<T>::conicTo(const Vec2<T>& control,
   if (commands_.empty()) {
     moveTo(point);
   } else {
+    if (commands_.back().type() == CommandType::CLOSE) {
+      commands_.pop_back();
+    }
     commands_.emplace_back(CommandType::CONIC, control, point, weight);
+    if (point == commands_.front().point()) {
+      close();
+    }
   }
 }
 
@@ -337,7 +357,13 @@ inline void Path2<T>::cubicTo(const Vec2<T>& control1,
   if (commands_.empty()) {
     moveTo(point);
   } else {
+    if (commands_.back().type() == CommandType::CLOSE) {
+      commands_.pop_back();
+    }
     commands_.emplace_back(CommandType::CUBIC, control1, control2, point);
+    if (point == commands_.front().point()) {
+      close();
+    }
   }
 }
 
@@ -452,6 +478,28 @@ inline Path2<T> Path2<T>::reversed() const {
 }
 
 #pragma mark Conversion
+
+template <class T>
+inline bool Path2<T>::convertQuadraticsToCubics() {
+  bool changed{};
+  const auto end = std::end(commands_);
+  auto current = std::begin(commands_);
+  auto previous = current++;
+  while (current != end) {
+    if (current->type() != CommandType::QUADRATIC) {
+      previous = current++;
+      continue;
+    }
+    const auto& a = previous->point();
+    const auto b = current->control();
+    const auto& c = current->point();
+    current->type() = CommandType::CUBIC;
+    current->control1() = a + (b - a) * 2.0 / 3.0;
+    current->control2() = c + (b - c) * 2.0 / 3.0;
+    changed = true;
+  }
+  return changed;
+}
 
 template <class T>
 inline bool Path2<T>::convertConicsToQuadratics() {

@@ -103,6 +103,7 @@ class Shape<T, 2> final {
   std::list<Path2<T>>& paths() { return paths_; }
 
   // Conversion
+  bool convertQuadraticsToCubics();
   bool convertConicsToQuadratics();
   bool convertConicsToQuadratics(math::Promote<T> tolerance);
 
@@ -262,10 +263,23 @@ inline void Shape2<T>::cubicTo(const Vec2<T>& control1,
 #pragma mark Conversion
 
 template <class T>
+inline bool Shape2<T>::convertQuadraticsToCubics() {
+  bool changed{};
+  for (auto& path : paths_) {
+    if (path.convertQuadraticsToCubics()) {
+      changed = true;
+    }
+  }
+  return changed;
+}
+
+template <class T>
 inline bool Shape2<T>::convertConicsToQuadratics() {
   bool changed{};
   for (auto& path : paths_) {
-    changed |= path.convertConicsToQuadratics();
+    if (path.convertConicsToQuadratics()) {
+      changed = true;
+    }
   }
   return changed;
 }
@@ -274,7 +288,9 @@ template <class T>
 inline bool Shape2<T>::convertConicsToQuadratics(math::Promote<T> tolerance) {
   bool changed{};
   for (auto& path : paths_) {
-    changed |= path.convertConicsToQuadratics(tolerance);
+    if (path.convertConicsToQuadratics(tolerance)) {
+      changed = true;
+    }
   }
   return changed;
 }
