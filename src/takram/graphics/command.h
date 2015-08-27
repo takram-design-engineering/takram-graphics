@@ -66,7 +66,8 @@ class Command final {
   bool operator!=(const Command& other) const;
 
   // Properties
-  CommandType type() const { return type_; }
+  const CommandType& type() const { return type_; }
+  CommandType& type() { return type_; }
   const Vec2<T>& control() const { return control1_; }
   Vec2<T>& control() { return control1_; }
   const Vec2<T>& control1() const { return control1_; }
