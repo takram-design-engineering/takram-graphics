@@ -89,6 +89,16 @@ class Command final {
 
 template <class T>
 using Command2 = Command<T, 2>;
+template <class T>
+using Command3 = Command<T, 3>;
+
+using Command2i = Command2<int>;
+using Command2f = Command2<float>;
+using Command2d = Command2<double>;
+
+using Command3i = Command3<int>;
+using Command3f = Command3<float>;
+using Command3d = Command3<double>;
 
 #pragma mark -
 

@@ -106,6 +106,7 @@ class Shape<T, 2> final {
   bool convertQuadraticsToCubics();
   bool convertConicsToQuadratics();
   bool convertConicsToQuadratics(math::Promote<T> tolerance);
+  bool removeDuplicates(math::Promote<T> threshold);
 
   // Element access
   Path2<T>& operator[](int index) { return at(index); }
@@ -289,6 +290,17 @@ inline bool Shape2<T>::convertConicsToQuadratics(math::Promote<T> tolerance) {
   bool changed{};
   for (auto& path : paths_) {
     if (path.convertConicsToQuadratics(tolerance)) {
+      changed = true;
+    }
+  }
+  return changed;
+}
+
+template <class T>
+inline bool Shape2<T>::removeDuplicates(math::Promote<T> threshold) {
+  bool changed{};
+  for (auto& path : paths_) {
+    if (path.removeDuplicates(threshold)) {
       changed = true;
     }
   }

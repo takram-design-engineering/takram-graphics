@@ -30,6 +30,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 #include <cstddef>
 #include <functional>
 #include <iterator>
@@ -133,6 +134,7 @@ class Path<T, 2> final {
   bool convertQuadraticsToCubics();
   bool convertConicsToQuadratics();
   bool convertConicsToQuadratics(math::Promote<T> tolerance);
+  bool removeDuplicates(math::Promote<T> threshold);
 
   // Element access
   Command2<T>& operator[](int index) { return at(index); }
@@ -490,9 +492,9 @@ inline bool Path2<T>::convertQuadraticsToCubics() {
       previous = current++;
       continue;
     }
-    const auto& a = previous->point();
+    const auto a = previous->point();
     const auto b = current->control();
-    const auto& c = current->point();
+    const auto c = current->point();
     current->type() = CommandType::CUBIC;
     current->control1() = a + (b - a) * 2.0 / 3.0;
     current->control2() = c + (b - c) * 2.0 / 3.0;
@@ -542,6 +544,73 @@ inline bool Path2<T>::convertConicsToQuadratics(Method method, Args&&... args) {
       previous = current++;
     }
     changed = true;
+  }
+  return changed;
+}
+
+template <class T>
+inline bool Path2<T>::removeDuplicates(math::Promote<T> threshold) {
+  bool changed{};
+  std::list<std::list<Iterator>> duplicates;
+  auto current = std::begin(commands_);
+  auto previous = current++;
+  bool duplicated{};
+  for (; current != std::end(commands_); ++current, ++previous) {
+    if (std::abs(current->point().x - previous->point().x) < threshold ||
+        std::abs(current->point().y - previous->point().y) < threshold) {
+      if (!duplicated) {
+        duplicates.emplace_back();
+        duplicates.back().emplace_back(previous);
+      }
+      duplicates.back().emplace_back(current);
+      duplicated = true;
+      changed = true;
+    } else {
+      duplicated = false;
+    }
+  }
+  for (auto& commands : duplicates) {
+    assert(commands.size() > 1);
+    for (auto itr = std::next(std::begin(commands));
+         itr != std::end(commands); ++itr) {
+      commands_.erase(*itr);
+    }
+    const auto& front = commands.front()->point();
+    const auto& back = commands.back()->point();
+    commands.front()->point() = (front + back) / 2;
+  }
+
+  // Convert straight quads, conics and cubics into lines
+  for (auto& command : commands_) {
+    switch (command.type()) {
+      case CommandType::QUADRATIC:
+      case CommandType::CONIC:
+        if (std::abs(command.point().x - command.control().x) < threshold ||
+            std::abs(command.point().y - command.control().y) < threshold) {
+          command = Command2<T>(CommandType::LINE, command.point());
+          changed = true;
+        }
+        break;
+      case CommandType::CUBIC:
+        if (std::abs(command.point().x - command.control1().x) < threshold ||
+            std::abs(command.point().y - command.control1().y) < threshold) {
+          command.control1() = command.point();
+          changed = true;
+        }
+        if (std::abs(command.point().x - command.control2().x) < threshold ||
+            std::abs(command.point().y - command.control2().y) < threshold) {
+          command.control2() = command.point();
+          changed = true;
+        }
+        if (command.point() == command.control1() &&
+            command.point() == command.control2()) {
+          command = Command2<T>(CommandType::LINE, command.point());
+          changed = true;
+        }
+        break;
+      default:
+        break;
+    }
   }
   return changed;
 }
