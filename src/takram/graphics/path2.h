@@ -556,7 +556,7 @@ inline bool Path2<T>::removeDuplicates(math::Promote<T> threshold) {
   auto previous = current++;
   bool duplicated{};
   for (; current != std::end(commands_); ++current, ++previous) {
-    if (std::abs(current->point().x - previous->point().x) < threshold ||
+    if (std::abs(current->point().x - previous->point().x) < threshold &&
         std::abs(current->point().y - previous->point().y) < threshold) {
       if (!duplicated) {
         duplicates.emplace_back();
@@ -585,19 +585,19 @@ inline bool Path2<T>::removeDuplicates(math::Promote<T> threshold) {
     switch (command.type()) {
       case CommandType::QUADRATIC:
       case CommandType::CONIC:
-        if (std::abs(command.point().x - command.control().x) < threshold ||
+        if (std::abs(command.point().x - command.control().x) < threshold &&
             std::abs(command.point().y - command.control().y) < threshold) {
           command = Command2<T>(CommandType::LINE, command.point());
           changed = true;
         }
         break;
       case CommandType::CUBIC:
-        if (std::abs(command.point().x - command.control1().x) < threshold ||
+        if (std::abs(command.point().x - command.control1().x) < threshold &&
             std::abs(command.point().y - command.control1().y) < threshold) {
           command.control1() = command.point();
           changed = true;
         }
-        if (std::abs(command.point().x - command.control2().x) < threshold ||
+        if (std::abs(command.point().x - command.control2().x) < threshold &&
             std::abs(command.point().y - command.control2().y) < threshold) {
           command.control2() = command.point();
           changed = true;
