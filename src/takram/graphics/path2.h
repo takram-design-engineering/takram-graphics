@@ -373,26 +373,17 @@ inline void Path2<T>::cubicTo(const Vec2<T>& control1,
 
 template <class T>
 inline PathDirection Path2<T>::direction() const {
-  if (commands_.size() < 3) {
+  if (commands_.size() < 3 || !closed()) {
     return PathDirection::UNDEFINED;
   }
   T sum{};
-  auto first = std::begin(commands_);
-  auto second = std::next(first);
-  for (; second != std::end(commands_); ++first, ++second) {
-    switch (second->type()) {
-      case CommandType::LINE:
-      case CommandType::QUADRATIC:
-      case CommandType::CONIC:
-      case CommandType::CUBIC:
-        sum += first->point().cross(second->point());
-        break;
-      case CommandType::CLOSE:
-        sum += second->point().cross(commands_.front().point());
-        break;
-      default:
-        assert(false);
-        break;
+  auto next = std::begin(commands_);
+  auto current = next++;
+  for (; current != std::end(commands_); ++current, ++next) {
+    if (next != std::end(commands_)) {
+      sum += current->point().cross(next->point());
+    } else {
+      sum += current->point().cross(commands_.front().point());
     }
   }
   if (!sum) {
@@ -578,39 +569,6 @@ inline bool Path2<T>::removeDuplicates(math::Promote<T> threshold) {
     const auto& front = commands.front()->point();
     const auto& back = commands.back()->point();
     commands.front()->point() = (front + back) / 2;
-  }
-
-  // Convert straight quads, conics and cubics into lines
-  for (auto& command : commands_) {
-    switch (command.type()) {
-      case CommandType::QUADRATIC:
-      case CommandType::CONIC:
-        if (std::abs(command.point().x - command.control().x) < threshold &&
-            std::abs(command.point().y - command.control().y) < threshold) {
-          command = Command2<T>(CommandType::LINE, command.point());
-          changed = true;
-        }
-        break;
-      case CommandType::CUBIC:
-        if (std::abs(command.point().x - command.control1().x) < threshold &&
-            std::abs(command.point().y - command.control1().y) < threshold) {
-          command.control1() = command.point();
-          changed = true;
-        }
-        if (std::abs(command.point().x - command.control2().x) < threshold &&
-            std::abs(command.point().y - command.control2().y) < threshold) {
-          command.control2() = command.point();
-          changed = true;
-        }
-        if (command.point() == command.control1() &&
-            command.point() == command.control2()) {
-          command = Command2<T>(CommandType::LINE, command.point());
-          changed = true;
-        }
-        break;
-      default:
-        break;
-    }
   }
   return changed;
 }
