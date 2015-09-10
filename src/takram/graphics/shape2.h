@@ -35,6 +35,7 @@
 #include "takram/algorithm/leaf_iterator_iterator.h"
 #include "takram/graphics/path.h"
 #include "takram/math/promotion.h"
+#include "takram/math/rectangle.h"
 #include "takram/math/vector.h"
 
 namespace takram {
@@ -80,6 +81,7 @@ class Shape<T, 2> final {
   // Attributes
   bool empty() const { return paths_.empty(); }
   std::size_t size() const { return paths_.size(); }
+  Rect2<math::Promote<T>> bounds(bool precise = false) const;
 
   // Adding commands
   void close();
@@ -166,6 +168,28 @@ inline bool Shape2<T>::operator==(const Shape& other) const {
 template <class T>
 inline bool Shape2<T>::operator!=(const Shape& other) const {
   return !operator==(other);
+}
+
+#pragma mark Attributes
+
+template <class T>
+inline Rect2<math::Promote<T>> Shape2<T>::bounds(bool precise) const {
+  if (paths_.empty()) {
+    return Rect2<math::Promote<T>>();
+  }
+  Rect2<math::Promote<T>> result;
+  for (const auto& path : paths_) {
+    const auto bounds = path.bounds(precise);
+    if (bounds.empty()) {
+      continue;
+    }
+    if (result.empty()) {
+      result = std::move(bounds);
+    } else {
+      result.include(std::move(bounds));
+    }
+  }
+  return std::move(result);
 }
 
 #pragma mark Adding commands

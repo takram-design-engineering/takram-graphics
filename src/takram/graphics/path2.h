@@ -45,6 +45,7 @@
 #include "takram/math/constants.h"
 #include "takram/math/promotion.h"
 #include "takram/math/rectangle.h"
+#include "takram/math/roots.h"
 #include "takram/math/vector.h"
 
 namespace takram {
@@ -102,7 +103,7 @@ class Path<T, 2> final {
   bool empty() const { return commands_.empty(); }
   bool closed() const;
   std::size_t size() const { return commands_.size(); }
-  Rect2<T> bounds() const;
+  Rect2<math::Promote<T>> bounds(bool precise = false) const;
 
   // Adding commands
   void close();
@@ -157,6 +158,35 @@ class Path<T, 2> final {
   ConstReverseIterator rend() const { return ConstReverseIterator(end()); }
 
  private:
+  // Bounding box
+  template <class U = math::Promote<T>>
+  Rect2<U> calculateApproximateBounds() const;
+  template <class U = math::Promote<T>>
+  Rect2<U> calculatePreciseBounds() const;
+  template <class OutputIterator>
+  unsigned int findQuadraticExtrema(const Vec2<T>& p0,
+                                    const Vec2<T>& p1,
+                                    const Vec2<T>& p2,
+                                    OutputIterator result) const;
+  template <class OutputIterator>
+  unsigned int findCubicExtrema(const Vec2<T>& p0,
+                                const Vec2<T>& p1,
+                                const Vec2<T>& p2,
+                                const Vec2<T>& p3,
+                                OutputIterator result) const;
+  template <class U = math::Promote<T>>
+  Vec2<U> evaluateQuadraticAt(const Vec2<T>& p0,
+                              const Vec2<T>& p1,
+                              const Vec2<T>& p2,
+                              U t) const;
+  template <class U = math::Promote<T>>
+  Vec2<U> evaluateCubicAt(const Vec2<T>& p0,
+                          const Vec2<T>& p1,
+                          const Vec2<T>& p2,
+                          const Vec2<T>& p3,
+                          U t) const;
+
+  // Conversion
   template <
     class Method, class... Args,
     std::enable_if_t<std::is_member_pointer<Method>::value> *& = enabler
@@ -223,12 +253,21 @@ inline bool Path2<T>::closed() const {
 }
 
 template <class T>
-inline Rect2<T> Path2<T>::bounds() const {
+inline Rect2<math::Promote<T>> Path2<T>::bounds(bool precise) const {
+  if (precise) {
+    return calculatePreciseBounds();
+  }
+  return calculateApproximateBounds();
+}
+
+template <class T>
+template <class U>
+inline Rect2<U> Path2<T>::calculateApproximateBounds() const {
   T min_x = std::numeric_limits<T>::max();
   T min_y = std::numeric_limits<T>::max();
   T max_x = std::numeric_limits<T>::lowest();
   T max_y = std::numeric_limits<T>::lowest();
-  for (const auto& command : *this) {
+  for (const auto& command : commands_) {
     switch (command.type()) {
       case CommandType::CUBIC:
         if (command.control2().x < min_x) min_x = command.control2().x;
@@ -261,7 +300,150 @@ inline Rect2<T> Path2<T>::bounds() const {
   if (min_y == std::numeric_limits<T>::max()) min_y = T();
   if (max_x == std::numeric_limits<T>::lowest()) max_x = T();
   if (max_y == std::numeric_limits<T>::lowest()) max_y = T();
-  return Rect2<T>(Vec2<T>(min_x, min_y), Vec2<T>(max_x, max_y));
+  return Rect2<U>(Vec2<U>(min_x, min_y), Vec2<U>(max_x, max_y));
+}
+
+template <class T>
+template <class U>
+inline Rect2<U> Path2<T>::calculatePreciseBounds() const {
+  if (commands_.empty()) {
+    return Rect2<U>();
+  }
+  Rect2<U> result(commands_.front().point());
+  Vec2<U> extrema[4];
+  for (auto current = std::begin(commands_), previous = current++;
+       current != std::end(commands_);
+       ++current, ++previous) {
+    switch (current->type()) {
+      case CommandType::CUBIC: {
+        result.include(current->point());
+        const auto count = findCubicExtrema(
+            previous->point(),
+            current->control1(),
+            current->control2(),
+            current->point(),
+            extrema);
+        for (int i{}; i < count; ++i) {
+          result.include(extrema[i]);
+        }
+        break;
+      }
+      case CommandType::CONIC: {
+        // TODO(shotamatsuda): Calculate conic extrema
+        result.include(current->control());
+        result.include(current->point());
+        break;
+      }
+      case CommandType::QUADRATIC: {
+        result.include(current->point());
+        const auto count = findQuadraticExtrema(
+            previous->point(),
+            current->control(),
+            current->point(),
+            extrema);
+        for (int i{}; i < count; ++i) {
+          result.include(extrema[i]);
+        }
+        break;
+      }
+      case CommandType::LINE:
+        result.include(current->point());
+        break;
+      case CommandType::MOVE:
+      case CommandType::CLOSE:
+        break;
+      default:
+        assert(false);
+        break;
+    }
+  }
+  return std::move(result);
+}
+
+template <class T>
+template <class OutputIterator>
+inline unsigned int Path2<T>::findQuadraticExtrema(
+    const Vec2<T>& p0,
+    const Vec2<T>& p1,
+    const Vec2<T>& p2,
+    OutputIterator result) const {
+  const auto a = p0 - 2 * p1 + p2;
+  const auto b = p1 - p0;
+  math::Promote<T> x_root;
+  math::Promote<T> y_root;
+  const auto x_count = math::solveLinear(a.x, b.x, &x_root);
+  const auto y_count = math::solveLinear(a.y, b.y, &y_root);
+  unsigned int count{};
+  if(x_count > 0 && 0 < x_root && x_root < 1) {
+    *result++ = evaluateQuadraticAt(p0, p1, p2, x_root);
+    ++count;
+  }
+  if(y_count > 0 && 0 < y_root && y_root < 1) {
+    *result = evaluateQuadraticAt(p0, p1, p2, y_root);
+    ++count;
+  }
+  return count;
+}
+
+template <class T>
+template <class OutputIterator>
+inline unsigned int Path2<T>::findCubicExtrema(
+    const Vec2<T>& p0,
+    const Vec2<T>& p1,
+    const Vec2<T>& p2,
+    const Vec2<T>& p3,
+    OutputIterator result) const {
+  const auto a = 3 * p3 - 9 * p2 + 9 * p1 - 3 * p0;
+  const auto b = 6 * p0 - 12 * p1 + 6 * p2;
+  const auto c = 3 * p1 - 3 * p0;
+  math::Promote<T> x_roots[2];
+  math::Promote<T> y_roots[2];
+  const auto x_count = math::solveQuadratic(a.x, b.x, c.x, x_roots);
+  const auto y_count = math::solveQuadratic(a.y, b.y, c.y, y_roots);
+  unsigned int count{};
+  if(x_count > 0 && 0 < x_roots[0] && x_roots[0] < 1) {
+    *result++ = evaluateCubicAt(p0, p1, p2, p3, x_roots[0]);
+    ++count;
+  }
+  if(y_count > 0 && 0 < y_roots[0] && y_roots[0] < 1) {
+    *result++ = evaluateCubicAt(p0, p1, p2, p3, y_roots[0]);
+    ++count;
+  }
+  if(x_count > 1 && 0 < x_roots[1] && x_roots[1] < 1) {
+    *result++ = evaluateCubicAt(p0, p1, p2, p3, x_roots[1]);
+    ++count;
+  }
+  if(y_count > 1 && 0 < y_roots[1] && y_roots[1] < 1) {
+    *result = evaluateCubicAt(p0, p1, p2, p3, y_roots[1]);
+    ++count;
+  }
+  return count;
+}
+
+template <class T>
+template <class U>
+inline Vec2<U> Path2<T>::evaluateQuadraticAt(const Vec2<T>& p0,
+                                             const Vec2<T>& p1,
+                                             const Vec2<T>& p2,
+                                             U t) const {
+  const auto a = (1 - t) * (1 - t);
+  const auto b = 2 * (1 - t) * t;
+  const auto c = t * t;
+  return a * p0 + b * p1 + c * p2;
+}
+
+template <class T>
+template <class U>
+inline Vec2<U> Path2<T>::evaluateCubicAt(const Vec2<T>& p0,
+                                         const Vec2<T>& p1,
+                                         const Vec2<T>& p2,
+                                         const Vec2<T>& p3,
+                                         U t) const {
+  const auto a = (1 - t) * (1 - t) * (1 - t);
+  const auto b = 3 * (1 - t) * (1 - t) * t;
+  const auto c = 3 * (1 - t) * t * t;
+  const auto d = t * t * t;
+  return a * p0 + b * p1 + c * p2 + d * p3;
 }
 
 #pragma mark Adding commands
@@ -487,8 +669,8 @@ inline bool Path2<T>::convertQuadraticsToCubics() {
     const auto b = current->control();
     const auto c = current->point();
     current->type() = CommandType::CUBIC;
-    current->control1() = a + (b - a) * 2.0 / 3.0;
-    current->control2() = c + (b - c) * 2.0 / 3.0;
+    current->control1() = a + (b - a) * 2 / 3;
+    current->control2() = c + (b - c) * 2 / 3;
     changed = true;
   }
   return changed;
