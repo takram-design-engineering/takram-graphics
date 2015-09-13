@@ -35,6 +35,7 @@
 #include "takram/algorithm/leaf_iterator_iterator.h"
 #include "takram/graphics/path.h"
 #include "takram/math/promotion.h"
+#include "takram/math/rectangle.h"
 #include "takram/math/vector.h"
 
 namespace takram {
@@ -62,6 +63,7 @@ class Shape<T, 2> final {
 
  public:
   Shape() = default;
+  explicit Shape(const Path2<T>& path);
   explicit Shape(const std::list<Path2<T>>& paths);
 
   // Copy semantics
@@ -79,6 +81,7 @@ class Shape<T, 2> final {
   // Attributes
   bool empty() const { return paths_.empty(); }
   std::size_t size() const { return paths_.size(); }
+  Rect2<math::Promote<T>> bounds(bool precise = false) const;
 
   // Adding commands
   void close();
@@ -102,8 +105,10 @@ class Shape<T, 2> final {
   std::list<Path2<T>>& paths() { return paths_; }
 
   // Conversion
+  bool convertQuadraticsToCubics();
   bool convertConicsToQuadratics();
   bool convertConicsToQuadratics(math::Promote<T> tolerance);
+  bool removeDuplicates(math::Promote<T> threshold);
 
   // Element access
   Path2<T>& operator[](int index) { return at(index); }
@@ -136,6 +141,9 @@ using Shape2d = Shape2<double>;
 #pragma mark -
 
 template <class T>
+inline Shape2<T>::Shape(const Path2<T>& path) : paths_{path} {}
+
+template <class T>
 inline Shape2<T>::Shape(const std::list<Path2<T>>& paths) : paths_(paths) {}
 
 #pragma mark Mutators
@@ -162,13 +170,36 @@ inline bool Shape2<T>::operator!=(const Shape& other) const {
   return !operator==(other);
 }
 
+#pragma mark Attributes
+
+template <class T>
+inline Rect2<math::Promote<T>> Shape2<T>::bounds(bool precise) const {
+  if (paths_.empty()) {
+    return Rect2<math::Promote<T>>();
+  }
+  Rect2<math::Promote<T>> result;
+  for (const auto& path : paths_) {
+    const auto bounds = path.bounds(precise);
+    if (bounds.empty()) {
+      continue;
+    }
+    if (result.empty()) {
+      result = std::move(bounds);
+    } else {
+      result.include(std::move(bounds));
+    }
+  }
+  return std::move(result);
+}
+
 #pragma mark Adding commands
 
 template <class T>
 inline void Shape2<T>::close() {
-  if (!paths_.empty()) {
-    paths_.back().close();
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().close();
 }
 
 template <class T>
@@ -179,78 +210,101 @@ inline void Shape2<T>::moveTo(T x, T y) {
 
 template <class T>
 inline void Shape2<T>::moveTo(const Vec2<T>& point) {
-  paths_.emplace_back();
+  if (paths_.empty()) {
+    paths_.emplace_back();
+  }
   paths_.back().moveTo(point);
 }
 
 template <class T>
 inline void Shape2<T>::lineTo(T x, T y) {
-  if (!paths_.empty()) {
-    paths_.back().lineTo(x, y);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().lineTo(x, y);
 }
 
 template <class T>
 inline void Shape2<T>::lineTo(const Vec2<T>& point) {
-  if (!paths_.empty()) {
-    paths_.back().lineTo(point);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().lineTo(point);
 }
 
 template <class T>
 inline void Shape2<T>::quadraticTo(T cx, T cy, T x, T y) {
-  if (!paths_.empty()) {
-    paths_.back().quadraticTo(cx, cy, x, y);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().quadraticTo(cx, cy, x, y);
 }
 
 template <class T>
 inline void Shape2<T>::quadraticTo(const Vec2<T>& control,
                                    const Vec2<T>& point) {
-  if (!paths_.empty()) {
-    paths_.back().quadraticTo(control, point);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().quadraticTo(control, point);
 }
 
 template <class T>
 inline void Shape2<T>::conicTo(T cx, T cy, T x, T y, math::Promote<T> weight) {
-  if (!paths_.empty()) {
-    paths_.back().conicTo(cx, cy, x, y, weight);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().conicTo(cx, cy, x, y, weight);
 }
 
 template <class T>
 inline void Shape2<T>::conicTo(const Vec2<T>& control,
                                const Vec2<T>& point,
                                math::Promote<T> weight) {
-  if (!paths_.empty()) {
-    paths_.back().conicTo(control, point, weight);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().conicTo(control, point, weight);
 }
 
 template <class T>
 inline void Shape2<T>::cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y) {
-  if (!paths_.empty()) {
-    paths_.back().cubicTo(cx1, cy1, cx2, cy2, x, y);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().cubicTo(cx1, cy1, cx2, cy2, x, y);
 }
 
 template <class T>
 inline void Shape2<T>::cubicTo(const Vec2<T>& control1,
                                const Vec2<T>& control2,
                                const Vec2<T>& point) {
-  if (!paths_.empty()) {
-    paths_.back().cubicTo(control1, control2, point);
+  if (paths_.empty()) {
+    paths_.emplace_back();
   }
+  paths_.back().cubicTo(control1, control2, point);
 }
 
 #pragma mark Conversion
 
 template <class T>
+inline bool Shape2<T>::convertQuadraticsToCubics() {
+  bool changed{};
+  for (auto& path : paths_) {
+    if (path.convertQuadraticsToCubics()) {
+      changed = true;
+    }
+  }
+  return changed;
+}
+
+template <class T>
 inline bool Shape2<T>::convertConicsToQuadratics() {
   bool changed{};
   for (auto& path : paths_) {
-    changed |= path.convertConicsToQuadratics();
+    if (path.convertConicsToQuadratics()) {
+      changed = true;
+    }
   }
   return changed;
 }
@@ -259,7 +313,20 @@ template <class T>
 inline bool Shape2<T>::convertConicsToQuadratics(math::Promote<T> tolerance) {
   bool changed{};
   for (auto& path : paths_) {
-    changed |= path.convertConicsToQuadratics(tolerance);
+    if (path.convertConicsToQuadratics(tolerance)) {
+      changed = true;
+    }
+  }
+  return changed;
+}
+
+template <class T>
+inline bool Shape2<T>::removeDuplicates(math::Promote<T> threshold) {
+  bool changed{};
+  for (auto& path : paths_) {
+    if (path.removeDuplicates(threshold)) {
+      changed = true;
+    }
   }
   return changed;
 }

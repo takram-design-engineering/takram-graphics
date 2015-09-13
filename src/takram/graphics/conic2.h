@@ -79,6 +79,8 @@ class Conic<T, 2> final {
   // Subdivision
   std::vector<Point> quadratics() const;
   std::vector<Point> quadratics(math::Promote<T> tolerance) const;
+
+ private:
   std::vector<Point> subdivide(unsigned int level) const;
   std::pair<Conic, Conic> chop() const;
 

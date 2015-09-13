@@ -127,6 +127,12 @@ class Color<T, 4> final {
   static Color white(T alpha = Depth<T>::max);
   static Color gray(T alpha = Depth<T>::max);
   static Color black(T alpha = Depth<T>::max);
+  static Color red(T alpha = Depth<T>::max);
+  static Color green(T alpha = Depth<T>::max);
+  static Color blue(T alpha = Depth<T>::max);
+  static Color cyan(T alpha = Depth<T>::max);
+  static Color magenta(T alpha = Depth<T>::max);
+  static Color yellow(T alpha = Depth<T>::max);
   static Color hex(std::uint32_t hex);
   static Color hex(std::uint32_t hex, math::Promote<T> alpha);
   static Color hexA(std::uint32_t hex);
@@ -187,7 +193,6 @@ class Color<T, 4> final {
  public:
   union {
     Vec4<T> vector;
-    struct { T red; T green; T blue; T alpha; };
     struct { T r; T g; T b; T a; };
   };
 };
@@ -363,6 +368,36 @@ inline Color4<T> Color4<T>::gray(T alpha) {
 template <class T>
 inline Color4<T> Color4<T>::black(T alpha) {
   return Color(Depth<T>::min, alpha);
+}
+
+template <class T>
+inline Color4<T> Color4<T>::red(T alpha) {
+  return Color(Depth<T>::max, Depth<T>::min, Depth<T>::min, alpha);
+}
+
+template <class T>
+inline Color4<T> Color4<T>::green(T alpha) {
+  return Color(Depth<T>::min, Depth<T>::max, Depth<T>::min, alpha);
+}
+
+template <class T>
+inline Color4<T> Color4<T>::blue(T alpha) {
+  return Color(Depth<T>::min, Depth<T>::min, Depth<T>::max, alpha);
+}
+
+template <class T>
+inline Color4<T> Color4<T>::cyan(T alpha) {
+  return Color(Depth<T>::min, Depth<T>::max, Depth<T>::max, alpha);
+}
+
+template <class T>
+inline Color4<T> Color4<T>::magenta(T alpha) {
+  return Color(Depth<T>::max, Depth<T>::min, Depth<T>::max, alpha);
+}
+
+template <class T>
+inline Color4<T> Color4<T>::yellow(T alpha) {
+  return Color(Depth<T>::max, Depth<T>::max, Depth<T>::min, alpha);
 }
 
 template <class T>

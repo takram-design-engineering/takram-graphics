@@ -122,6 +122,12 @@ class Color<T, 3> final {
   static Color white();
   static Color gray();
   static Color black();
+  static Color red();
+  static Color green();
+  static Color blue();
+  static Color cyan();
+  static Color magenta();
+  static Color yellow();
   static Color hex(std::uint32_t hex);
 
   // Mutators
@@ -176,7 +182,6 @@ class Color<T, 3> final {
  public:
   union {
     Vec3<T> vector;
-    struct { T red; T green; T blue; };
     struct { T r; T g; T b; };
   };
 };
@@ -331,6 +336,36 @@ inline Color3<T> Color3<T>::gray() {
 template <class T>
 inline Color3<T> Color3<T>::black() {
   return Color(Depth<T>::min);
+}
+
+template <class T>
+inline Color3<T> Color3<T>::red() {
+  return Color(Depth<T>::max, Depth<T>::min, Depth<T>::min);
+}
+
+template <class T>
+inline Color3<T> Color3<T>::green() {
+  return Color(Depth<T>::min, Depth<T>::max, Depth<T>::min);
+}
+
+template <class T>
+inline Color3<T> Color3<T>::blue() {
+  return Color(Depth<T>::min, Depth<T>::min, Depth<T>::max);
+}
+
+template <class T>
+inline Color3<T> Color3<T>::cyan() {
+  return Color(Depth<T>::min, Depth<T>::max, Depth<T>::max);
+}
+
+template <class T>
+inline Color3<T> Color3<T>::magenta() {
+  return Color(Depth<T>::max, Depth<T>::min, Depth<T>::max);
+}
+
+template <class T>
+inline Color3<T> Color3<T>::yellow() {
+  return Color(Depth<T>::max, Depth<T>::max, Depth<T>::min);
 }
 
 template <class T>
