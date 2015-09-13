@@ -84,7 +84,7 @@ class Path<T, 2> final {
   };
 
  public:
-  Path();
+  Path() = default;
   explicit Path(const std::list<Command2<T>>& commands);
 
   // Copy semantics
@@ -195,7 +195,6 @@ class Path<T, 2> final {
 
  private:
   std::list<Command2<T>> commands_;
-  mutable PathDirection direction_;
 };
 
 using Path2i = Path2<int>;
@@ -205,12 +204,8 @@ using Path2d = Path2<double>;
 #pragma mark -
 
 template <class T>
-inline Path2<T>::Path() : direction_(PathDirection::UNDEFINED) {}
-
-template <class T>
 inline Path2<T>::Path(const std::list<Command2<T>>& commands)
-    : commands_(commands),
-      direction_(PathDirection::UNDEFINED) {}
+    : commands_(commands) {}
 
 #pragma mark Mutators
 
@@ -312,8 +307,7 @@ inline Rect2<U> Path2<T>::calculatePreciseBounds() const {
   Rect2<U> result(commands_.front().point());
   Vec2<U> extrema[4];
   for (auto current = std::begin(commands_), previous = current++;
-       current != std::end(commands_);
-       ++current, ++previous) {
+       current != std::end(commands_); ++current, ++previous) {
     switch (current->type()) {
       case CommandType::CUBIC: {
         result.include(current->point());
@@ -559,9 +553,8 @@ inline PathDirection Path2<T>::direction() const {
     return PathDirection::UNDEFINED;
   }
   T sum{};
-  auto next = std::begin(commands_);
-  auto current = next++;
-  for (; current != std::end(commands_); ++current, ++next) {
+  for (auto next = std::begin(commands_), current = next++;
+       current != std::end(commands_); ++current, ++next) {
     if (next != std::end(commands_)) {
       sum += current->point().cross(next->point());
     } else {
@@ -657,10 +650,8 @@ inline Path2<T> Path2<T>::reversed() const {
 template <class T>
 inline bool Path2<T>::convertQuadraticsToCubics() {
   bool changed{};
-  const auto end = std::end(commands_);
-  auto current = std::begin(commands_);
-  auto previous = current++;
-  while (current != end) {
+  for (auto current = std::begin(commands_), previous = current++;
+       current != std::end(commands_);) {
     if (current->type() != CommandType::QUADRATIC) {
       previous = current++;
       continue;
@@ -697,10 +688,8 @@ template <
 inline bool Path2<T>::convertConicsToQuadratics(Method method, Args&&... args) {
   assert(method);
   bool changed{};
-  const auto end = std::end(commands_);
-  auto current = std::begin(commands_);
-  auto previous = current++;
-  while (current != end) {
+  for (auto current = std::begin(commands_), previous = current++;
+       current != std::end(commands_);) {
     if (current->type() != CommandType::CONIC) {
       previous = current++;
       continue;
@@ -724,13 +713,43 @@ inline bool Path2<T>::convertConicsToQuadratics(Method method, Args&&... args) {
 template <class T>
 inline bool Path2<T>::removeDuplicates(math::Promote<T> threshold) {
   bool changed{};
+
+  // Convert the type of command to line if possible
+  for (auto current = std::begin(commands_), previous = current++;
+       current != std::end(commands_); ++current, ++previous) {
+    switch (current->type()) {
+      case CommandType::QUADRATIC:
+        if (current->control().equals(previous->point(), threshold) ||
+            current->control().equals(current->point(), threshold)) {
+          current->type() = CommandType::LINE;
+          changed = true;
+        }
+        break;
+      case CommandType::CONIC:
+        // TODO(shotamatsuda): Deal with other cases
+        if (!current->weight()) {
+          current->type() = CommandType::LINE;
+          changed = true;
+        }
+        break;
+      case CommandType::CUBIC:
+        if (current->control1().equals(previous->point(), threshold) &&
+            current->control2().equals(current->point(), threshold)) {
+          current->type() = CommandType::LINE;
+          changed = true;
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  // Remove duplicated points
   std::list<std::list<Iterator>> duplicates;
-  auto current = std::begin(commands_);
-  auto previous = current++;
   bool duplicated{};
-  for (; current != std::end(commands_); ++current, ++previous) {
-    if (std::abs(current->point().x - previous->point().x) < threshold &&
-        std::abs(current->point().y - previous->point().y) < threshold) {
+  for (auto current = std::begin(commands_), previous = current++;
+       current != std::end(commands_); ++current, ++previous) {
+    if (current->point().equals(previous->point(), threshold)) {
       if (!duplicated) {
         duplicates.emplace_back();
         duplicates.back().emplace_back(previous);
