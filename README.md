@@ -3,6 +3,9 @@ Graphics
 
 A collection of C++ classes and functions to compute common graphical operations that interoperate with common creative-coding libraries (WIP).
 
+[![License](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat
+)](http://mit-license.org)
+
 ## Setup Guide
 
 Run "setup.sh" inside "script" directory to initialize submodules and build dependant libraries.
