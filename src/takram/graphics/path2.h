@@ -713,38 +713,6 @@ inline bool Path2<T>::convertConicsToQuadratics(Method method, Args&&... args) {
 template <class T>
 inline bool Path2<T>::removeDuplicates(math::Promote<T> threshold) {
   bool changed{};
-
-  // Convert the type of command to line if possible
-  for (auto current = std::begin(commands_), previous = current++;
-       current != std::end(commands_); ++current, ++previous) {
-    switch (current->type()) {
-      case CommandType::QUADRATIC:
-        if (current->control().equals(previous->point(), threshold) ||
-            current->control().equals(current->point(), threshold)) {
-          current->type() = CommandType::LINE;
-          changed = true;
-        }
-        break;
-      case CommandType::CONIC:
-        // TODO(shotamatsuda): Deal with other cases
-        if (!current->weight()) {
-          current->type() = CommandType::LINE;
-          changed = true;
-        }
-        break;
-      case CommandType::CUBIC:
-        if (current->control1().equals(previous->point(), threshold) &&
-            current->control2().equals(current->point(), threshold)) {
-          current->type() = CommandType::LINE;
-          changed = true;
-        }
-        break;
-      default:
-        break;
-    }
-  }
-
-  // Remove duplicated points
   std::list<std::list<Iterator>> duplicates;
   bool duplicated{};
   for (auto current = std::begin(commands_), previous = current++;
