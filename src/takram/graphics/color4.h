@@ -78,7 +78,7 @@ class Color<T, 4> final {
   Color();
   explicit Color(T gray, T alpha = Depth<T>::max);
   Color(T red, T green, T blue, T alpha = Depth<T>::max);
-  explicit Color(const T *values, int size = channels);
+  explicit Color(const T *values, int size = 4);
   template <class... Args>
   Color(const std::tuple<Args...>& tuple);
   Color(std::initializer_list<T> list);
@@ -93,8 +93,8 @@ class Color<T, 4> final {
 
 #if TAKRAM_HAS_OPENCV
   template <class U>
-  Color(const cv::Vec<U, channels>& other);
-  operator cv::Vec<T, channels>() const;
+  Color(const cv::Vec<U, 4>& other);
+  operator cv::Vec<T, 4>() const;
 #endif  // TAKRAM_HAS_OPENCV
 
 #if TAKRAM_HAS_OPENFRAMEWORKS
@@ -140,7 +140,7 @@ class Color<T, 4> final {
   // Mutators
   void set(T gray, T alpha = Depth<T>::max);
   void set(T red, T green, T blue, T alpha = Depth<T>::max);
-  void set(const T *values, int size = channels);
+  void set(const T *values, int size = 4);
   template <class... Args>
   void set(const std::tuple<Args...>& tuple);
   void set(std::initializer_list<T> list);
@@ -251,18 +251,18 @@ inline Color<T, 4>::Color(const Color4<U>& other)
 
 template <class T>
 template <class U>
-inline Color<T, 4>::Color(const cv::Vec<U, channels>& other)
+inline Color<T, 4>::Color(const cv::Vec<U, 4>& other)
     : vector(Depth<T>::convert(other[0]),
              Depth<T>::convert(other[1]),
              Depth<T>::convert(other[2]),
              Depth<T>::convert(other[3])) {}
 
 template <class T>
-inline Color<T, 4>::operator cv::Vec<T, channels>() const {
-  return cv::Vec<T, channels>(Depth<T>::convert(r),
-                              Depth<T>::convert(g),
-                              Depth<T>::convert(b),
-                              Depth<T>::convert(a));
+inline Color<T, 4>::operator cv::Vec<T, 4>() const {
+  return cv::Vec<T, 4>(Depth<T>::convert(r),
+                       Depth<T>::convert(g),
+                       Depth<T>::convert(b),
+                       Depth<T>::convert(a));
 }
 
 #endif  // TAKRAM_HAS_OPENCV
