@@ -141,39 +141,39 @@ using Shape2d = Shape2<double>;
 #pragma mark -
 
 template <class T>
-inline Shape2<T>::Shape(const Path2<T>& path) : paths_{path} {}
+inline Shape<T, 2>::Shape(const Path2<T>& path) : paths_{path} {}
 
 template <class T>
-inline Shape2<T>::Shape(const std::list<Path2<T>>& paths) : paths_(paths) {}
+inline Shape<T, 2>::Shape(const std::list<Path2<T>>& paths) : paths_(paths) {}
 
 #pragma mark Mutators
 
 template <class T>
-inline void Shape2<T>::set(const std::list<Path2<T>>& paths) {
+inline void Shape<T, 2>::set(const std::list<Path2<T>>& paths) {
   paths_ = paths;
 }
 
 template <class T>
-inline void Shape2<T>::reset() {
+inline void Shape<T, 2>::reset() {
   paths_.clear();
 }
 
 #pragma mark Comparison
 
 template <class T>
-inline bool Shape2<T>::operator==(const Shape& other) const {
+inline bool Shape<T, 2>::operator==(const Shape& other) const {
   return paths_ == other.paths_;
 }
 
 template <class T>
-inline bool Shape2<T>::operator!=(const Shape& other) const {
+inline bool Shape<T, 2>::operator!=(const Shape& other) const {
   return !operator==(other);
 }
 
 #pragma mark Attributes
 
 template <class T>
-inline Rect2<math::Promote<T>> Shape2<T>::bounds(bool precise) const {
+inline Rect2<math::Promote<T>> Shape<T, 2>::bounds(bool precise) const {
   if (paths_.empty()) {
     return Rect2<math::Promote<T>>();
   }
@@ -195,7 +195,7 @@ inline Rect2<math::Promote<T>> Shape2<T>::bounds(bool precise) const {
 #pragma mark Adding commands
 
 template <class T>
-inline void Shape2<T>::close() {
+inline void Shape<T, 2>::close() {
   if (paths_.empty()) {
     paths_.emplace_back();
   }
@@ -203,13 +203,13 @@ inline void Shape2<T>::close() {
 }
 
 template <class T>
-inline void Shape2<T>::moveTo(T x, T y) {
+inline void Shape<T, 2>::moveTo(T x, T y) {
   paths_.emplace_back();
   paths_.back().moveTo(x, y);
 }
 
 template <class T>
-inline void Shape2<T>::moveTo(const Vec2<T>& point) {
+inline void Shape<T, 2>::moveTo(const Vec2<T>& point) {
   if (paths_.empty()) {
     paths_.emplace_back();
   }
@@ -217,7 +217,7 @@ inline void Shape2<T>::moveTo(const Vec2<T>& point) {
 }
 
 template <class T>
-inline void Shape2<T>::lineTo(T x, T y) {
+inline void Shape<T, 2>::lineTo(T x, T y) {
   if (paths_.empty()) {
     paths_.emplace_back();
   }
@@ -225,7 +225,7 @@ inline void Shape2<T>::lineTo(T x, T y) {
 }
 
 template <class T>
-inline void Shape2<T>::lineTo(const Vec2<T>& point) {
+inline void Shape<T, 2>::lineTo(const Vec2<T>& point) {
   if (paths_.empty()) {
     paths_.emplace_back();
   }
@@ -233,7 +233,7 @@ inline void Shape2<T>::lineTo(const Vec2<T>& point) {
 }
 
 template <class T>
-inline void Shape2<T>::quadraticTo(T cx, T cy, T x, T y) {
+inline void Shape<T, 2>::quadraticTo(T cx, T cy, T x, T y) {
   if (paths_.empty()) {
     paths_.emplace_back();
   }
@@ -241,8 +241,8 @@ inline void Shape2<T>::quadraticTo(T cx, T cy, T x, T y) {
 }
 
 template <class T>
-inline void Shape2<T>::quadraticTo(const Vec2<T>& control,
-                                   const Vec2<T>& point) {
+inline void Shape<T, 2>::quadraticTo(const Vec2<T>& control,
+                                     const Vec2<T>& point) {
   if (paths_.empty()) {
     paths_.emplace_back();
   }
@@ -250,7 +250,8 @@ inline void Shape2<T>::quadraticTo(const Vec2<T>& control,
 }
 
 template <class T>
-inline void Shape2<T>::conicTo(T cx, T cy, T x, T y, math::Promote<T> weight) {
+inline void Shape<T, 2>::conicTo(T cx, T cy, T x, T y,
+                                 math::Promote<T> weight) {
   if (paths_.empty()) {
     paths_.emplace_back();
   }
@@ -258,9 +259,9 @@ inline void Shape2<T>::conicTo(T cx, T cy, T x, T y, math::Promote<T> weight) {
 }
 
 template <class T>
-inline void Shape2<T>::conicTo(const Vec2<T>& control,
-                               const Vec2<T>& point,
-                               math::Promote<T> weight) {
+inline void Shape<T, 2>::conicTo(const Vec2<T>& control,
+                                 const Vec2<T>& point,
+                                 math::Promote<T> weight) {
   if (paths_.empty()) {
     paths_.emplace_back();
   }
@@ -268,7 +269,7 @@ inline void Shape2<T>::conicTo(const Vec2<T>& control,
 }
 
 template <class T>
-inline void Shape2<T>::cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y) {
+inline void Shape<T, 2>::cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y) {
   if (paths_.empty()) {
     paths_.emplace_back();
   }
@@ -276,9 +277,9 @@ inline void Shape2<T>::cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y) {
 }
 
 template <class T>
-inline void Shape2<T>::cubicTo(const Vec2<T>& control1,
-                               const Vec2<T>& control2,
-                               const Vec2<T>& point) {
+inline void Shape<T, 2>::cubicTo(const Vec2<T>& control1,
+                                 const Vec2<T>& control2,
+                                 const Vec2<T>& point) {
   if (paths_.empty()) {
     paths_.emplace_back();
   }
@@ -288,7 +289,7 @@ inline void Shape2<T>::cubicTo(const Vec2<T>& control1,
 #pragma mark Conversion
 
 template <class T>
-inline bool Shape2<T>::convertQuadraticsToCubics() {
+inline bool Shape<T, 2>::convertQuadraticsToCubics() {
   bool changed{};
   for (auto& path : paths_) {
     if (path.convertQuadraticsToCubics()) {
@@ -299,7 +300,7 @@ inline bool Shape2<T>::convertQuadraticsToCubics() {
 }
 
 template <class T>
-inline bool Shape2<T>::convertConicsToQuadratics() {
+inline bool Shape<T, 2>::convertConicsToQuadratics() {
   bool changed{};
   for (auto& path : paths_) {
     if (path.convertConicsToQuadratics()) {
@@ -310,7 +311,7 @@ inline bool Shape2<T>::convertConicsToQuadratics() {
 }
 
 template <class T>
-inline bool Shape2<T>::convertConicsToQuadratics(math::Promote<T> tolerance) {
+inline bool Shape<T, 2>::convertConicsToQuadratics(math::Promote<T> tolerance) {
   bool changed{};
   for (auto& path : paths_) {
     if (path.convertConicsToQuadratics(tolerance)) {
@@ -321,7 +322,7 @@ inline bool Shape2<T>::convertConicsToQuadratics(math::Promote<T> tolerance) {
 }
 
 template <class T>
-inline bool Shape2<T>::removeDuplicates(math::Promote<T> threshold) {
+inline bool Shape<T, 2>::removeDuplicates(math::Promote<T> threshold) {
   bool changed{};
   for (auto& path : paths_) {
     if (path.removeDuplicates(threshold)) {
@@ -334,14 +335,14 @@ inline bool Shape2<T>::removeDuplicates(math::Promote<T> threshold) {
 #pragma mark Element access
 
 template <class T>
-inline Path2<T>& Shape2<T>::at(int index) {
+inline Path2<T>& Shape<T, 2>::at(int index) {
   auto itr = std::begin(paths_);
   std::advance(itr, index);
   return *itr;
 }
 
 template <class T>
-inline const Path2<T>& Shape2<T>::at(int index) const {
+inline const Path2<T>& Shape<T, 2>::at(int index) const {
   auto itr = std::begin(paths_);
   std::advance(itr, index);
   return *itr;
@@ -350,22 +351,22 @@ inline const Path2<T>& Shape2<T>::at(int index) const {
 #pragma mark Iterator
 
 template <class T>
-inline typename Shape2<T>::Iterator Shape2<T>::begin() {
+inline typename Shape<T, 2>::Iterator Shape<T, 2>::begin() {
   return Iterator(std::begin(paths_), std::end(paths_));
 }
 
 template <class T>
-inline typename Shape2<T>::ConstIterator Shape2<T>::begin() const {
+inline typename Shape<T, 2>::ConstIterator Shape<T, 2>::begin() const {
   return ConstIterator(std::begin(paths_), std::end(paths_));
 }
 
 template <class T>
-inline typename Shape2<T>::Iterator Shape2<T>::end() {
+inline typename Shape<T, 2>::Iterator Shape<T, 2>::end() {
   return Iterator(std::end(paths_), std::end(paths_));
 }
 
 template <class T>
-inline typename Shape2<T>::ConstIterator Shape2<T>::end() const {
+inline typename Shape<T, 2>::ConstIterator Shape<T, 2>::end() const {
   return ConstIterator(std::end(paths_), std::end(paths_));
 }
 

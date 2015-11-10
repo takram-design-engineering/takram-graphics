@@ -206,34 +206,34 @@ using Color4d = Color4<double>;
 #pragma mark -
 
 template <class T>
-inline Color4<T>::Color() : vector() {}
+inline Color<T, 4>::Color() : vector() {}
 
 template <class T>
-inline Color4<T>::Color(T gray, T alpha) : vector(gray, gray, gray, alpha) {}
+inline Color<T, 4>::Color(T gray, T alpha) : vector(gray, gray, gray, alpha) {}
 
 template <class T>
-inline Color4<T>::Color(T red, T green, T blue, T alpha)
+inline Color<T, 4>::Color(T red, T green, T blue, T alpha)
     : vector(red, green, blue, alpha) {}
 
 template <class T>
-inline Color4<T>::Color(const T *values, int size) : vector(values, size) {}
+inline Color<T, 4>::Color(const T *values, int size) : vector(values, size) {}
 
 template <class T>
 template <class... Args>
-inline Color4<T>::Color(const std::tuple<Args...>& tuple) : vector(tuple) {}
+inline Color<T, 4>::Color(const std::tuple<Args...>& tuple) : vector(tuple) {}
 
 template <class T>
-inline Color4<T>::Color(std::initializer_list<T> list) : vector(list) {}
+inline Color<T, 4>::Color(std::initializer_list<T> list) : vector(list) {}
 
 template <class T>
 template <class U>
-inline Color4<T>::Color(const Color3<U>& color, T alpha) : vector() {
+inline Color<T, 4>::Color(const Color3<U>& color, T alpha) : vector() {
   set(color, alpha);
 }
 
 template <class T>
 template <class U>
-inline Color4<T>::Color(const Color4<U>& color, T alpha) : vector() {
+inline Color<T, 4>::Color(const Color4<U>& color, T alpha) : vector() {
   set(color, alpha);
 }
 
@@ -241,7 +241,7 @@ inline Color4<T>::Color(const Color4<U>& color, T alpha) : vector() {
 
 template <class T>
 template <class U>
-inline Color4<T>::Color(const Color4<U>& other)
+inline Color<T, 4>::Color(const Color4<U>& other)
     : vector(Depth<T>::convert(other.r),
              Depth<T>::convert(other.g),
              Depth<T>::convert(other.b),
@@ -251,14 +251,14 @@ inline Color4<T>::Color(const Color4<U>& other)
 
 template <class T>
 template <class U>
-inline Color4<T>::Color(const cv::Vec<U, channels>& other)
+inline Color<T, 4>::Color(const cv::Vec<U, channels>& other)
     : vector(Depth<T>::convert(other[0]),
              Depth<T>::convert(other[1]),
              Depth<T>::convert(other[2]),
              Depth<T>::convert(other[3])) {}
 
 template <class T>
-inline Color4<T>::operator cv::Vec<T, channels>() const {
+inline Color<T, 4>::operator cv::Vec<T, channels>() const {
   return cv::Vec<T, channels>(Depth<T>::convert(r),
                               Depth<T>::convert(g),
                               Depth<T>::convert(b),
@@ -271,14 +271,14 @@ inline Color4<T>::operator cv::Vec<T, channels>() const {
 
 template <class T>
 template <class U>
-inline Color4<T>::Color(const ofColor_<U>& other)
+inline Color<T, 4>::Color(const ofColor_<U>& other)
     : vector(Depth<T>::convert(other.r),
              Depth<T>::convert(other.g),
              Depth<T>::convert(other.b),
              Depth<T>::convert(other.a)) {}
 
 template <class T>
-inline Color4<T>::operator ofColor_<T>() const {
+inline Color<T, 4>::operator ofColor_<T>() const {
   return ofColor_<T>(Depth<T>::convert(r),
                      Depth<T>::convert(g),
                      Depth<T>::convert(b),
@@ -291,14 +291,14 @@ inline Color4<T>::operator ofColor_<T>() const {
 
 template <class T>
 template <class U>
-inline Color4<T>::Color(const ci::ColorAT<U>& other)
+inline Color<T, 4>::Color(const ci::ColorAT<U>& other)
     : vector(Depth<T>::convert(other.r),
              Depth<T>::convert(other.g),
              Depth<T>::convert(other.b),
              Depth<T>::convert(other.a)) {}
 
 template <class T>
-inline Color4<T>::operator ci::ColorAT<T>() const {
+inline Color<T, 4>::operator ci::ColorAT<T>() const {
   return ci::ColorT<T>(Depth<T>::convert(r),
                        Depth<T>::convert(g),
                        Depth<T>::convert(b),
@@ -310,14 +310,14 @@ inline Color4<T>::operator ci::ColorAT<T>() const {
 #if TAKRAM_HAS_NANOVG
 
 template <class T>
-inline Color4<T>::Color(const NVGcolor& other)
+inline Color<T, 4>::Color(const NVGcolor& other)
     : vector(Depth<T>::convert(other.r),
              Depth<T>::convert(other.g),
              Depth<T>::convert(other.b),
              Depth<T>::convert(other.a)) {}
 
 template <class T>
-inline Color4<T>::operator NVGcolor() const {
+inline Color<T, 4>::operator NVGcolor() const {
   return {{{
     Depth<float>::convert(r),
     Depth<float>::convert(g),
@@ -332,21 +332,21 @@ inline Color4<T>::operator NVGcolor() const {
 
 template <class T>
 template <class U>
-inline Color4<T>::Color(const Color3<U>& other)
+inline Color<T, 4>::Color(const Color3<U>& other)
     : vector(Depth<T>::convert(other.r),
              Depth<T>::convert(other.g),
              Depth<T>::convert(other.b)) {}
 
 template <class T>
-inline Color4<T>::Color(const Vec4<T>& other) : vector(other) {}
+inline Color<T, 4>::Color(const Vec4<T>& other) : vector(other) {}
 
 #pragma mark Copy semantics
 
 template <class T>
-inline Color4<T>::Color(const Color& other) : vector(other.vector) {}
+inline Color<T, 4>::Color(const Color& other) : vector(other.vector) {}
 
 template <class T>
-inline Color4<T>& Color4<T>::operator=(const Color& other) {
+inline Color4<T>& Color<T, 4>::operator=(const Color& other) {
   if (&other != this) {
     vector = other.vector;
   }
@@ -356,52 +356,52 @@ inline Color4<T>& Color4<T>::operator=(const Color& other) {
 #pragma mark Factory
 
 template <class T>
-inline Color4<T> Color4<T>::white(T alpha) {
+inline Color4<T> Color<T, 4>::white(T alpha) {
   return Color(Depth<T>::max, alpha);
 }
 
 template <class T>
-inline Color4<T> Color4<T>::gray(T alpha) {
+inline Color4<T> Color<T, 4>::gray(T alpha) {
   return Color((Depth<T>::min + Depth<T>::max) / 2, alpha);
 }
 
 template <class T>
-inline Color4<T> Color4<T>::black(T alpha) {
+inline Color4<T> Color<T, 4>::black(T alpha) {
   return Color(Depth<T>::min, alpha);
 }
 
 template <class T>
-inline Color4<T> Color4<T>::red(T alpha) {
+inline Color4<T> Color<T, 4>::red(T alpha) {
   return Color(Depth<T>::max, Depth<T>::min, Depth<T>::min, alpha);
 }
 
 template <class T>
-inline Color4<T> Color4<T>::green(T alpha) {
+inline Color4<T> Color<T, 4>::green(T alpha) {
   return Color(Depth<T>::min, Depth<T>::max, Depth<T>::min, alpha);
 }
 
 template <class T>
-inline Color4<T> Color4<T>::blue(T alpha) {
+inline Color4<T> Color<T, 4>::blue(T alpha) {
   return Color(Depth<T>::min, Depth<T>::min, Depth<T>::max, alpha);
 }
 
 template <class T>
-inline Color4<T> Color4<T>::cyan(T alpha) {
+inline Color4<T> Color<T, 4>::cyan(T alpha) {
   return Color(Depth<T>::min, Depth<T>::max, Depth<T>::max, alpha);
 }
 
 template <class T>
-inline Color4<T> Color4<T>::magenta(T alpha) {
+inline Color4<T> Color<T, 4>::magenta(T alpha) {
   return Color(Depth<T>::max, Depth<T>::min, Depth<T>::max, alpha);
 }
 
 template <class T>
-inline Color4<T> Color4<T>::yellow(T alpha) {
+inline Color4<T> Color<T, 4>::yellow(T alpha) {
   return Color(Depth<T>::max, Depth<T>::max, Depth<T>::min, alpha);
 }
 
 template <class T>
-inline Color4<T> Color4<T>::hex(std::uint32_t hex) {
+inline Color4<T> Color<T, 4>::hex(std::uint32_t hex) {
   return Color(
       Depth<T>::convert(static_cast<std::uint8_t>(0xff & (hex >> 16))),
       Depth<T>::convert(static_cast<std::uint8_t>(0xff & (hex >> 8))),
@@ -409,7 +409,7 @@ inline Color4<T> Color4<T>::hex(std::uint32_t hex) {
 }
 
 template <class T>
-inline Color4<T> Color4<T>::hex(std::uint32_t hex, math::Promote<T> alpha) {
+inline Color4<T> Color<T, 4>::hex(std::uint32_t hex, math::Promote<T> alpha) {
   return Color(
       Depth<T>::convert(static_cast<std::uint8_t>(0xff & (hex >> 16))),
       Depth<T>::convert(static_cast<std::uint8_t>(0xff & (hex >> 8))),
@@ -418,7 +418,7 @@ inline Color4<T> Color4<T>::hex(std::uint32_t hex, math::Promote<T> alpha) {
 }
 
 template <class T>
-inline Color4<T> Color4<T>::hexA(std::uint32_t hex) {
+inline Color4<T> Color<T, 4>::hexA(std::uint32_t hex) {
   return Color(
       Depth<T>::convert(static_cast<std::uint8_t>(0xff & (hex >> 16))),
       Depth<T>::convert(static_cast<std::uint8_t>(0xff & (hex >> 8))),
@@ -429,34 +429,34 @@ inline Color4<T> Color4<T>::hexA(std::uint32_t hex) {
 #pragma mark Mutators
 
 template <class T>
-inline void Color4<T>::set(T gray, T alpha) {
+inline void Color<T, 4>::set(T gray, T alpha) {
   vector.set(gray, gray, gray, alpha);
 }
 
 template <class T>
-inline void Color4<T>::set(T red, T green, T blue, T alpha) {
+inline void Color<T, 4>::set(T red, T green, T blue, T alpha) {
   vector.set(red, green, blue, alpha);
 }
 
 template <class T>
-inline void Color4<T>::set(const T *values, int size) {
+inline void Color<T, 4>::set(const T *values, int size) {
   vector.set(values, size);
 }
 
 template <class T>
 template <class... Args>
-inline void Color4<T>::set(const std::tuple<Args...>& tuple) {
+inline void Color<T, 4>::set(const std::tuple<Args...>& tuple) {
   vector.set(tuple);
 }
 
 template <class T>
-inline void Color4<T>::set(std::initializer_list<T> list) {
+inline void Color<T, 4>::set(std::initializer_list<T> list) {
   vector.set(list);
 }
 
 template <class T>
 template <class U>
-inline void Color4<T>::set(const Color3<U>& color, T alpha) {
+inline void Color<T, 4>::set(const Color3<U>& color, T alpha) {
   r = Depth<T>::convert(color.r);
   g = Depth<T>::convert(color.g);
   b = Depth<T>::convert(color.b);
@@ -465,7 +465,7 @@ inline void Color4<T>::set(const Color3<U>& color, T alpha) {
 
 template <class T>
 template <class U>
-inline void Color4<T>::set(const Color4<U>& color, T alpha) {
+inline void Color<T, 4>::set(const Color4<U>& color, T alpha) {
   r = Depth<T>::convert(color.r);
   g = Depth<T>::convert(color.g);
   b = Depth<T>::convert(color.b);
@@ -473,29 +473,29 @@ inline void Color4<T>::set(const Color4<U>& color, T alpha) {
 }
 
 template <class T>
-inline void Color4<T>::reset() {
+inline void Color<T, 4>::reset() {
   vector.reset();
 }
 
 #pragma mark Element access
 
 template <class T>
-inline T& Color4<T>::at(int index) {
+inline T& Color<T, 4>::at(int index) {
   return vector.at(index);
 }
 
 template <class T>
-inline const T& Color4<T>::at(int index) const {
+inline const T& Color<T, 4>::at(int index) const {
   return vector.at(index);
 }
 
 template <class T>
-inline T& Color4<T>::at(Channel channel) {
+inline T& Color<T, 4>::at(Channel channel) {
   return at(static_cast<int>(channel));
 }
 
 template <class T>
-inline const T& Color4<T>::at(Channel channel) const {
+inline const T& Color<T, 4>::at(Channel channel) const {
   return at(static_cast<int>(channel));
 }
 
@@ -503,13 +503,13 @@ inline const T& Color4<T>::at(Channel channel) const {
 
 template <class T>
 template <class U>
-inline bool Color4<T>::operator==(const Color4<U>& other) const {
+inline bool Color<T, 4>::operator==(const Color4<U>& other) const {
   return vector == other.vector;
 }
 
 template <class T>
 template <class U>
-inline bool Color4<T>::operator!=(const Color4<U>& other) const {
+inline bool Color<T, 4>::operator!=(const Color4<U>& other) const {
   return vector != other.vector;
 }
 
@@ -517,7 +517,7 @@ inline bool Color4<T>::operator!=(const Color4<U>& other) const {
 
 template <class T>
 template <class V>
-inline Color4<T> Color4<T>::lerp(const Color& other, V factor) const {
+inline Color4<T> Color<T, 4>::lerp(const Color& other, V factor) const {
   return Color(r + (other.r - r) * factor,
                g + (other.g - g) * factor,
                b + (other.b - b) * factor,
@@ -526,7 +526,7 @@ inline Color4<T> Color4<T>::lerp(const Color& other, V factor) const {
 
 template <class T>
 template <class V>
-inline Color4<T> Color4<T>::lerp(const Color3<T>& other, V factor) const {
+inline Color4<T> Color<T, 4>::lerp(const Color3<T>& other, V factor) const {
   return Color4<T>(r + (other.r - r) * factor,
                    g + (other.g - g) * factor,
                    b + (other.b - b) * factor,

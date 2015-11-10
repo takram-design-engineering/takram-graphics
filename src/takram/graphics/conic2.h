@@ -103,37 +103,37 @@ using Conic2d = Conic2<double>;
 #pragma mark -
 
 template <class T>
-inline Conic2<T>::Conic() : a(), b(), c(), weight() {}
+inline Conic<T, 2>::Conic() : a(), b(), c(), weight() {}
 
 template <class T>
-inline Conic2<T>::Conic(const Point& a,
-                        const Point& b,
-                        const Point& c,
-                        math::Promote<T> weight)
+inline Conic<T, 2>::Conic(const Point& a,
+                          const Point& b,
+                          const Point& c,
+                          math::Promote<T> weight)
     : points{{a, b, c}},
       weight(weight) {}
 
 #pragma mark Comparison
 
 template <class T>
-inline bool Conic2<T>::operator==(const Conic& other) const {
+inline bool Conic<T, 2>::operator==(const Conic& other) const {
   return points == other.points && weight == other.weight;
 }
 
 template <class T>
-inline bool Conic2<T>::operator!=(const Conic& other) const {
+inline bool Conic<T, 2>::operator!=(const Conic& other) const {
   return !operator==(other);
 }
 
 #pragma mark Subdivision
 
 template <class T>
-inline std::vector<Vec2<T>> Conic2<T>::quadratics() const {
+inline std::vector<Vec2<T>> Conic<T, 2>::quadratics() const {
   return subdivide(1);
 }
 
 template <class T>
-inline std::vector<Vec2<T>> Conic2<T>::quadratics(
+inline std::vector<Vec2<T>> Conic<T, 2>::quadratics(
     math::Promote<T> tolerance) const {
   unsigned int subdivision{};
   if (tolerance >= 0) {
@@ -150,7 +150,7 @@ inline std::vector<Vec2<T>> Conic2<T>::quadratics(
 }
 
 template <class T>
-inline std::vector<Vec2<T>> Conic2<T>::subdivide(unsigned int level) const {
+inline std::vector<Vec2<T>> Conic<T, 2>::subdivide(unsigned int level) const {
   if (level) {
     const auto pair = chop();
     const auto first = pair.first.subdivide(--level);
@@ -165,7 +165,7 @@ inline std::vector<Vec2<T>> Conic2<T>::subdivide(unsigned int level) const {
 }
 
 template <class T>
-inline std::pair<Conic2<T>, Conic2<T>> Conic2<T>::chop() const {
+inline std::pair<Conic2<T>, Conic2<T>> Conic<T, 2>::chop() const {
   const auto scale = 1 / (1 + this->weight);
   const auto weight = std::sqrt((1 + this->weight) / 2);
   const auto weighted = this->weight * b;

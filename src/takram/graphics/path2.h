@@ -205,41 +205,41 @@ using Path2d = Path2<double>;
 #pragma mark -
 
 template <class T>
-inline Path2<T>::Path() : direction_(PathDirection::UNDEFINED) {}
+inline Path<T, 2>::Path() : direction_(PathDirection::UNDEFINED) {}
 
 template <class T>
-inline Path2<T>::Path(const std::list<Command2<T>>& commands)
+inline Path<T, 2>::Path(const std::list<Command2<T>>& commands)
     : commands_(commands),
       direction_(PathDirection::UNDEFINED) {}
 
 #pragma mark Mutators
 
 template <class T>
-inline void Path2<T>::set(const std::list<Command2<T>>& commands) {
+inline void Path<T, 2>::set(const std::list<Command2<T>>& commands) {
   commands_ = commands;
 }
 
 template <class T>
-inline void Path2<T>::reset() {
+inline void Path<T, 2>::reset() {
   commands_.clear();
 }
 
 #pragma mark Comparison
 
 template <class T>
-inline bool Path2<T>::operator==(const Path& other) const {
+inline bool Path<T, 2>::operator==(const Path& other) const {
   return commands_ == other.commands_;
 }
 
 template <class T>
-inline bool Path2<T>::operator!=(const Path& other) const {
+inline bool Path<T, 2>::operator!=(const Path& other) const {
   return !operator==(other);
 }
 
 #pragma mark Attributes
 
 template <class T>
-inline bool Path2<T>::closed() const {
+inline bool Path<T, 2>::closed() const {
   if (commands_.size() < 3) {
     return false;
   }
@@ -253,7 +253,7 @@ inline bool Path2<T>::closed() const {
 }
 
 template <class T>
-inline Rect2<math::Promote<T>> Path2<T>::bounds(bool precise) const {
+inline Rect2<math::Promote<T>> Path<T, 2>::bounds(bool precise) const {
   if (precise) {
     return calculatePreciseBounds();
   }
@@ -262,7 +262,7 @@ inline Rect2<math::Promote<T>> Path2<T>::bounds(bool precise) const {
 
 template <class T>
 template <class U>
-inline Rect2<U> Path2<T>::calculateApproximateBounds() const {
+inline Rect2<U> Path<T, 2>::calculateApproximateBounds() const {
   T min_x = std::numeric_limits<T>::max();
   T min_y = std::numeric_limits<T>::max();
   T max_x = std::numeric_limits<T>::lowest();
@@ -305,7 +305,7 @@ inline Rect2<U> Path2<T>::calculateApproximateBounds() const {
 
 template <class T>
 template <class U>
-inline Rect2<U> Path2<T>::calculatePreciseBounds() const {
+inline Rect2<U> Path<T, 2>::calculatePreciseBounds() const {
   if (commands_.empty()) {
     return Rect2<U>();
   }
@@ -362,7 +362,7 @@ inline Rect2<U> Path2<T>::calculatePreciseBounds() const {
 
 template <class T>
 template <class OutputIterator>
-inline unsigned int Path2<T>::findQuadraticExtrema(
+inline unsigned int Path<T, 2>::findQuadraticExtrema(
     const Vec2<T>& p0,
     const Vec2<T>& p1,
     const Vec2<T>& p2,
@@ -387,7 +387,7 @@ inline unsigned int Path2<T>::findQuadraticExtrema(
 
 template <class T>
 template <class OutputIterator>
-inline unsigned int Path2<T>::findCubicExtrema(
+inline unsigned int Path<T, 2>::findCubicExtrema(
     const Vec2<T>& p0,
     const Vec2<T>& p1,
     const Vec2<T>& p2,
@@ -422,10 +422,10 @@ inline unsigned int Path2<T>::findCubicExtrema(
 
 template <class T>
 template <class U>
-inline Vec2<U> Path2<T>::evaluateQuadraticAt(const Vec2<T>& p0,
-                                             const Vec2<T>& p1,
-                                             const Vec2<T>& p2,
-                                             U t) const {
+inline Vec2<U> Path<T, 2>::evaluateQuadraticAt(const Vec2<T>& p0,
+                                               const Vec2<T>& p1,
+                                               const Vec2<T>& p2,
+                                               U t) const {
   const auto a = (1 - t) * (1 - t);
   const auto b = 2 * (1 - t) * t;
   const auto c = t * t;
@@ -434,11 +434,11 @@ inline Vec2<U> Path2<T>::evaluateQuadraticAt(const Vec2<T>& p0,
 
 template <class T>
 template <class U>
-inline Vec2<U> Path2<T>::evaluateCubicAt(const Vec2<T>& p0,
-                                         const Vec2<T>& p1,
-                                         const Vec2<T>& p2,
-                                         const Vec2<T>& p3,
-                                         U t) const {
+inline Vec2<U> Path<T, 2>::evaluateCubicAt(const Vec2<T>& p0,
+                                           const Vec2<T>& p1,
+                                           const Vec2<T>& p2,
+                                           const Vec2<T>& p3,
+                                           U t) const {
   const auto a = (1 - t) * (1 - t) * (1 - t);
   const auto b = 3 * (1 - t) * (1 - t) * t;
   const auto c = 3 * (1 - t) * t * t;
@@ -449,30 +449,30 @@ inline Vec2<U> Path2<T>::evaluateCubicAt(const Vec2<T>& p0,
 #pragma mark Adding commands
 
 template <class T>
-inline void Path2<T>::close() {
+inline void Path<T, 2>::close() {
   if (commands_.back().type() != CommandType::CLOSE) {
     commands_.emplace_back(CommandType::CLOSE);
   }
 }
 
 template <class T>
-inline void Path2<T>::moveTo(T x, T y) {
+inline void Path<T, 2>::moveTo(T x, T y) {
   moveTo(Vec2<T>(x, y));
 }
 
 template <class T>
-inline void Path2<T>::moveTo(const Vec2<T>& point) {
+inline void Path<T, 2>::moveTo(const Vec2<T>& point) {
   commands_.clear();
   commands_.emplace_back(CommandType::MOVE, point);
 }
 
 template <class T>
-inline void Path2<T>::lineTo(T x, T y) {
+inline void Path<T, 2>::lineTo(T x, T y) {
   lineTo(Vec2<T>(x, y));
 }
 
 template <class T>
-inline void Path2<T>::lineTo(const Vec2<T>& point) {
+inline void Path<T, 2>::lineTo(const Vec2<T>& point) {
   if (commands_.empty()) {
     moveTo(point);
   } else {
@@ -487,13 +487,13 @@ inline void Path2<T>::lineTo(const Vec2<T>& point) {
 }
 
 template <class T>
-inline void Path2<T>::quadraticTo(T cx, T cy, T x, T y) {
+inline void Path<T, 2>::quadraticTo(T cx, T cy, T x, T y) {
   quadraticTo(Vec2<T>(cx, cy), Vec2<T>(x, y));
 }
 
 template <class T>
-inline void Path2<T>::quadraticTo(const Vec2<T>& control,
-                                  const Vec2<T>& point) {
+inline void Path<T, 2>::quadraticTo(const Vec2<T>& control,
+                                    const Vec2<T>& point) {
   if (commands_.empty()) {
     moveTo(point);
   } else {
@@ -508,14 +508,14 @@ inline void Path2<T>::quadraticTo(const Vec2<T>& control,
 }
 
 template <class T>
-inline void Path2<T>::conicTo(T cx, T cy, T x, T y, math::Promote<T> weight) {
+inline void Path<T, 2>::conicTo(T cx, T cy, T x, T y, math::Promote<T> weight) {
   conicTo(Vec2<T>(cx, cy), Vec2<T>(x, y), weight);
 }
 
 template <class T>
-inline void Path2<T>::conicTo(const Vec2<T>& control,
-                              const Vec2<T>& point,
-                              math::Promote<T> weight) {
+inline void Path<T, 2>::conicTo(const Vec2<T>& control,
+                                const Vec2<T>& point,
+                                math::Promote<T> weight) {
   if (commands_.empty()) {
     moveTo(point);
   } else {
@@ -530,14 +530,14 @@ inline void Path2<T>::conicTo(const Vec2<T>& control,
 }
 
 template <class T>
-inline void Path2<T>::cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y) {
+inline void Path<T, 2>::cubicTo(T cx1, T cy1, T cx2, T cy2, T x, T y) {
   cubicTo(Vec2<T>(cx1, cy1), Vec2<T>(cx2, cy2), Vec2<T>(x, y));
 }
 
 template <class T>
-inline void Path2<T>::cubicTo(const Vec2<T>& control1,
-                              const Vec2<T>& control2,
-                              const Vec2<T>& point) {
+inline void Path<T, 2>::cubicTo(const Vec2<T>& control1,
+                                const Vec2<T>& control2,
+                                const Vec2<T>& point) {
   if (commands_.empty()) {
     moveTo(point);
   } else {
@@ -554,7 +554,7 @@ inline void Path2<T>::cubicTo(const Vec2<T>& control1,
 #pragma mark Direction
 
 template <class T>
-inline PathDirection Path2<T>::direction() const {
+inline PathDirection Path<T, 2>::direction() const {
   if (commands_.size() < 3 || !closed()) {
     return PathDirection::UNDEFINED;
   }
@@ -575,7 +575,7 @@ inline PathDirection Path2<T>::direction() const {
 }
 
 template <class T>
-inline Path2<T>& Path2<T>::reverse() {
+inline Path2<T>& Path<T, 2>::reverse() {
   if (commands_.empty()) {
     return *this;
   }
@@ -648,14 +648,14 @@ inline Path2<T>& Path2<T>::reverse() {
 }
 
 template <class T>
-inline Path2<T> Path2<T>::reversed() const {
+inline Path2<T> Path<T, 2>::reversed() const {
   return std::move(Path(*this).reverse());
 }
 
 #pragma mark Conversion
 
 template <class T>
-inline bool Path2<T>::convertQuadraticsToCubics() {
+inline bool Path<T, 2>::convertQuadraticsToCubics() {
   bool changed{};
   const auto end = std::end(commands_);
   auto current = std::begin(commands_);
@@ -677,13 +677,13 @@ inline bool Path2<T>::convertQuadraticsToCubics() {
 }
 
 template <class T>
-inline bool Path2<T>::convertConicsToQuadratics() {
+inline bool Path<T, 2>::convertConicsToQuadratics() {
   using F = std::vector<Vec2<T>> (Conic2<T>::*)(void) const;
   return convertConicsToQuadratics(static_cast<F>(&Conic2<T>::quadratics));
 }
 
 template <class T>
-inline bool Path2<T>::convertConicsToQuadratics(math::Promote<T> tolerance) {
+inline bool Path<T, 2>::convertConicsToQuadratics(math::Promote<T> tolerance) {
   using F = std::vector<Vec2<T>> (Conic2<T>::*)(math::Promote<T>) const;
   return convertConicsToQuadratics(static_cast<F>(&Conic2<T>::quadratics),
                                    tolerance);
@@ -694,7 +694,8 @@ template <
   class Method, class... Args,
   std::enable_if_t<std::is_member_pointer<Method>::value> *&
 >
-inline bool Path2<T>::convertConicsToQuadratics(Method method, Args&&... args) {
+inline bool Path<T, 2>::convertConicsToQuadratics(Method method,
+                                                  Args&&... args) {
   assert(method);
   bool changed{};
   const auto end = std::end(commands_);
@@ -722,7 +723,7 @@ inline bool Path2<T>::convertConicsToQuadratics(Method method, Args&&... args) {
 }
 
 template <class T>
-inline bool Path2<T>::removeDuplicates(math::Promote<T> threshold) {
+inline bool Path<T, 2>::removeDuplicates(math::Promote<T> threshold) {
   bool changed{};
   std::list<std::list<Iterator>> duplicates;
   auto current = std::begin(commands_);
@@ -758,14 +759,14 @@ inline bool Path2<T>::removeDuplicates(math::Promote<T> threshold) {
 #pragma mark Element access
 
 template <class T>
-inline Command2<T>& Path2<T>::at(int index) {
+inline Command2<T>& Path<T, 2>::at(int index) {
   auto itr = std::begin(commands_);
   std::advance(itr, index);
   return *itr;
 }
 
 template <class T>
-inline const Command2<T>& Path2<T>::at(int index) const {
+inline const Command2<T>& Path<T, 2>::at(int index) const {
   auto itr = std::begin(commands_);
   std::advance(itr, index);
   return *itr;
