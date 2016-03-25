@@ -3,7 +3,7 @@ Graphics
 
 A collection of C++ classes and functions to compute common graphical operations that interoperate with common creative-coding libraries (WIP).
 
-[![License](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat
+[![Build Status](https://travis-ci.org/takram-design-engineering/takram-graphics.svg)](https://travis-ci.org/takram-design-engineering/takram-graphics) [![License](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat
 )](http://mit-license.org)
 
 ## Setup Guide
