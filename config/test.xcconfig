@@ -28,8 +28,8 @@ TAKRAM_GRAPHICS_DIR = $(PROJECT_DIR)
 #include "shared.xcconfig"
 
 // Linking
-OTHER_LDFLAGS = $(inherited) "$(PROJECT_DIR)/build/gtest/libgtest.a" "$(PROJECT_DIR)/build/gtest/libgtest_main.a"
+OTHER_LDFLAGS = $(inherited) "$(PROJECT_DIR)/build/googletest/libgtest.a" "$(PROJECT_DIR)/build/googletest/libgtest_main.a"
 
 // Search Paths
 HEADER_SEARCH_PATHS = $(inherited) $(OPENCV_HEADER_SEARCH_PATHS) $(OPENFRAMEWORKS_HEADER_SEARCH_PATHS) $(CINDER_HEADER_SEARCH_PATHS)
-USER_HEADER_SEARCH_PATHS = $(inherited) "$(PROJECT_DIR)/lib/gtest/include"
+USER_HEADER_SEARCH_PATHS = $(inherited) "$(PROJECT_DIR)/lib/googletest/googletest/include"

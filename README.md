@@ -1,7 +1,7 @@
 Graphics
 ========
 
-A collection of C++ classes and functions to compute common graphical operations that interoperate with common creative-coding libraries (WIP).
+A collection of C++ classes and functions to compute common graphical operations that interoperate with common creative-coding libraries.
 
 [![Build Status](https://travis-ci.org/takram-design-engineering/takram-graphics.svg)](https://travis-ci.org/takram-design-engineering/takram-graphics) [![License](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat
 )](http://mit-license.org)
@@ -17,13 +17,13 @@ Run "setup.sh" inside "script" directory to initialize submodules and build depe
 
 ### Submodules
 
-- [Google Testing Framework](https://chromium.googlesource.com/external/googletest)
+- [Google Test Framework](https://github.com/google/googletest)
 
 ## License
 
 The MIT License
 
-Copyright (C) 2015 Shota Matsuda
+Copyright (C) 2015-2016 Shota Matsuda
 
 Includes algorithm based on Skia http://skia.org/<br>
 Copyright (C) 2006 The Android Open Source Project<br>

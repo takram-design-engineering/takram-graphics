@@ -498,7 +498,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PROJECT_DIR}/script/header.sh\" \"src\"";
+			shellScript = "\"${PROJECT_DIR}/script/copy_headers.sh\" \"src\"";
 		};
 		93B474721B648D4A00613FB6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -511,7 +511,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PROJECT_DIR}/script/header.sh\" \"src\"";
+			shellScript = "\"${PROJECT_DIR}/script/copy_headers.sh\" \"src\"";
 		};
 		93B474731B648D4F00613FB6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -524,7 +524,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PROJECT_DIR}/script/header.sh\" \"src\"";
+			shellScript = "\"${PROJECT_DIR}/script/copy_headers.sh\" \"src\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 

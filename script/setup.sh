@@ -4,7 +4,7 @@
 #
 #  The MIT License
 #
-#  Copyright (C) 2014-2015 Shota Matsuda
+#  Copyright (C) 2014-2016 Shota Matsuda
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a
 #  copy of this software and associated documentation files (the "Software"),
@@ -29,5 +29,5 @@ readonly PROJECT_DIR="$(cd "$(dirname "$0")/../"; pwd)"
 
 pushd "${PROJECT_DIR}"
   git submodule update --init
-  "script/build.sh" cmake "lib/gtest" "build/gtest"
+  "script/build.sh" cmake "lib/googletest/googletest" "build/googletest"
 popd
