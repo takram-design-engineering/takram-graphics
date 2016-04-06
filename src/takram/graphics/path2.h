@@ -95,10 +95,6 @@ class Path<T, 2> final {
   void set(const std::list<Command2<T>>& commands);
   void reset();
 
-  // Comparison
-  bool operator==(const Path& other) const;
-  bool operator!=(const Path& other) const;
-
   // Attributes
   bool empty() const { return commands_.empty(); }
   bool closed() const;
@@ -197,6 +193,12 @@ class Path<T, 2> final {
   std::list<Command2<T>> commands_;
 };
 
+// Comparison
+template <class T, class U>
+bool operator==(const Path2<T>& lhs, const Path2<U>& rhs);
+template <class T, class U>
+bool operator!=(const Path2<T>& lhs, const Path2<U>& rhs);
+
 using Path2i = Path2<int>;
 using Path2f = Path2<float>;
 using Path2d = Path2<double>;
@@ -221,14 +223,14 @@ inline void Path<T, 2>::reset() {
 
 #pragma mark Comparison
 
-template <class T>
-inline bool Path<T, 2>::operator==(const Path& other) const {
-  return commands_ == other.commands_;
+template <class T, class U>
+inline bool operator==(const Path2<T>& lhs, const Path2<U>& rhs) {
+  return lhs.commands() == rhs.commands();
 }
 
-template <class T>
-inline bool Path<T, 2>::operator!=(const Path& other) const {
-  return !operator==(other);
+template <class T, class U>
+inline bool operator!=(const Path2<T>& lhs, const Path2<U>& rhs) {
+  return !(lhs == rhs);
 }
 
 #pragma mark Attributes

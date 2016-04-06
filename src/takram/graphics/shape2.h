@@ -74,10 +74,6 @@ class Shape<T, 2> final {
   void set(const std::list<Path2<T>>& paths);
   void reset();
 
-  // Comparison
-  bool operator==(const Shape& other) const;
-  bool operator!=(const Shape& other) const;
-
   // Attributes
   bool empty() const { return paths_.empty(); }
   std::size_t size() const { return paths_.size(); }
@@ -134,6 +130,12 @@ class Shape<T, 2> final {
   std::list<Path2<T>> paths_;
 };
 
+// Comparison
+template <class T, class U>
+bool operator==(const Shape2<T>& lhs, const Shape2<U>& rhs);
+template <class T, class U>
+bool operator!=(const Shape2<T>& lhs, const Shape2<U>& rhs);
+
 using Shape2i = Shape2<int>;
 using Shape2f = Shape2<float>;
 using Shape2d = Shape2<double>;
@@ -160,14 +162,14 @@ inline void Shape<T, 2>::reset() {
 
 #pragma mark Comparison
 
-template <class T>
-inline bool Shape<T, 2>::operator==(const Shape& other) const {
-  return paths_ == other.paths_;
+template <class T, class U>
+inline bool operator==(const Shape2<T>& lhs, const Shape2<U>& rhs) {
+  return lhs.paths() == rhs.paths();
 }
 
-template <class T>
-inline bool Shape<T, 2>::operator!=(const Shape& other) const {
-  return !operator==(other);
+template <class T, class U>
+inline bool operator!=(const Shape2<T>& lhs, const Shape2<U>& rhs) {
+  return !(lhs == rhs);
 }
 
 #pragma mark Attributes

@@ -61,10 +61,6 @@ class Command final {
   Command(const Command&) = default;
   Command& operator=(const Command&) = default;
 
-  // Comparison
-  bool operator==(const Command& other) const;
-  bool operator!=(const Command& other) const;
-
   // Properties
   const CommandType& type() const { return type_; }
   CommandType& type() { return type_; }
@@ -86,6 +82,12 @@ class Command final {
   math::Promote<T> weight_;
   Vec2<T> point_;
 };
+
+// Comparison
+template <class T, class U, int D>
+bool operator==(const Command<T, D>& lhs, const Command<U, D>& rhs);
+template <class T, class U, int D>
+bool operator!=(const Command<T, D>& lhs, const Command<U, D>& rhs);
 
 template <class T>
 using Command2 = Command<T, 2>;
@@ -143,18 +145,18 @@ inline Command<T, D>::Command(CommandType type,
 
 #pragma mark Comparison
 
-template <class T, int D>
-inline bool Command<T, D>::operator==(const Command& other) const {
-  return (type_ == other.type_ &&
-          control1_ == other.control1_ &&
-          control2_ == other.control2_ &&
-          weight_ == other.weight_ &&
-          point_ == other.point_);
+template <class T, class U, int D>
+inline bool operator==(const Command<T, D>& lhs, const Command<U, D>& rhs) {
+  return (lhs.type() == rhs.type() &&
+          lhs.control1() == rhs.control1() &&
+          lhs.control2() == rhs.control2() &&
+          lhs.weight() == rhs.weight() &&
+          lhs.point() == rhs.point());
 }
 
-template <class T, int D>
-inline bool Command<T, D>::operator!=(const Command& other) const {
-  return !operator==(other);
+template <class T, class U, int D>
+inline bool operator!=(const Command<T, D>& lhs, const Command<U, D>& rhs) {
+  return !(lhs == rhs);
 }
 
 #pragma mark Stream

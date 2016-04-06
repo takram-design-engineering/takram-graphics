@@ -153,12 +153,6 @@ class Color<T, 3> final {
   T& back() { return vector.back(); }
   const T& back() const { return vector.back(); }
 
-  // Comparison
-  template <class U>
-  bool operator==(const Color3<U>& other) const;
-  template <class U>
-  bool operator!=(const Color3<U>& other) const;
-
   // Interpolation
   template <class V>
   Color lerp(const Color& other, V factor) const;
@@ -185,6 +179,12 @@ class Color<T, 3> final {
     struct { T r; T g; T b; };
   };
 };
+
+// Comparison
+template <class T, class U>
+bool operator==(const Color3<T>& lhs, const Color3<U>& rhs);
+template <class T, class U>
+bool operator!=(const Color3<T>& lhs, const Color3<U>& rhs);
 
 using Color3u = Color3<std::uint8_t>;
 using Color3s = Color3<std::uint16_t>;
@@ -433,16 +433,14 @@ inline const T& Color<T, 3>::at(Channel channel) const {
 
 #pragma mark Comparison
 
-template <class T>
-template <class U>
-inline bool Color<T, 3>::operator==(const Color3<U>& other) const {
-  return vector == other.vector;
+template <class T, class U>
+inline bool operator==(const Color3<T>& lhs, const Color3<U>& rhs) {
+  return lhs.vector == rhs.vector;
 }
 
-template <class T>
-template <class U>
-inline bool Color<T, 3>::operator!=(const Color3<U>& other) const {
-  return vector != other.vector;
+template <class T, class U>
+inline bool operator!=(const Color3<T>& lhs, const Color3<U>& rhs) {
+  return !(lhs == rhs);
 }
 
 #pragma mark Interpolation

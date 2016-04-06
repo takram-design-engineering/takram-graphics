@@ -72,10 +72,6 @@ class Conic<T, 2> final {
   Conic(const Conic&) = default;
   Conic& operator=(const Conic&) = default;
 
-  // Comparison
-  bool operator==(const Conic& other) const;
-  bool operator!=(const Conic& other) const;
-
   // Subdivision
   std::vector<Point> quadratics() const;
   std::vector<Point> quadratics(math::Promote<T> tolerance) const;
@@ -96,6 +92,12 @@ class Conic<T, 2> final {
   T weight;
 };
 
+// Comparison
+template <class T, class U>
+bool operator==(const Conic2<T>& lhs, const Conic2<U>& rhs);
+template <class T, class U>
+bool operator!=(const Conic2<T>& lhs, const Conic2<U>& rhs);
+
 using Conic2i = Conic2<int>;
 using Conic2f = Conic2<float>;
 using Conic2d = Conic2<double>;
@@ -115,14 +117,14 @@ inline Conic<T, 2>::Conic(const Point& a,
 
 #pragma mark Comparison
 
-template <class T>
-inline bool Conic<T, 2>::operator==(const Conic& other) const {
-  return points == other.points && weight == other.weight;
+template <class T, class U>
+inline bool operator==(const Conic2<T>& lhs, const Conic2<U>& rhs) {
+  return lhs.points == rhs.points && lhs.weight == rhs.weight;
 }
 
-template <class T>
-inline bool Conic<T, 2>::operator!=(const Conic& other) const {
-  return !operator==(other);
+template <class T, class U>
+inline bool operator!=(const Conic2<T>& lhs, const Conic2<U>& rhs) {
+  return !(lhs == rhs);
 }
 
 #pragma mark Subdivision
